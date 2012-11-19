@@ -1,0 +1,145 @@
+/*
+Say you have an array for which the ith element is the price of a given stock on day i.
+
+Design an algorithm to find the maximum profit. You may complete at most two transactions.
+
+Note:
+You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+*/
+class Solution {
+public:
+    int maxProfit(vector<int> &prices) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if(prices.size()<=1)
+            return 0;
+        
+        vector<int> diff;
+        for(int i=0;i<prices.size()-1;i++)
+        {
+            diff.push_back(prices[i+1]-prices[i]);
+        }
+        
+        int posi =0;
+        int nega =0;
+        vector<int> inter;
+        for(int j=0;j<diff.size();j++)
+        {
+            if(diff[j]>0){
+                if(nega<0){
+                    inter.push_back(nega);
+                    nega=0;
+                }
+                posi+=diff[j];
+            }
+            else if(diff[j]<0){
+                if(posi>0){
+                    inter.push_back(posi);
+                    posi=0;
+                }
+                nega+=diff[j];
+            }
+        }
+        
+        if(nega<0){
+            inter.push_back(nega);
+            nega=0;
+        }
+        if(posi>0){
+            inter.push_back(posi);
+            posi=0;
+        }
+        
+        int len = inter.size();
+        if (len==0)
+            return 0;
+        
+        int maxb =0;
+        if(inter[0]>0){
+            if(len==1)
+                return inter[0];
+            for(int i=1;i<len;i+=2){
+                maxb=max(cal(inter, i),maxb);
+            }
+        }else{
+            if(len==1)
+                return 0;
+            for(int i=0;i<len;i+=2){
+                maxb=max(cal(inter, i),maxb);
+            }            
+        }
+        
+        return maxb;
+    }
+    
+    
+    int cal(vector<int> &inter, int index) {
+        int left=0;
+        int right =0;
+        int suml =0;
+        int sumr=0;
+        for(int i =0;i<index;i++)
+        {
+            if(suml+inter[i]>0){
+                suml+=inter[i];
+                if(suml>left)
+                    left=suml;
+            }
+            else
+                suml=0;
+        }
+        
+        for(int i =index;i<inter.size();i++)
+        {
+            if(sumr+inter[i]>0){
+                sumr+=inter[i];
+                if(sumr>right)
+                    right=sumr;
+            }
+            else
+                sumr=0;
+        }
+        
+        return left+right;   
+    }
+};
+
+
+class Solution {
+public:
+    int maxProfit(vector<int> &prices) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if(prices.size()==0||prices.size()==1)
+            return 0;
+            
+        int len=prices.size();
+        int* dp1=new int[len];
+        int* dp2=new int[len];
+        for(int i=0;i<len;i++){
+            dp1[i]=0;
+            dp2[i]=0;
+        }
+        int smax=prices[len-1];
+        int smin=prices[0];
+        //first i days, buy max
+        for(int i=1;i<len;i++)
+        {
+            smin=min(smin,prices[i]);
+            dp1[i]=max(dp1[i-1],prices[i]-smin);
+        }
+        //from i days, buy max
+        for(int i=len-2;i>=0;i--)
+        {
+            smax=max(smax, prices[i]);
+            dp2[i]=max(dp2[i+1],smax-prices[i]);
+        }
+        
+        //before i day + after i day
+        int ans=0;
+        for(int i=0;i<len;i++)
+            ans=max(ans, dp1[i]+dp2[i]);
+        return ans;
+    }
+};
+
