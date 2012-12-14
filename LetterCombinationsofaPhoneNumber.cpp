@@ -23,12 +23,12 @@ public:
         return result;
     }
 
-    void letterCombinationsHelper(string& digits, size_t i, string str) {
+    void letterCombinationsHelper(string& digits, int i, string str) {
         if (i == digits.size()) {
             result.push_back(str);
         }
         int pos = digits[i] - '2';
-        for (size_t j = 0; j < keypad[pos].size(); j++) {
+        for (int j = 0; j < keypad[pos].size(); j++) {
             letterCombinationsHelper(digits, i + 1, str + keypad[pos][j]);
         }
     }

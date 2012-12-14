@@ -11,12 +11,14 @@ public:
             unsigned_dividend = -dividend;
             sign = -sign;
         }
-        else unsigned_dividend = dividend;
+        else
+			unsigned_dividend = dividend;
         if (divisor < 0) {
             unsigned_divisor = -divisor;
             sign = -sign;
         }
-        else unsigned_divisor = divisor;
+        else
+			unsigned_divisor = divisor;
         unsigned int result = unsigned_divide(unsigned_dividend, unsigned_divisor);
         return (sign < 0) ? -result : result;
     }

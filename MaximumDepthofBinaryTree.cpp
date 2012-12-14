@@ -22,7 +22,7 @@ struct TreeNode {
 class Solution {
 public:
     int maxDepth(TreeNode *root) {
-//        return maxDepth1(root);
+		//return maxDepth1(root);
         return maxDepth2(root);
     }
 
@@ -33,10 +33,12 @@ public:
     }
 
     void maxDepthHelper(TreeNode *node, int curDepth, int &maxDepth) {
-        if (node == NULL) return;
+        if (node == NULL)
+			return;
         curDepth++;
         if (node->left == NULL && node->right == NULL) {
-            if (curDepth > maxDepth) maxDepth = curDepth;
+            if (curDepth > maxDepth)
+				maxDepth = curDepth;
         }
         maxDepthHelper(node->left, curDepth, maxDepth);
         maxDepthHelper(node->right, curDepth, maxDepth);
@@ -47,7 +49,8 @@ public:
     }
 
     int maxDepthHelper2(TreeNode *node) {
-        if (node == NULL) return 0;
+        if (node == NULL)
+			return 0;
         return 1+max(maxDepthHelper2(node->left), maxDepthHelper2(node->right));
     }
 };

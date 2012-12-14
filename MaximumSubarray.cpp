@@ -10,9 +10,6 @@
 #include <climits>
 using namespace std;
 
-
-
-
 class Solution {
 public:
     int maxSubArray(int A[], int n) {
@@ -37,19 +34,6 @@ public:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 class Solution {
 public:
     int maxSumSubarray(const int x[], const int n) {
@@ -61,8 +45,10 @@ public:
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
                 int sum = 0;
-                for (int k = i; k <= j; k++) sum += x[k];
-                if (sum > res) res = sum;
+                for (int k = i; k <= j; k++)
+					sum += x[k];
+                if (sum > res)
+					res = sum;
             }
         }
         return res;
@@ -74,15 +60,18 @@ public:
             int sum = 0;
             for (int j = i; j < n; j++) {
                 sum += x[j];
-                if (sum > res) res = sum;
+                if (sum > res)
+					res = sum;
             }
         }
         return res;
     };
 
     int maxSumSubarray3(const int x[], const int l, const int u) {
-        if (l > u) return INT_MIN;
-        if (l == u) return x[l];
+        if (l > u)
+			return INT_MIN;
+        if (l == u)
+			return x[l];
         int m = (l + u) / 2;
         int lmax, rmax, sum;
         sum = 0;
@@ -101,11 +90,13 @@ public:
         int maxSoFar = INT_MIN;
         int i;
         for (i = 0; i < n; i++) {
-            if (x[i] >= 0) break;
+            if (x[i] >= 0)
+				break;
             maxSoFar = max(maxSoFar, x[i]);
         }
         // if all negative return max elements
-        if (i == n) return maxSoFar;
+        if (i == n)
+			return maxSoFar;
 
         // otherwise, return the maximum sub array
         int maxEndHere = 0;

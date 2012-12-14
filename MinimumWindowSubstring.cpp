@@ -26,20 +26,23 @@ public:
     string minWindow(string S, string T) {
         int needToFind[256] = {0};
         int hasFound[256] = {0};
-        size_t count = 0;
-        for (size_t i = 0; i < T.size(); i++)
+        int count = 0;
+        for (int i = 0; i < T.size(); i++)
             needToFind[(int)T[i]]++;
 
         string res = "";
         int min = INT_MAX;
-        for (size_t begin = 0, end = 0; end < S.size(); end++) {
-            if (needToFind[(int)S[end]] == 0) continue;
+        for (int begin = 0, end = 0; end < S.size(); end++) {
+            if (needToFind[(int)S[end]] == 0)
+				continue;
             hasFound[(int)S[end]]++;
-            if (hasFound[(int)S[end]] <= needToFind[(int)S[end]]) count++;
+            if (hasFound[(int)S[end]] <= needToFind[(int)S[end]])
+				count++;
 
             if (count == T.size()) {
-                while (needToFind[(int)S[begin]] == 0 || hasFound[(int)S[begin]] > needToFind[(int)S[begin]]) {
-                    if (hasFound[(int)S[begin]] > needToFind[(int)S[begin]]) hasFound[(int)S[begin]]--;
+                while (needToFind[(int)S[begin]] == 0 || hasFound[(int)S[begin]] > needToFind[(int)S[begin]]){
+                    if (hasFound[(int)S[begin]] > needToFind[(int)S[begin]])
+						hasFound[(int)S[begin]]--;
                     begin++;
                 }
 

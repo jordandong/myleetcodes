@@ -10,6 +10,7 @@
 //
 // Here is an example:
 // S = "rabbbit", T = "rabbit"
+//	because rabbbit = rabb b it, ra b bbit, rab b bit, there are three.
 //
 // Return 3.
 //============================================================================
@@ -24,12 +25,16 @@ public:
         int M = T.size();
         int dp[M+1][N+1];
         dp[0][0] = 1;
-        for (int i = 1; i <= M; i++) dp[i][0] = 0;
-        for (int j = 1; j <= N; j++) dp[0][j] = 1;
+        for (int i = 1; i <= M; i++)
+			dp[i][0] = 0;
+        for (int j = 1; j <= N; j++)
+			dp[0][j] = 1;
         for (int i = 1; i <= M; i++) {
             for (int j = 1; j <= N; j++) {
-                if (T[i-1] == S[j-1]) dp[i][j] = dp[i-1][j-1] + dp[i][j-1];
-                else dp[i][j] = dp[i][j-1];
+                if (T[i-1] == S[j-1])
+					dp[i][j] = dp[i-1][j-1] + dp[i][j-1];
+                else
+					dp[i][j] = dp[i][j-1];
             }
         }
         return dp[M][N];

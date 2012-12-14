@@ -14,13 +14,15 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        size_t res = 0;
-        size_t start = 0, end = 0;
-        bool visited[256] = { false };
+        int res = 0;
+        int start = 0;
+		int end = 0;
+        bool visited[256] = {false};
         while (end < s.size()) {
             if (visited[(int)s[end]]) {
                 res = max(res, end - start);
-                while (s[start] != s[end]) visited[(int)s[start++]] = false;
+                while (s[start] != s[end])
+					visited[(int)s[start++]] = false;
                 start++;
                 end++;
             } else {

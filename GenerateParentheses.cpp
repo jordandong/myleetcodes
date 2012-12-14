@@ -20,9 +20,12 @@ public:
     };
 
     void generateParenthesisHeler(int l, int r, string s, vector<string> &result) {
-        if (l == 0 && r == 0) result.push_back(s);
-        if (l > 0) generateParenthesisHeler(l - 1, r, s + '(', result);
-        if (r > l) generateParenthesisHeler(l, r - 1, s + ')', result);
+        if (l == 0 && r == 0)
+				result.push_back(s);
+        if (l > 0)
+			generateParenthesisHeler(l - 1, r, s + '(', result);
+        if (r > l)
+			generateParenthesisHeler(l, r - 1, s + ')', result);
     };
 };
 

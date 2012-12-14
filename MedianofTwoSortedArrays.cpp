@@ -12,7 +12,7 @@ using namespace std;
 class Solution {
 public:
     double findMedianSortedArrays(int A[], int m, int B[], int n) {
-//        return findMedianSortedArrays1(A, m, B, n);
+//     	return findMedianSortedArrays1(A, m, B, n);
         return findMedianSortedArrays1(A, m, B, n);
     }
 
@@ -34,7 +34,8 @@ public:
             }
             s--;
         }
-        if ((m + n) % 2 == 0) return (m1 + m2) / 2.0;
+        if ((m + n) % 2 == 0)
+			return (m1 + m2) / 2.0;
         return m2;
     };
 
@@ -43,7 +44,8 @@ public:
     };
 
     double findMedianHelper2(const int A[], const int m, const int B[], const int n, const int l, const int r) {
-        if (l > r) return findMedianHelper2(B, n, A, m, max(0, (n-m)/2), min(n-1, (m+n)/2));
+        if (l > r)
+			return findMedianHelper2(B, n, A, m, max(0, (n-m)/2), min(n-1, (m+n)/2));
         int i = (l+r)/2;
         int j = (m+n)/2-i;
 
@@ -53,10 +55,13 @@ public:
         int Ai = ((i == m) ? INT_MAX : A[i]);
         int Bj = ((j == n) ? INT_MAX : B[j]);
 
-        if (Ai < Bj_1) return findMedianHelper2(A, m, B, n, i+1, r);
-        if (Ai > Bj) return findMedianHelper2(A, m, B, n, l, i-1);
+        if (Ai < Bj_1)
+			return findMedianHelper2(A, m, B, n, i+1, r);
+        if (Ai > Bj)
+			return findMedianHelper2(A, m, B, n, l, i-1);
 
-        if (((m+n) % 2) == 1) return A[i];
+        if (((m+n) % 2) == 1)
+			return A[i];
         return (max(Ai_1, Bj_1) + Ai) / 2.0;
     };
 };

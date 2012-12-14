@@ -9,14 +9,19 @@
 class Solution {
 public:
     void merge(int A[], int m, int B[], int n) {
-        int i = m - 1, j = n - 1;
-        int k = m + n - 1;
-        while (i >= 0 && j >= 0) {
-            if (A[i] >= B[j]) A[k--] = A[i--];
-            else A[k--] = B[j--];
+        int i=m-1;
+		int j=n-1;
+        int k=m+n-1;
+        while (i >= 0 && j >= 0){
+            if (A[i] >= B[j])
+				A[k--] = A[i--];
+            else
+				A[k--] = B[j--];
         }
-        while (i >= 0) A[k--] = A[i--];
-        while (j >= 0) A[k--] = B[j--];
+        while (i >= 0)
+			A[k--] = A[i--];
+        while (j >= 0)
+			A[k--] = B[j--];
     }
 };
 
@@ -33,12 +38,11 @@ public:
         int len = m+n;
         while(m>=1&&n>=1){
             if(A[m-1]>B[n-1]){
-                A[len -1] = A[m-1];
+                A[len-1] = A[m-1];
                 m--;
                 len--;
-            }
-            else{
-                A[len -1] = B[n-1];
+            }else{
+                A[len-1] = B[n-1];
                 n--;
                 len--;
             }

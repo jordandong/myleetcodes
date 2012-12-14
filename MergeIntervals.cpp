@@ -31,7 +31,8 @@ struct StartIncreasing {
 class Solution {
 public:
     vector<Interval> merge(vector<Interval> &intervals) {
-        if (intervals.size() < 2) return intervals;
+        if (intervals.size() < 2)
+			return intervals;
         sort(intervals.begin(), intervals.end(), start_increasing);
         vector<Interval> result;
         Interval curInterval;

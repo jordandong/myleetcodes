@@ -17,23 +17,45 @@ using namespace std;
 class Solution {
 public:
     int longestValidParentheses(string s) {
-        int N = s.size();
-        if (N < 2) return 0;
-        int res = 0;
-        int k = 0, l = 0;
-        for (int i = 0; i < N; i++) {
-            if (s[i] == '(') k++, l++;
-            else k--, l++;
-            if (k == 0 && l > res) res = l;
-            else if (k < 0) k = 0, l = 0;
+        int N=s.size();
+        if (N<2)
+			return 0;
+        int res=0;
+        int k=0, l=0;
+        for(int i=0; i<N; i++){
+            if(s[i] == '('){
+				k++;
+				l++;
+			}
+            else{
+				k--;
+				l++;
+			}
+            if(k == 0 && l > res)
+				res = l;
+            else if(k < 0){
+				k = 0;
+				l = 0;
+			}
         }
-
-        k = 0, l = 0;
-        for (int i = N-1; i > 0; i--) {
-            if (s[i] == ')') k++, l++;
-            else k--, l++;
-            if (k == 0 && l > res) res = l;
-            else if (k < 0) k = 0, l = 0;
+		//cannot figure out like "(((((())"
+		//so need to start from the end again
+        k=0;
+		l=0;
+        for(int i=N-1; i>0; i--){
+        	if (s[i] == ')'){
+				k++;
+				l++;
+			}else{
+				k--;
+				l++;
+			}
+            if(k == 0 && l > res)
+				res = l;
+            else if (k < 0){
+				k = 0;
+				l = 0;
+			}
         }
         return res;
     }

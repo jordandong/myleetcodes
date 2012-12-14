@@ -28,8 +28,7 @@ public:
         if(l1->val<l2->val){
             curr=l1;
             l1=l1->next;
-        }
-        else{
+        } else{
             curr=l2;
             l2=l2->next;
         }
@@ -41,8 +40,7 @@ public:
                 l1=l1->next;
                 curr=curr->next;
                 
-            }
-            else{
+            }else{
                 curr->next=l2;
                 l2=l2->next;
                 curr=curr->next;
@@ -56,22 +54,6 @@ public:
         return head;
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -91,25 +73,23 @@ struct ListNode {
 class Solution {
 public:
     ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
-        ListNode *head = NULL, *node = NULL;
+        ListNode *head = NULL;
+		ListNode *node = NULL;
         while (l1 != NULL && l2 != NULL) {
             if (l1->val < l2->val) {
                 if (head == NULL) {
                     head = l1;
                     node = head;
-                }
-                else {
+                }else {
                     node->next = l1;
                     node = node->next;
                 }
                 l1 = l1->next;
-            }
-            else {
+            }else{
                 if (head == NULL) {
                     head = l2;
                     node = head;
-                }
-                else {
+                }else {
                     node->next = l2;
                     node = node->next;
                 }
@@ -117,12 +97,16 @@ public:
             }
         }
         if (l1 == NULL) {
-            if (head == NULL) head = l2;
-            else node->next = l2;
+            if (head == NULL)
+				head = l2;
+            else
+				node->next = l2;
         }
         else if (l2 == NULL) {
-            if (head == NULL) head = l1;
-            else node->next = l1;
+            if (head == NULL)
+				head = l1;
+            else
+				node->next = l1;
         }
         return head;
     }

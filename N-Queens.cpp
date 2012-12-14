@@ -16,13 +16,16 @@ public:
         int N = board.size();
         int i = row, j = 0;
         while(j < col)
-            if (board[i][j++] == 'Q') return false;
+            if (board[i][j++] == 'Q')
+				return false;
         i = row, j = col;
         while (i >=0 && j >= 0)
-            if (board[i--][j--] == 'Q') return false;
+            if (board[i--][j--] == 'Q')
+				return false;
         i = row, j = col;
         while (i < N && j >= 0)
-            if (board[i++][j--] == 'Q') return false;
+            if (board[i++][j--] == 'Q')
+				return false;
         return true;
     };
 

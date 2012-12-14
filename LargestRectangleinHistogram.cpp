@@ -33,12 +33,15 @@ public:
     		stk.push(i);
     	}
 
-    	while (!stk.empty()) stk.pop();
+    	while (!stk.empty())
+			stk.pop();
 
     	for (int i = n - 1; i > 0; i--) {
     		while (!stk.empty()) {
-    			if (height[i] <= height[stk.top()]) stk.pop();
-    			else break;
+    			if (height[i] <= height[stk.top()])
+					stk.pop();
+    			else
+					break;
     		}
     		int j = (stk.empty()) ? n : stk.top();
     		// Calculating number of bars on the left + right
@@ -50,7 +53,8 @@ public:
     	for (int i = 0; i < n; i++) {
     		// Calculating height * width
     		y[i] = height[i] * (y[i] + 1);
-    		if (y[i] > res) res = y[i];
+    		if (y[i] > res)
+				res = y[i];
     	}
     	return res;
     }

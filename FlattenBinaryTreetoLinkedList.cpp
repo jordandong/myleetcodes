@@ -45,41 +45,55 @@ class Solution {
 public:
     void flatten(TreeNode *root) {
         return flatten1(root);
-        //        return flatten2(root);
+		//return flatten2(root);
     }
 
     void flatten1(TreeNode *root) {
         TreeNode* res = NULL;
         flattenHelper1(root, res);
-        root = res;
     }
 
     void flattenHelper1(TreeNode *node, TreeNode *&res) {
-        if (node == NULL) return;
+        if(node == NULL)
+			return;
         TreeNode* leftSub = node->left;
         node->left = NULL;
         TreeNode* rightSub = node->right;
         node->right = NULL;
-        if (res == NULL) res = node;
-        else res->right = node, res = res->right;
+        if (res == NULL)
+			res = node;
+        else{
+			res->right = node;
+			res = res->right;
+		}
         flattenHelper1(leftSub, res);
         flattenHelper1(rightSub, res);
     }
 
     void flatten2(TreeNode *root) {
-        if (root == NULL) return;
+        if (root == NULL)
+			return;
         TreeNode *res = NULL;
         stack<TreeNode*> stk;
         stk.push(root);
         while (!stk.empty()) {
             TreeNode* top = stk.top();
             stk.pop();
-            if (top->right) stk.push(top->right), top->right = NULL;
-            if (top->left) stk.push(top->left), top->left = NULL;
-            if (res == NULL) res = top;
-            else res->right = top, res = res->right;
+            if (top->right){
+				stk.push(top->right);
+				top->right = NULL;
+			}
+            if (top->left){
+				stk.push(top->left);
+				top->left = NULL;
+			}
+            if (res == NULL)
+				res = top;
+            else{
+				res->right = top;
+				res = res->right;
+			}
         }
-        root = res;
     }
 };
 

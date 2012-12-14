@@ -29,18 +29,22 @@ public:
     ListNode *mergeKLists(vector<ListNode *> &lists) {
         priority_queue<ListNode*, vector<ListNode*>, greater_listnode > minHeap;
         for (vector<ListNode *>::iterator it = lists.begin(); it != lists.end(); it++) {
-            if ((*it) != NULL) minHeap.push(*it);
+            if ((*it) != NULL)
+				minHeap.push(*it);
         }
-        if (minHeap.empty()) return NULL;
+        if (minHeap.empty())
+			return NULL;
         ListNode *head = minHeap.top();
         minHeap.pop();
         ListNode *node = head;
-        if (node->next != NULL) minHeap.push(node->next);
+        if (node->next != NULL)
+			minHeap.push(node->next);
         while (!minHeap.empty()) {
             node->next = minHeap.top();
             minHeap.pop();
             node = node->next;
-            if (node->next != NULL) minHeap.push(node->next);
+            if (node->next != NULL)
+				minHeap.push(node->next);
         }
         return head;
     }

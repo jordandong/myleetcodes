@@ -23,7 +23,8 @@ public:
         int next = 0;
         while (i <= next) {
             next = max(next, i + A[i]);
-            if (next >= n - 1) return true;
+            if (next >= n - 1)
+				return true;
             i++;
         }
         return false;
@@ -47,7 +48,6 @@ public:
         else if(n<=1)
             return true;
         else{
-        
             for(int i=0;i<A[0];i++){
                 if(canJump(A+i+1,n-i-1))
                     return true;

@@ -30,21 +30,21 @@ public:
         int N = num.size();
         if (N < 2)
         	return;
-        int i = N - 2;
+        int i = N-2;
         while (i >= 0 && num[i] >= num[i+1])
         	i--;
         
-        if (i == -1) {
+        if (i==-1) {
             reverse(num, 0, N - 1);
             return;
         }
                
-        int j = N - 1;
-        while (j > i && num[j] <= num[i])
+        int j = N-1;
+        while (j>i && num[j] <= num[i])
         	j--;
         	
         swap(num[i], num[j]);
-        reverse(num, i + 1, N - 1);
+        reverse(num, i+1, N-1);
     };
 };
 

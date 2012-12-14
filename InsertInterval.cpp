@@ -35,8 +35,8 @@ public:
     vector<Interval> insert(vector<Interval> &intervals, Interval newInterval) {
         vector<Interval> result;
         bool merge_finished = false;
-        for (vector<Interval>::iterator it = intervals.begin(); it != intervals.end(); it++) {
-            if ((*it).start <= newInterval.end && newInterval.start <= (*it).end) {
+        for (vector<Interval>::iterator it = intervals.begin(); it != intervals.end(); it++){
+            if ((*it).start <= newInterval.end && newInterval.start <= (*it).end){
                 newInterval.start = (newInterval.start > (*it).start) ? (*it).start : newInterval.start;
                 newInterval.end = ((newInterval.end < (*it).end) ? (*it).end : newInterval.end);
                 continue;
@@ -47,7 +47,8 @@ public:
             }
             result.push_back(*it);
         }
-        if (!merge_finished) result.push_back(newInterval);
+        if (!merge_finished)
+			result.push_back(newInterval);
         return result;
     }
 };
