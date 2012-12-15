@@ -14,6 +14,30 @@
 //
 //============================================================================
 
+
+class Solution {
+public:
+    int numTrees(int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        return countTree(1, n);
+    }
+    
+    int countTree(int start, int end){
+        if(start>=end)
+            return 1;
+        int res = 0;
+        for(int k=start;k<=end;k++){
+            int left = countTree(start, k-1);
+            int right = countTree(k+1, end);
+            res+=left*right;
+        }
+        return res;
+    }
+};
+
+
+
 #include <iostream>
 #include <cstring>
 using namespace std;
@@ -21,15 +45,17 @@ using namespace std;
 class Solution {
 public:
     int numTrees(int n) {
-//        return numTrees1(n);
+		//return numTrees1(n);
         return numTrees2(n);
     }
 
     int numTrees1(int n) {
-        if (n < 2) return 1;
+        if (n < 2)
+			return 1;
         int res = 0;
         for (int i = 0; i < n; i++)
             res += numTrees1(i)*numTrees1(n-i-1);
+		//ith node as root, 0 to i-1th nodes form a left tree and i+1 to n-1 nodes form right tree
         return res;
     }
 

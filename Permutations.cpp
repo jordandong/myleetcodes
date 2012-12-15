@@ -34,23 +34,14 @@ public:
 
 
 
-
-
-
-
-
-
-
-
-
-
 #include <vector>
 using namespace std;
 
 class Solution {
 public:
     void permuteHelper(vector<int> num, int i, vector<vector<int> > &result) {
-        if (i == num.size()) result.push_back(num);
+        if (i == num.size())
+			result.push_back(num);
         else {
             for (int j = i; j < num.size(); j++) {
                 swap(num[i], num[j]);

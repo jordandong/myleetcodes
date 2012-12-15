@@ -35,7 +35,8 @@ public:
     }
 
     bool pathSumHelper(TreeNode* node, int sum) {
-        if (node == NULL) return false;
+        if (node == NULL)
+			return false;
         sum -= node->val;
         if (NULL == node->left && NULL == node->right)
             return (sum == 0);
@@ -64,7 +65,7 @@ public:
         // DO NOT write int main() function
         if(root==NULL)
             return false;
-            
+
         if(root->left!=NULL){
             if(hasPathSum(root->left, sum - root->val))
                 return true;

@@ -42,7 +42,8 @@ public:
                 preNode = curNode;
                 curNode = nextNode;
             }
-            else curNode = curNode->next;
+            else
+				curNode = curNode->next;
         }
         
         if (preTail == NULL)

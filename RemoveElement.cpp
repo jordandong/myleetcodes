@@ -12,8 +12,7 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         if(n==0)
-            return 0;
-        
+            return 0;        
         int i = 0;
         int j = n-1;
         
@@ -41,8 +40,10 @@ public:
         int i = 0, j = 0;
         while (i < n) {
             if (A[i] != elem) {
-                if (i == j)
-                	i++, j++;
+                if(i==j){
+                	i++;
+					j++;
+				}
                 else
                 	A[j++] = A[i++];
             }

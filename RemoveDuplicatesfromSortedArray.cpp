@@ -35,11 +35,14 @@ public:
 class Solution {
 public:
     int removeDuplicates(int A[], int n) {
-        if (n < 2) return n;
+        if (n < 2)
+			return n;
         int i = 1, j = 1;
         while (i < n) {
-            if (A[i-1] != A[i]) A[j++] = A[i++];
-            else i++;
+            if (A[i-1] != A[i])
+				A[j++] = A[i++];
+            else
+				i++;
         }
         return j;
     }

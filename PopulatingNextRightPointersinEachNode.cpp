@@ -35,9 +35,7 @@
 //============================================================================
 
 #include <iostream>
-
 using namespace std;
-
 /**
  * Definition for binary tree with next pointer.
  */
@@ -59,7 +57,8 @@ public:
 
     void connect1(TreeLinkNode *node)
     {
-        if (node) node->next = NULL;
+        if(node)
+			node->next = NULL;
         connectHelper1(node);
     }
 
@@ -70,9 +69,9 @@ public:
         
         TreeLinkNode* curr = node;
         while (curr) {
-            if (curr->left)
+            if(curr->left)
             	curr->left->next = curr->right;
-            if (curr->right)
+            if(curr->right)
             	curr->right->next = (curr->next) ? curr->next->left : NULL;
             curr = curr->next;
         }   

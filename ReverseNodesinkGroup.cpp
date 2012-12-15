@@ -39,9 +39,11 @@ public:
         	
         ListNode *curNode = head;
         int length = 0;
-        while (curNode != NULL)
-        	curNode = curNode->next, length++;
-        int multi = length / k;
+        while (curNode != NULL){
+        	curNode = curNode->next;
+			length++;
+		}
+        int multi = length/k;
         
         if(multi == 0)
         	return head;

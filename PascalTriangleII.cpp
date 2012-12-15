@@ -42,6 +42,9 @@ int main()
     return 0;
 }
 
+
+
+
 class Solution {
 public:
     vector<int> getRow(int rowIndex) {
@@ -61,6 +64,9 @@ public:
         return res;
     }
 };
+
+
+
 
 class Solution {
 public:

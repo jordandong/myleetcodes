@@ -47,7 +47,8 @@ public:
         
         int N = words.size();
         vector<int> spaces;
-        int start = 0, end = 0;
+        int start = 0;
+		int end = 0;
         while (end < N)  {
             // justify one line
             spaces.clear();

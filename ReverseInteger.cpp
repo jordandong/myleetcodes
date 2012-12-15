@@ -29,14 +29,15 @@ class Solution {
 public:
     int reverse(int x) {
         int sign = 1;
-        if (x < 0)
-        	sign = -sign, x = -x;
+        if (x < 0){
+        	sign = -sign;
+			x = -x;
+		}
         long long res = 0;
         while (x) {
             res = res * 10 + x % 10;
             x /= 10;
         }
-        assert(INT_MIN < res && INT_MAX > res);
         if (sign < 0)
         	return -res;
         return res;

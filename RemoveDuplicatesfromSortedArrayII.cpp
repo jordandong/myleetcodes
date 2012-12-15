@@ -26,7 +26,6 @@ public:
                         A[pos] = A[i];
                         pos++;
                     }
-
                 }
                 else{
                     flag++;
@@ -38,7 +37,6 @@ public:
             }
             return pos;
         }
-
     }
 };
 

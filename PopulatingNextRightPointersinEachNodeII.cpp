@@ -25,9 +25,7 @@
 //============================================================================
 
 #include <iostream>
-
 using namespace std;
-
 /**
  * Definition for binary tree with next pointer.
  */
@@ -53,15 +51,12 @@ public:
         TreeLinkNode* nextHead = NULL;
         while (curNode)
         {
-            if(curNode->left)
-            {
+            if(curNode->left){
                 curNode->left->next = getNextSibling(curNode, true);
                 if (!nextHead)
                 	nextHead = curNode->left;
             }
-            
-            if (curNode->right)
-            {
+            if (curNode->right){
                 curNode->right->next = getNextSibling(curNode, false);
                 if (!nextHead)
                 	nextHead = curNode->right;
@@ -76,7 +71,7 @@ public:
         if (isLeft)
             if (curNode->right)
             	return curNode->right;
-        while ((curNode = curNode->next))
+        while((curNode=curNode->next))
         {
             if (curNode->left)
             	return curNode->left;

@@ -41,8 +41,10 @@ public:
         	
         if (*str == '+')
         	str++;
-        else if (*str == '-')
-        	str++, sign = -1;
+        else if (*str == '-'){
+        	str++;
+			sign = -1;
+		}
         	
         long long val = 0;
         int digit;

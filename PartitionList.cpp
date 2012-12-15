@@ -58,7 +58,6 @@ public:
         	backNode->next = NULL;
         if (frontHead == NULL)
         	return backHead;
-        
         return frontHead;
     }
 };
@@ -85,7 +84,6 @@ public:
         if(head==NULL)
             return NULL;
             
-        
         ListNode *point = new ListNode(INT_MIN);
         ListNode *res = point;
         

@@ -40,7 +40,6 @@ public:
             	break;
             if (k != 4 && i == j)
             	sol+=".";
-            
             sol+=s[j++];
             restoreIpAddressesHelper(s, j, k-1, sol, res);
             if (x == 0)

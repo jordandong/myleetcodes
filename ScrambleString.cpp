@@ -49,7 +49,7 @@ using namespace std;
 class Solution {
 public:
     bool isSameCharSet(string &s1, int l1, int u1, string &s2, int l2, int u2) {
-        if (u1 - l1 != u2 - l2)
+        if (u1-l1 != u2-l2)
         	return false;
         int c[256] = {0};
         for (int i = l1; i < u1; i++)
@@ -65,9 +65,9 @@ public:
     bool isScrambleHelper(string &s1, int l1, int u1, string &s2, int l2, int u2) {
         if(!isSameCharSet(s1, l1, u1, s2, l2, u2))
         	return false;
-        if (l1 + 1 == u1)
+        if (l1+1 == u1)
         	return true;
-        for (int i = 1; i < u1 - l1; i++) {
+        for (int i = 1; i < u1-l1; i++) {
             if ((isScrambleHelper(s1, l1, l1 + i, s2, l2, l2 + i) && isScrambleHelper(s1, l1 + i, u1, s2, l2 + i, u2))
                     || (isScrambleHelper(s1, l1, l1 + i, s2, u2 - i, u2) && isScrambleHelper(s1, l1 + i, u1, s2, l2, u2 - i)))
                 return true;

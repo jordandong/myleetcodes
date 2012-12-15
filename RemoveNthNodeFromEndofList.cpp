@@ -62,10 +62,13 @@ public:
     ListNode *removeNthFromEnd(ListNode *head, int n) {
         if (NULL == head)
         	return head;
-        ListNode *fast = head, *slow = head;
+        ListNode *fast = head;
+		ListNode *slow = head;
         int i = 0;
-        while (fast != NULL && i < n)
-        	fast = fast->next, i++;
+        while (fast != NULL && i < n){
+        	fast = fast->next;
+			i++;
+		}
         if (fast == NULL) {
             head = head->next;
             delete slow;

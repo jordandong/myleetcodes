@@ -42,8 +42,8 @@ public:
         for (int k = l; k <= u; k++) {
             vector<TreeNode*> leftTrees = generateTreesHelper(l, k-1);
             vector<TreeNode*> rightTrees = generateTreesHelper(k+1, u);
-            for (size_t i = 0; i < leftTrees.size(); i++) {
-                for (size_t j = 0; j < rightTrees.size(); j++) {
+            for (int i = 0; i < leftTrees.size(); i++) {
+                for (int j = 0; j < rightTrees.size(); j++) {
                     TreeNode* root = new TreeNode(k);
                     root->left = leftTrees[i];
                     root->right = rightTrees[j];

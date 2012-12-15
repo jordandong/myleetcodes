@@ -18,9 +18,7 @@ public:
         if(p==NULL&&q==NULL)
             return true;
         else if (p==NULL||q==NULL)
-            return false;
-        
-        
+            return false;        
         if(p->val!=q->val){
             return false;
         }else{
@@ -32,7 +30,6 @@ public:
 
 #include <iostream>
 using namespace std;
-
 /**
  * Definition for binary tree
  */
