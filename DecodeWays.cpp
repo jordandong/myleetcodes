@@ -88,3 +88,36 @@ public:
         return r[0];
     }
 };
+
+
+class Solution {
+public:
+    int numDecodings(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int n = s.length();
+        int *c = new int[n+1];
+        c[0]=1;
+        if(n==0)
+            return 0;
+            
+            
+        for(int i=0;i<n;i++){
+            int c1=0;
+            int c2=0;
+            if(s[i]!='0'){
+                c1 = c[i];
+                if(i>0&&(s[i-1]=='1'||(s[i-1]=='2'&&s[i]<'7')))
+                    c2 = c[i-1];
+            }
+            else{
+                if(i>0&&(s[i-1]=='1'||s[i-1]=='2'))
+                    c2 = c[i-1];                
+            }
+            c[i+1] = c1+c2;
+            c1=0;
+            c2=0;
+        }
+        return c[n];
+    }
+};
