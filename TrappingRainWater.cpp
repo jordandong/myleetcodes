@@ -14,7 +14,7 @@ class Solution {
 public:
     int trap(int A[], int n) {
         if (n <= 2)
-        	return 0;
+        		return 0;
         int lmax[n];
         int rmax[n];
         lmax[0] = A[0];
@@ -39,3 +39,32 @@ public:
 int main() {
     return 0;
 }
+
+
+class Solution {
+public:
+    int trap(int A[], int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<int> left(n,0);
+        int total = 0;
+        int max = 0;
+        for(int i = 0; i < n; i++){
+            if(A[i]<max){
+                left[i]=max-A[i];
+            }else{
+                max = A[i];
+            }
+        }
+        
+        max=0;
+        for(int i = n-1; i >= 0; i--){
+            if(A[i]<max){
+                total+=min(left[i], max-A[i]);
+            }else{
+                max = A[i];
+            }
+        }
+        return total;
+    }
+};

@@ -104,46 +104,24 @@ public:
     }
 };
 
+
 class Solution {
 public:
-    int maximalRectangle(vector<vector<char> > &matrix) {
+    int largestRectangleArea(vector<int> &h) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if(!matrix.size())
-            return 0;
-            
-        int M = matrix.size();
-        int N = matrix[0].size();
-        vector<vector<int> > rec=vector<vector<int> >(M, vector<int>(N, 0));
-        for (int j = 0; j < N; j++){
-            for (int i = 0; i < M; i++){
-                if (matrix[i][j]=='0')
-                    rec[i][j] = 0;
-                else
-                    rec[i][j] = (i==0 ? 1 : 1 + rec[i-1][j]);
+        stack<int> p;
+        int i = 0, m = 0;
+        h.push_back(0);
+        while(i < h.size()) {
+            if(p.empty() || h[p.top()] <= h[i])
+                p.push(i++);
+            else {
+                int t = p.top();
+                p.pop();
+                m = max(m, h[t] * (p.empty() ? i : i - p.top() - 1 ));
             }
         }
-
-
-        int nMax = 0;
-        for (int i = M-1; i >= 0; i--){
-            for (int j = i; j >= 0; j--){
-                int nLen = 0;
-                int nBeg = -1;
-                for (int k = 0; k < N; k++){
-                    if ((rec[i][k]!=0) && (rec[j][k]!=0) && (rec[i][k]-rec[j][k] == i-j)){
-                        if (nBeg < 0)
-                            nBeg = k;
-                        nLen = max(nLen, k - nBeg + 1);
-                    }
-                    else
-                        nBeg = -1;
-                }
-
-                nMax = max(nMax, nLen*(i-j+1));
-            }
-        }
-
-        return nMax;
+        return m;
     }
 };
