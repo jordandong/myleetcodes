@@ -101,7 +101,7 @@ public:
 
     	if(ma+mb+2<=k){
 	    	if(a[ma]>b[mb])
-		    	return kthsmallest(a,lena,b+mb+1,lenb-mb-1,k-mb-1);
+		    		return kthsmallest(a,lena,b+mb+1,lenb-mb-1,k-mb-1);
 		    else
 			    return kthsmallest(a+ma+1,lena-ma-1,b,lenb,k-ma-1);
 	    }

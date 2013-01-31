@@ -23,7 +23,7 @@ public:
             int h = (height[i] < height[j]) ? height[i] : height[j];
             int res = h * (j - i);
             if (res > max)
-            	max = res;
+            		max = res;
             if (height[i] <= height[j]) {
                 i++;
                 while (height[i] < h && i < j)

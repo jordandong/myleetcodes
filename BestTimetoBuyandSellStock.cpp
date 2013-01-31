@@ -24,8 +24,8 @@ public:
         for (size_t i = 0; i < prices.size(); i++)
         {
             if (prices[i] < prices[min_i])
-            	min_i = i;
-            int diff = prices[i] - prices[min_i];
+	            	min_i = i;
+	        int diff = prices[i] - prices[min_i];
             if (diff > res)
             	res = diff;
         }

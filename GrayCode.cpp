@@ -82,7 +82,7 @@ public:
         res.push_back(1);
         
         for(int i=0; i<=size-3; ++i){
-            int next = *res.rbegin(); get the last element
+            int next = *res.rbegin(); //get the last element
             //flip the rightmost bit
             if(i%2==1){
                 next = next^1;

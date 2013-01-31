@@ -24,21 +24,21 @@ public:
         while (true) {
             int ac, bc;
             if (i != a.end())
-            	ac = *(i++) - '0';
+	            	ac = *(i++) - '0';
             else
-            	ac = 0;
+	            	ac = 0;
             if (j != b.end())
-            	bc = *(j++) - '0';
+	            	bc = *(j++) - '0';
             else
-            	bc = 0;
+	            	bc = 0;
             int s = ac + bc + carry;
             c.push_back('0' + (s % 2));
             carry = s / 2;
             if (i == a.end() && j == b.end())
-            	break;
+	            	break;
         }
         if (carry == 1)
-        	c.push_back('1');
+        		c.push_back('1');
         reverse(c.begin(), c.end());
         return c;
     }
@@ -47,6 +47,49 @@ public:
 int main() {
     return 0;
 }
+
+
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        return addBC(a,b,0);
+    }
+    
+    string addBC(string a, string b, int carry){
+        int lena = a.length();
+        int lenb = b.length();
+        if(lena==0&&lenb==0){
+            if(carry)
+                return "1";
+            else
+                return "";
+        }
+        
+        int na;
+        int pa = lena==0?0:lena-1;
+        if(lena==0)
+            na = 0;
+        else
+            na = a[lena-1]-'0';
+            
+            
+        int nb;
+        int pb = lenb==0?0:lenb-1;
+        if(lenb==0)
+            nb = 0;
+        else
+            nb = b[lenb-1]-'0';
+            
+        string res;
+        res.push_back('0'+(na+nb+carry)%2);
+        carry = (na+nb+carry)/2;
+        
+        return addBC(a.substr(0,pa), b.substr(0,pb), carry) + res;
+        
+    }
+};
 
 
 class Solution {

@@ -29,24 +29,26 @@ public:
                 l1 = l1->next;
             }
             else
-            	a = 0;
+	            	a = 0;
+
             if (l2 != NULL) {
                 b = l2->val;
                 l2 = l2->next;
             }
             else
-            	b = 0;
+	            	b = 0;
+
             int s = a + b + c;
             c = s / 10;
             if (l3 == NULL)
-            	l3 = node = new ListNode(s % 10);
+	            	l3 = node = new ListNode(s % 10);
             else
-            	node->next = new ListNode(s % 10), node = node->next;
+	            	node->next = new ListNode(s % 10), node = node->next;
             if (l1 == NULL && l2 == NULL)
-            	break;
+	            	break;
         }
         if (c == 1)
-        	node->next = new ListNode(1);
+	        	node->next = new ListNode(1);
         return l3;
     }
 };
@@ -54,9 +56,6 @@ public:
 int main() {
     return 0;
 }
-
-
-
 
 
 /**

@@ -51,3 +51,29 @@ public:
 int main() {
     return 0;
 }
+
+
+class Solution {
+public:
+
+    void nextPermutation(vector<int> &num) {
+        int N = num.size();
+        if (N < 2)
+        	return;
+        int i = N-2;
+        while (i >= 0 && num[i] >= num[i+1])
+        	i--;
+        
+        if (i==-1) {
+            reverse(num.begin(), num.end());
+            return;
+        }
+               
+        int j = N-1;
+        while (j>i && num[j] <= num[i])
+        	j--;
+        	
+        swap(num[i], num[j]);
+        reverse(num.begin()+i+1, num.end());
+    };
+};

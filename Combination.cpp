@@ -34,7 +34,7 @@ public:
             return;
         }
         if (i == n + 1)
-        	return;
+  	      	return;
         combineHeler(n, k, i + 1, combination, result);
         combination.push_back(i);
         combineHeler(n, k, i + 1, combination, result);

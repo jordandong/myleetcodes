@@ -69,12 +69,10 @@ class Solution {
 					}                
 					if(sum==0)
 						return res; 
-					if (sum > 0)   
-					{	  
+					if (sum > 0) {	  
 						end = end - 1;   
 					}  
-					else if(sum <0)  
-					{  
+					else if(sum <0)  {  
 						begin = begin + 1;  
 					} 
 				}

@@ -64,3 +64,29 @@ public:
 int main() {
 	return 0;
 }
+
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int nMax = 0;
+        const char* p = s.c_str();
+        const char* str=p;
+        stack<const char*> stk;
+        while (*p != 0){
+            if (*p == '(')
+                stk.push(p);
+            else if (*p == ')'){
+                if (!stk.empty() && *stk.top() == '('){
+                    stk.pop();
+                    nMax = max(p - (stk.empty() ? str-1 : stk.top()), nMax);
+                }
+                else stk.push(p);
+            }
+            p++;
+        }
+        return nMax;
+    }
+        
+};

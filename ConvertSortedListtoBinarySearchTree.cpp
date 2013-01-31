@@ -32,18 +32,18 @@ class Solution {
 public:
     TreeNode *sortedListToBST(ListNode *head) {
         if (head == NULL)
-        	return NULL;
+  	      	return NULL;
         ListNode* node = head;
-        int len = 1;
+  	      int len = 1;
         while (NULL != (node = node->next))
-        	len++;
+  	      	len++;
         return sortedListToBSTHelper(head, 0, len - 1);
     }
 
     // in-order build tree, takes O(n) time
     TreeNode* sortedListToBSTHelper(ListNode*& head, int start, int end) {
         if (start > end)
-        	return NULL;
+  	      	return NULL;
         int mid = start + (end - start) / 2;
         TreeNode* leftTree = sortedListToBSTHelper(head, start, mid - 1);
         TreeNode* root = new TreeNode(head->val);

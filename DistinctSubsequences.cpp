@@ -44,3 +44,27 @@ public:
 int main() {
     return 0;
 }
+
+
+class Solution {
+public:
+    int numDistinct(string S, string T) {
+        int N = S.size();
+        int M = T.size();
+        int dp[2][N+1];
+        dp[0][0] = 1;
+        for (int j = 1; j <= N; j++)
+			dp[0][j] = 1;
+        
+        for (int i = 1; i <= M; i++) {
+            dp[i%2][0] = 0;
+            for (int j = 1; j <= N; j++) {
+                if (T[i-1] == S[j-1])
+					dp[i%2][j] = dp[(i-1)%2][j-1] + dp[i%2][j-1];
+                else
+					dp[i%2][j] = dp[i%2][j-1];
+            }
+        }
+        return dp[M%2][N];
+    }
+};

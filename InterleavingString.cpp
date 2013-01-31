@@ -83,3 +83,41 @@ int main() {
     cout << sol.isInterleave("aabcc", "dbbca", "aadbbbaccc") << endl;
     return 0;
 }
+
+
+class Solution {
+public:
+
+    bool isInterleave(string s1, string s2, string s3) {
+        int M = s1.size();
+        int N = s2.size();
+        if (M+N != s3.size())
+			return false;
+        
+		bool dp[2][N+1];
+        dp[0][0] = true;
+        
+        for (int j = 1; j <= N; j++) {
+            if (dp[0][j-1] && s2[j-1] == s3[j-1])
+				dp[0][j] = true;
+            else
+				dp[0][j] = false;
+        }
+
+        for (int i = 1; i <= M; i++){
+            if (dp[(i-1)%2][0] && s1[i-1] == s3[i-1])
+  	  			dp[i%2][0] = true;
+            else
+				dp[i%2][0] = false;
+            
+            for (int j = 1; j <= N; j++) {
+                if ((dp[(i-1)%2][j] && s1[i-1] == s3[i+j-1]) || (dp[i%2][j-1] && s2[j-1] == s3[i+j-1]))
+					dp[i%2][j] = true;
+                else
+					dp[i%2][j] = false;
+            }
+        }
+
+        return dp[M%2][N];
+    }
+};

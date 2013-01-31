@@ -11,7 +11,7 @@ public:
         if(x < 2)
             return x;
         long int l = 0;
-        long int u = 2 + (x / 2);
+        long int u = 1 + (x / 2);
         while(l +1 < u) {
             long long m = l + (u - l) / 2;
             long long p = m * m;
@@ -53,3 +53,27 @@ public:
 int main() {
 	return 0;
 }
+
+class Solution {
+public:
+    int sqrt(int x) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        long long l = 0;
+        long long r = x;
+        long long ret = 0;
+        while(l <= r){
+            long long mid = l + (r - l)/2;
+            long long result = mid * mid;
+            if(result == x){
+                ret = mid;
+                return (int)ret;
+            }else if(result < x){
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+        return (int)r;
+    }
+};

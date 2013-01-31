@@ -57,7 +57,7 @@ public:
     vector<int> inorderTraversal2(TreeNode *node) {
         vector<int> result;
         if (node == NULL)
-        	return result;
+        		return result;
         stack<TreeNode*> stk;
         TreeNode* curr = node;
         while (!stk.empty() || curr != NULL) {

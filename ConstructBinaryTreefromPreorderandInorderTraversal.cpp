@@ -30,7 +30,7 @@ public:
 
     TreeNode *buildTreeHelper(vector<int>::iterator preorder, vector<int>::iterator inorder, size_t n) {
         if (n == 0)
-        	return NULL;
+        		return NULL;
         vector<int>::iterator it = find(inorder, inorder + n, *preorder);
         int idx = it - inorder;
         TreeNode* root = new TreeNode(*it);

@@ -40,6 +40,84 @@ int main() {
     return 0;
 }
 
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        
+        int N = s.size();
+        if(N==1)
+            return s;
+        
+        bool dp[N][N+1];
+        int m = 0;
+        int start;
+        for(int i =0; i<N;i++){
+            for(int k=0; k+i<=N; k++){
+                if(k==1||k==0)
+                    dp[i][k] = true;
+                else
+                    dp[i][k] = false;
+            }
+        }
+        
+        for(int k=2; k<=N;k++){
+            for(int i=0; i+k<=N; i++){
+                dp[i][k] = dp[i+1][k-2] && s[i]==s[i+k-1];
+                if(dp[i][k]){
+                    m = max(m, k);
+                    start=i;
+                }
+            }
+        }
+        
+        return s.substr(start, m);
+        
+    }
+};
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        
+        int N = s.size();
+        if(N==1)
+            return s;
+        
+        bool dp[N][N];
+        int m = 0;
+        int start;
+        for(int i =0; i<N;i++){
+            for(int j=0; j<N; j++){
+                dp[i][j] = false;
+            }
+        }
+        
+        for(int i= N-1; i>=0;i--){
+            for(int j=i; j<N; j++){
+                if(i==j)
+                    dp[i][j]=true;
+                else if(j-i==1)
+                    dp[i][j]=s[i]==s[j];
+                else
+                    dp[i][j] = dp[i+1][j-1] && s[i]==s[j];
+                if(dp[i][j]&& j-i+1>m){
+                    m = j-i+1;
+                    start=i;
+                }
+            }
+        }
+        
+        return s.substr(start, m);
+        
+    }
+};
+
 
 //the below method is not true, since   abcdefgxxiiliigfedcba  v.s. abcdefgiiliixxgfedcba
 class Solution {

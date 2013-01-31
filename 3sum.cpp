@@ -30,9 +30,9 @@ public:
             while (i < j) {
                 int sum = num[i] + num[j] + num[k];
                 if (sum > 0)
-                	j--;
+                		j--;
                 else if (sum < 0)
-                	i++;
+                		i++;
                 else {
                     vector<int> triplet;
                     triplet.push_back(num[i]);
@@ -90,15 +90,13 @@ class Solution {
 						begin++;
 						end--;
 					}
-					else if (sum > 0)   
-					{  
+					else if (sum > 0)   {  
 						end = end - 1;  
 						if (num[end] == num[end+1]){  
 							end = end - 1;  
 						}  
 					}  
-					else  
-					{  
+					else  {  
 						begin = begin + 1;  
 						if (num[begin] == num[begin-1])  {  
 							begin = begin + 1;  

@@ -57,73 +57,6 @@ int main() {
 }
 
 
-/**
- * Definition for binary tree
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-class Solution {
-public:
-    bool isSymmetric(TreeNode *root) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        if(root == NULL)
-            return true;
-        
-        if(root->left == NULL && root->right == NULL)
-            return true;
-        if(root->left == NULL || root->right == NULL)
-            return false;
-        
-        stack<TreeNode*> s1;
-        stack<TreeNode*> s2;
-        
-        
-        s1.push(root->left);
-        s2.push(root->right);
-        
-        while(!s1.empty() && !s2.empty()){
-            TreeNode* n1 = s1.top();
-            TreeNode* n2 = s2.top();
-            s1.pop();
-            s2.pop();
-            if(n1==NULL && n2!=NULL)
-                return false;
-            if(n1!=NULL && n2==NULL)
-                return false;
-            if(n1->val != n2->val)
-                return false;
-            
-            if(n1->left==NULL && n2->right!=NULL)
-                return false;
-            if(n1->right==NULL && n2->left !=NULL)
-                return false;
-            if(n1->left!=NULL && n2->right==NULL)
-                return false;
-            if(n1->right!=NULL && n2->left ==NULL)
-                return false;
-            if(n1->left!=NULL)
-                s1.push(n1->left);
-            if(n1->right!=NULL)
-                s1.push(n1->right);
-            if(n2->right!=NULL)
-                s2.push(n2->right);
-            if(n2->left!=NULL)
-                s2.push(n2->left);
-        }
-        
-        if(!s1.empty() || !s2.empty())
-            return false;
-        else
-            return true;
-        
-        
-    }
-};
 
 /**
  * Definition for binary tree
@@ -153,7 +86,7 @@ public:
             TreeNode* n2 = s2.top();
             s1.pop();
             s2.pop();
-            if(n1==n2)
+            if(n1==n2)//both are NULL
                 continue;
             if(n1==NULL || n2 ==NULL)
                 return n1==n2;
@@ -185,7 +118,7 @@ public:
         
         vector<int> s1;
         vector<int> s2;
-        inorder1(root, s1);
+        inorder1(root, s1); //inorder should be the same as reverse-inorder
         inorder2(root, s2);
         int n1 = s1.size();
         int n2 = s2.size();
@@ -216,7 +149,7 @@ public:
     }
 };
 
-//Java BST version
+//Java BFS version
 public class Solution {
     boolean isSym(ArrayList<TreeNode> al)
     {

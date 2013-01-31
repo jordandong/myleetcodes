@@ -103,9 +103,9 @@ public:
             currNum--;
             row.push_back(front->val);
             if (front->left)
-            	currQ.push(front->left), nextNum++;
+            		currQ.push(front->left), nextNum++;
             if (front->right)
-            	currQ.push(front->right), nextNum++;
+            		currQ.push(front->right), nextNum++;
             if (currNum == 0) {
                 res.push_back(row);
                 row.clear();
@@ -155,8 +155,7 @@ public:
             if(tn->right!=NULL)
                 tmpq.push(tn->right);
                 
-            if(q.empty())
-            {
+            if(q.empty()){
                 res.push_back(tmp);
                 tmp.clear();
                 while(!tmpq.empty()){

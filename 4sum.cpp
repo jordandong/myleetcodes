@@ -35,9 +35,9 @@ struct increaing {
     bool operator() (TwoSum ts1, TwoSum ts2) {
         if (ts1.value == ts2.value){
             if (ts1.index1 == ts2.index1)
-            	return (ts1.index2 < ts2.index2);
+            		return (ts1.index2 < ts2.index2);
             else
-            	return (ts1.index1 < ts2.index1);
+            		return (ts1.index1 < ts2.index1);
         }
         else
             return (ts1.value < ts2.value);
@@ -145,22 +145,22 @@ public:
 					continue;  
 				}
 				vector<int> tmp;
-                        	tmp.push_back(num[j]);
+                tmp.push_back(num[j]);
 				tmp.push_back(num[i]);
 				tmp.push_back(num[begin]);
 				tmp.push_back(num[end]);
 				res.push_back(tmp);
-                        	begin++;
+                	begin++;
                         	end--;
 				}
 				else if(sum > target){ 
-                        		end--;
-                        		while (num[end] == num[end+1]){  
+                		end--;
+                    while (num[end] == num[end+1]){  
 						end--;  
 					}  
 				}  
 				else{
-                        		begin++;
+					begin++;
 					while(num[begin] == num[begin-1]){  
 						begin++;  
 					}  

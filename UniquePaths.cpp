@@ -27,6 +27,22 @@ public:
         return dp[m][n];
         
     }
+    
+    int uniquePaths2(int m, int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int dp[2][n+1];
+        for(int j=0;j<=n; j++)
+            dp[0][j]=0;
+        dp[0][1]=1;
+        dp[1][0]=0;
+        
+        for(int i=1;i<=m;i++)
+            for(int j=1;j<=n;j++)
+                dp[i%2][j] = dp[(i-1)%2][j] + dp[i%2][j-1];        
+        
+        return dp[m%2][n];    
+    }
 };
 
 

@@ -14,6 +14,30 @@
 // Output: index1=1, index2=2
 //============================================================================
 
+class Solution {
+public:
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        unordered_map<int, int> mp;
+        vector<int> res(2,-1);
+        for(int i=0; i<numbers.size();i++)
+            mp[numbers[i]]=i+1;
+        
+        for(int i=0; i<numbers.size();i++){
+            if(mp.find(target-numbers[i])!=mp.end()){
+                int index = mp[target-numbers[i]];
+                if(index!=i+1){
+                    res[0]=min(index, i+1);
+                    res[1]=max(index, i+1);
+                }
+            }
+        }
+        return res;
+    }
+};
+
+
 #include <iostream>
 #include <vector>
 #include <algorithm>

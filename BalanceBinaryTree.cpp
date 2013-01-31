@@ -34,17 +34,17 @@ public:
 
     bool isBalancedHelper1(TreeNode* node) {
         if (node == NULL)
-        	return true;
+	        	return true;
         int leftHeight = height(node->left);
         int rightHeight = height(node->right);
         if (abs(leftHeight - rightHeight) > 1)
-        	return false;
+	        	return false;
         return isBalancedHelper1(node->left) && isBalancedHelper1(node->right);
     }
 
     int height(TreeNode *node) {
         if (node == NULL)
-        	return 0;
+	        	return 0;
         return (1 + max(height(node->left), height(node->right)));
     }
 
@@ -55,7 +55,7 @@ public:
 
     bool isBalancedHelper2(TreeNode *node, int &height) {
         if (node == NULL) {
-            height = 0;
+	            height = 0;
             return true;
         }
         int leftHeight, rightHeight;
