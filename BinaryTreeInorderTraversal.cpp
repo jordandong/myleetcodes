@@ -96,16 +96,32 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         vector<int> res;
-        return inorder(root, res);
+        //inorderHelper(root, res);
+        inorderHelperII(root, res);
+        return res;
     }
     
-    vector<int> inorder(TreeNode *root, vector<int> &res){
-        if(root==NULL)
-            return res;
-        res = inorder(root->left, res);
+    void inorderHelper(TreeNode* root, vector<int> &res){
+        if(!root)
+            return;
+        inorderHelper(root->left, res);    
         res.push_back(root->val);
-        res = inorder(root->right, res);
-        
-        return res;
+        inorderHelper(root->right, res);
+    }
+    
+    void inorderHelperII(TreeNode* root, vector<int> &res){
+        stack<TreeNode*> stk;
+        TreeNode* curr=root; 
+        while(curr){
+            stk.push(curr);
+            curr=curr->left;
+            
+            while(!curr&&stk.size()){
+                TreeNode* tmp = stk.top();
+                stk.pop();
+                res.push_back(tmp->val);
+                curr=tmp->right;
+            }
+        }
     }
 };

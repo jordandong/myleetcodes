@@ -44,3 +44,31 @@ public:
 int main() {
     return 0;
 }
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *swapPairs(ListNode *head) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        ListNode* first, *second;
+        first=head;
+        if(first&&first->next){
+            second=first->next;
+            first->next = swapPairs(second->next);
+            second->next=first;
+            head=second;
+        }else{
+            return first;
+        }
+        return head;
+    }
+};
