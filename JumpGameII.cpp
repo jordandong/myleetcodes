@@ -37,6 +37,26 @@ public:
     }
 };
 
+class Solution {
+public:
+ int jump(int A[], int n) {
+         int count = 0;
+         int end = n-1;
+         while(end)
+         {
+             for(int i = 0; i < end; i++)
+             {
+                 if((A[i]+i)>=end)
+                 {
+                     count++;
+                     end = i;
+                 }
+             }
+         }
+         return count;
+     }
+};
+
 int main() {
     return 0;
 }
