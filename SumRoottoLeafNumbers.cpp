@@ -15,8 +15,6 @@ The root-to-leaf path 1->3 represents the number 13.
 Return the sum = 12 + 13 = 25.
 */
 
-
-
 /**
  * Definition for binary tree
  * struct TreeNode {
@@ -44,13 +42,11 @@ public:
         if(!root->left&&!root->right){
             sum+=cur;
             return;
-        }else if(!root->left)
-            sumNumbersHelper(root->right, cur, sum);
-        else if(!root->right)
-            sumNumbersHelper(root->left, cur, sum);
-        else{
-            sumNumbersHelper(root->left, cur, sum);
-            sumNumbersHelper(root->right, cur, sum);
         }
+        
+        if(root->left)
+            sumNumbersHelper(root->left, cur, sum);
+        if(root->right)
+            sumNumbersHelper(root->right, cur, sum);
     }
 };
