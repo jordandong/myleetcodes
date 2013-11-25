@@ -1,0 +1,120 @@
+/**
+ * Definition for a point.
+ * struct Point {
+ *     int x;
+ *     int y;
+ *     Point() : x(0), y(0) {}
+ *     Point(int a, int b) : x(a), y(b) {}
+ * };
+ */
+
+//O(n^3), but easy
+class Solution {
+public:
+    //Check if three points, i, j and k, are collinear
+    bool sameLine(Point i, Point j, Point k){
+        return (j.y-i.y)*(k.x-j.x)-(k.y-j.y)*(j.x-i.x)==0;
+    }
+    //Check if all points are the same
+    bool allSamePoints(vector<Point> &points){
+        int i=0;
+        while(i<points.size()){
+            if(points[i].x!=points[0].x || points[i].y!=points[0].y)
+                break;
+            ++i;
+        }
+        return i==points.size();
+    }
+    int maxPoints(vector<Point> &points) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        if(points.size()<=1 || allSamePoints(points))
+            return points.size();
+        int maxPoints = 2;
+        for(int i=0; i<points.size(); ++i){
+            for(int j=i+1; j<points.size(); ++j){
+                if(points[i].x==points[j].x && points[i].y==points[j].y)
+                    continue;
+                int count = 2;
+                for(int k=0; k<points.size(); ++k){
+                    if(k!=i && k!=j && sameLine(points[i], points[j], points[k]))
+                        count++;
+                }
+                maxPoints = max(maxPoints, count);
+            }
+        }
+        return maxPoints;
+    }
+};
+
+
+//cannot deal with dup points, need to improve later, slope is not a good idea, O(n^2)
+/*
+class Solution {
+public:
+    struct LINE {
+        bool bVertical;
+        float k;
+        float b;// y axle intersection if none vertical, x axle intersection if vertical line
+    };
+    
+    bool Equal(float x, float y){
+        return (x - y) >= -0.00000001 && (x - y) <= 0.00000001;
+    };
+    
+    LINE findLine(vector<Point> &pts) {
+        LINE line;
+        int nMax = 0;
+        int n = pts.size();
+
+        for (int i = 0; i < n-1; i++) {
+            unordered_map<float, int> map;
+            int nVertical = 0;
+            for (int j = i+1; j < n; j++) {
+                if (pts[i].x == pts[j].x) {
+                    nVertical++;
+                    if (nVertical > nMax) {
+                        line.bVertical = true;
+                        line.b = pts[i].x;
+                        nMax = nVertical;
+                    }
+                }
+                else{
+                    float k = float((pts[j].y - pts[i].y))/float((pts[j].x - pts[i].x));
+                    if (map.find(k) != map.end())
+                        map[k]++;
+                    else
+                        map[k] = 1;
+
+                    if (map[k] > nMax) {
+                        line.bVertical = false;
+                        line.k = k;
+                        line.b = pts[i].y - k * pts[i].x;
+                        nMax = map[k];
+                    }
+                }
+            }
+        }
+        return line;
+    };
+
+    int maxPoints(vector<Point> &points) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        if(points.size()<=1)
+            return points.size();
+        
+        LINE l = findLine(points);
+        int res = 0;
+        for(int i=0; i<points.size(); i++){
+            if(l.bVertical && Equal(l.b, points[i].x))
+                res++;
+            else{
+                if(Equal(points[i].y, l.k*points[i].x+l.b))
+                    res++;
+            }
+        }
+        return res;
+    };
+};
+*/
