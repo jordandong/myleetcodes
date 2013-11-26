@@ -7,7 +7,71 @@
  *     Point(int a, int b) : x(a), y(b) {}
  * };
  */
+ 
+ 
+ 
+//O(lgn*n^2), sort slope
+#define FLT_MAX float(1e36)
+#define SAME_PT float(-1e36)
+class Solution {
+public:
+    bool allSamePoints(vector<Point> &points){
+        int i=0;
+        while(i<points.size()){
+            if(points[i].x!=points[0].x || points[i].y!=points[0].y)
+                break;
+            ++i;
+        }
+        return i==points.size();
+    }
+    
+    bool Equal(float x, float y){
+        return abs(x-y)<=0.00000001 || abs(x-SAME_PT)<=0.00000001 || abs(y-SAME_PT)<=0.00000001;
+    };
 
+    int Cal_One_Point(int &cur, vector<Point> &pts) {
+        vector<float> slope;
+        for (int i=0; i<pts.size(); i++) {
+            if(cur == i)
+                continue;
+            if(pts[cur].x == pts[i].x){
+                if(pts[cur].y == pts[i].y)
+                    slope.push_back(SAME_PT);
+                else
+                    slope.push_back(FLT_MAX);
+            }else{
+                float k = float((pts[i].y - pts[cur].y))/float((pts[i].x - pts[cur].x));
+                slope.push_back(k);
+            }
+        }
+        sort(slope.begin(), slope.end());
+        int cnt =0;
+        int maxcnt=0;
+        for(int i=0;i<slope.size()-1;i++){
+            if(Equal(slope[i],slope[i+1])){
+                cnt++;
+            }else{
+                maxcnt=max(cnt, maxcnt);
+                cnt=0;
+            }
+        }
+        return (cnt>maxcnt?cnt:maxcnt)+2;
+    };
+
+    int maxPoints(vector<Point> &points) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        if(allSamePoints(points) || points.size()<=1)
+            return points.size();
+        int res = 2;    
+        for(int i=0; i<points.size(); i++){
+            res = max(res, Cal_One_Point(i, points));
+        }
+        return res;
+    };
+};
+
+#if 0
 //O(n^3), but easy
 class Solution {
 public:
@@ -46,10 +110,10 @@ public:
         return maxPoints;
     }
 };
-
+#endif
 
 //cannot deal with dup points, need to improve later, slope is not a good idea, O(n^2)
-/*
+#if 0
 class Solution {
 public:
     struct LINE {
@@ -117,4 +181,4 @@ public:
         return res;
     };
 };
-*/
+#endif
