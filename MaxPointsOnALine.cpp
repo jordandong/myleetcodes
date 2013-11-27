@@ -8,8 +8,37 @@
  * };
  */
  
- 
- 
+//O(n^2) time, O(n) space, using space to save time based on last method, hash slope here
+class Solution { 
+public:
+    //the sign deps on a, if a<0, return <0, else >0
+    int gcd(int a, int b){
+        return a?gcd(b%a, a):b;
+    }
+    int maxPoints(vector<Point> &points) {
+        int res=0;
+        for(auto& p1: points){
+            unordered_map<string, int> slope;
+            int cnt_same=0, cnt_slope=0;
+            for(auto& p2:points){
+                int dx=p1.x-p2.x;
+                int dy=p1.y-p2.y;
+                int g=gcd(dx,dy);
+                if(!g){
+                    cnt_same++;
+                    continue;
+                }
+                dx/=g;
+                dy/=g;
+                cnt_slope=max(cnt_slope,++slope[to_string(dx)+" "+to_string(dy)]);
+            }
+            res=max(res,cnt_slope+cnt_same);
+        }
+        return res;
+    }
+};
+
+#if 0 
 //O(lgn*n^2), sort slope
 #define FLT_MAX float(1e36)
 #define SAME_PT float(-1e36)
@@ -70,7 +99,7 @@ public:
         return res;
     };
 };
-
+#endif
 #if 0
 //O(n^3), but easy
 class Solution {
