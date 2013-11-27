@@ -7,11 +7,50 @@
  *     Point(int a, int b) : x(a), y(b) {}
  * };
  */
+  
+//O(n^2) time, O(n) space, using space to save time based on last method, hash slope 
+class pairHash{
+public:
+    size_t operator()(const pair<int, int> &k) const{
+        return k.first<<4 ^ k.second>>4;
+    }
+};
+
+class Solution { 
+public:
+    int gcd(int a, int b){
+        return a?gcd(b%a, a):b;
+    }
+    int maxPoints(vector<Point> &points) {
+        int res=0;
+        for(auto& p1: points){
+            unordered_map<pair<int, int>, int, pairHash> slope;
+            int cnt_same=0, cnt_slope=0;
+            for(auto& p2:points){
+                int dx=p1.x-p2.x;
+                int dy=p1.y-p2.y;
+                int g=gcd(dx,dy);
+                if(!g){
+                    cnt_same++;
+                    continue;
+                }
+                //if the ratio is the same, no matter what dx and dy are
+                //- - return -  ; -n*A +n*B may always return + or -  ;  +n*A -n*B may always return - or +
+                //So dx/g always has the same sign if dx/dy is the same
+                dx/=g;
+                dy/=g;
+                cnt_slope=max(cnt_slope,++slope[make_pair(dx,dy)]);
+            }
+            res=max(res,cnt_slope+cnt_same);
+        }
+        return res;
+    }
+};
  
+#if 0 
 //O(n^2) time, O(n) space, using space to save time based on last method, hash slope here
 class Solution { 
 public:
-    //the sign deps on a, if a<0, return <0, else >0
     int gcd(int a, int b){
         return a?gcd(b%a, a):b;
     }
@@ -28,6 +67,9 @@ public:
                     cnt_same++;
                     continue;
                 }
+                //if the ratio is the same, no matter what dx and dy are
+                //- - return -  ; -n*A +n*B may always return + or -  ;  +n*A -n*B may always return - or +
+                //So dx/g always has the same sign if dx/dy is the same
                 dx/=g;
                 dy/=g;
                 cnt_slope=max(cnt_slope,++slope[to_string(dx)+" "+to_string(dy)]);
@@ -37,6 +79,7 @@ public:
         return res;
     }
 };
+#endif
 
 #if 0 
 //O(lgn*n^2), sort slope
