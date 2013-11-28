@@ -18,18 +18,18 @@ public:
             return 0;
         stack<int> s;
         for(auto &t : tokens){
-            if(t.length()==1 && (t[0]<'0' || t[0]>'9')){
+            if(t=="+" || t=="-" || t=="*" || t=="/"){
                 int a = s.top();
                 s.pop();
                 int b = s.top();
                 s.pop();
-                if(t[0]=='+')
+                if(t=="+")
                     s.push(b+a);
-                if(t[0]=='-')
+                if(t=="-")
                     s.push(b-a);
-                if(t[0]=='*')
+                if(t=="*")
                     s.push(b*a);
-                if(t[0]=='/')
+                if(t=="/")
                     s.push(b/a);               
             }else{
                 int num = 0;

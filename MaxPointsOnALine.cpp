@@ -11,7 +11,90 @@ Given n points on a 2D plane, find the maximum number of points that lie on the 
  *     Point(int a, int b) : x(a), y(b) {}
  * };
  */
-  
+
+//O(n^2), hash line
+/*hash func can be used eariler, then use the hash value as Key
+we only need to declare unordered_map<int, int or set> map,
+int value = hashfunc(Line or point);
+map[value] = int or set;
+Here I practise to add customized hash func to unordered_map, then Equal is necessary
+*/
+class Line{
+public:	
+	int a;
+	int b;
+	int c;
+	Line(int a, int b, int c){
+		int g = GCD(a,b);
+		this->a=a/g;
+		this->b=b/g;
+		this->c=c/g;
+	}
+	int GCD(int a, int b){
+		return a?GCD(b%a,a):b;
+	}
+};  
+
+class pointHash{
+public:
+    size_t operator()(const Point &k) const{
+        return k.x<<4 ^ k.y>>4;
+    }
+};
+
+class pointEqual{
+public:
+    bool operator()(const Point &a, const Point &b) const{
+        return a.x==b.x && a.y==b.y;
+    }
+};
+
+class lineHash{
+public:
+    size_t operator()(const Line &k) const{
+        return k.a<<4 ^ k.b<<8 ^ k.c>>4;
+    }
+};
+
+class lineEqual{
+public:
+    bool operator()(const Line &x, const Line &y) const{
+        return x.a==y.a && x.b==y.b && x.c == y.c;
+    }
+};
+
+class Solution {
+public:
+    int maxPoints(vector<Point> & points) {
+        
+        int res = 0;
+        unordered_map<Point, int , pointHash, pointEqual> pts;
+        for(auto & a : points) {
+            pts[a]+= 1;
+            res = res>pts[a]?res:pts[a];
+        }
+
+        unordered_map<Line, unordered_set<int>, lineHash, lineEqual> le;
+        int n = points.size();
+        for (int i=0; i< n-1; i++) {
+            for (int j = i+1; j < n; j++) {
+                int a = points[j].y-points[i].y;
+                int b = points[i].x-points[j].x;
+                if (a == 0 && b == 0)
+					continue;
+                int c = -a*points[i].x-b*points[i].y;
+                Line l(a, b, c);
+                le[l].insert(i);
+                le[l].insert(j);
+                if(le[l].size() > res)
+					res = le[l].size();
+            }
+        }
+        return res;
+    }
+};
+
+#if 0
 //O(n^2) time, O(n) space, using space to save time based on last method, hash slope 
 class pairHash{
 public:
@@ -50,6 +133,7 @@ public:
         return res;
     }
 };
+ #endif
  
 #if 0 
 //O(n^2) time, O(n) space, using space to save time based on last method, hash slope here
@@ -147,6 +231,7 @@ public:
     };
 };
 #endif
+
 #if 0
 //O(n^3), but easy
 class Solution {
@@ -188,8 +273,8 @@ public:
 };
 #endif
 
-//cannot deal with dup points, need to improve later, slope is not a good idea, O(n^2)
 #if 0
+//cannot deal with dup points, need to improve later, slope is not a good idea, O(n^2)
 class Solution {
 public:
     struct LINE {
