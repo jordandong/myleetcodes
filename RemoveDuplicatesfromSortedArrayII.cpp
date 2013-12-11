@@ -15,21 +15,18 @@ public:
         unordered_map<int, int> mp;
         int i=0;
         int j=0;
-        int sum = 0;
         while(j<n){
             if(mp.find(A[j])==mp.end()){
                 mp[A[j]]=1;
                 A[i++]=A[j++];
-                sum++;
             }else if(mp[A[j]]>=2){
                 j++;
             }else{
                 mp[A[j]]++;
                 A[i++]=A[j++];
-                sum++;
             }
         }
-        return sum;
+        return i;
     }
 };
 
