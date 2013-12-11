@@ -18,6 +18,21 @@
 class Solution {
 public:
     bool isPalindrome(int x) {
+        int p = 0;
+        int q = x;
+        while(x!=0){
+            p*=10;
+            p+=(x%10);
+            x/=10;
+        }
+        return p==q && q>=0;
+    }
+};
+
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
         if(x<0)
         	return false;
         int d = 1;
