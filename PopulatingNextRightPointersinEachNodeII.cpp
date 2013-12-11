@@ -24,6 +24,31 @@
 //  "  4-> 5 -> 7 -> NULL "
 //============================================================================
 
+class Solution {
+public:
+    void connect(TreeLinkNode *root) {
+        if(!root)
+            return;
+        queue<TreeLinkNode*> q[2];
+        int i=0;
+        q[i].push(root);
+        while(!q[i].empty()){
+            TreeLinkNode* t = q[i].front();
+            q[i].pop();
+            if(t->left)
+                q[i^1].push(t->left);
+            if(t->right)
+                q[i^1].push(t->right);
+            if(q[i].empty()){
+                t->next = NULL;
+                i^=1;
+            }else{
+                t->next = q[i].front();
+            }
+        }
+    }
+};
+
 #include <iostream>
 using namespace std;
 /**
