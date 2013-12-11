@@ -17,29 +17,21 @@
 class Solution {
 public:
     ListNode *removeNthFromEnd(ListNode *head, int n) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        if(head==NULL)
-            return head;
-        ListNode *reshead = new ListNode(0);
-        reshead->next = head;
-        ListNode *fast=head;
-        ListNode *slow=reshead;
-
-        while(fast!=NULL){
-            if(n==0){
-                slow=slow->next;
-                fast = fast->next;
-            }
-            while(n>0){
-                fast = fast->next;
-                n--;
-            }
+        ListNode *new_head = new ListNode(-1);
+        new_head->next = head;
+        ListNode *fast = new_head;
+        ListNode *slow = new_head;
+        while(n>0){
+            fast=fast->next;
+            n--;
         }
-        ListNode *tmp = slow->next;
-        slow->next = tmp==NULL?NULL:tmp->next;
-        delete tmp;
-        return reshead->next;
+        
+        while(fast->next){
+            fast=fast->next;
+            slow=slow->next;
+        }
+        slow->next = slow->next->next;
+        return new_head->next;
     }
 };
 
