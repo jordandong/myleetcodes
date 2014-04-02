@@ -3,6 +3,49 @@
 // containing all ones and return its area.
 //============================================================================
 
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char> > &matrix) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int rtn = 0;
+        int m = matrix.size();
+        if(!m)
+            return rtn;
+        int n = matrix[0].size();
+        vector<int> h(n, 0);
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(matrix[i][j]=='1'){
+                    h[j]++;
+                }else{
+                    h[j]=0;
+                }
+            }
+            rtn = max(rtn, largestRectHist(h, n));
+        }
+        return rtn;
+    }
+    
+    int largestRectHist(vector<int> &h, int n){
+        stack<int> stk;
+        int rtn = 0;
+        h.push_back(0);
+        int i = 0;
+        while(i<=n){
+            if(stk.empty() || h[i] >= h[stk.top()]){
+                stk.push(i++);
+            }else{
+                int j = stk.top();
+                stk.pop();
+                rtn = max(rtn, h[j]*(stk.empty()?i:(i - stk.top() - 1)));
+            }
+        }
+        return rtn;
+    }
+};
+
+
 #include <iostream>
 #include <vector>
 #include <stack>
