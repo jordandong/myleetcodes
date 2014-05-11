@@ -8,6 +8,17 @@
 class Solution {
 public:
     int climbStairs(int n) {
+        if(n==0 || n==1)
+            return 1;
+        int first_half = n&1?(n-1)>>1:n>>1;
+        int second_half = n&1?(n+1)>>1:n>>1;
+        return climbStairs(first_half)*climbStairs(second_half) + climbStairs(first_half - 1)*climbStairs(second_half - 1); 
+    }
+};
+
+class Solution {
+public:
+    int climbStairs(int n) {
         if (n <= 2)
         	return n;
         int a = 1;
@@ -21,11 +32,6 @@ public:
         return c;
     }
 };
-
-int main() {
-    return 0;
-}
-
 
 class Solution {
 public:
