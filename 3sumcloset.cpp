@@ -39,44 +39,34 @@ class Solution {
 		}
 };
 
-int main() {
-	return 0;
-}
-
-
-
 class Solution {
 	public:
 		int threeSumClosest(vector<int> &num, int target) {
 			// Start typing your C/C++ solution below
 			// DO NOT write int main() function
-			int min = INT_MAX;
-			int res;
-			// Start typing your C/C++ solution below
-			// DO NOT write int main() function
 			int size = num.size();
-			sort(num.begin(),num.end());
+			sort(num.begin(), num.end());
+			int min = 0;
+			if(size >=3)
+				min = num[0] + num[1] + num[2];
+			else
+				return INT_MAX;
 
-			for(int i=0;i<size-2;i++){
-				int begin =i+1;
-				int end = size-1;
+			for(int i = 0; i < size-2; i++){
+				int begin = i + 1;
+				int end = size - 1;
 				while(begin < end){
-					int sum = num[i]+num[begin]+num[end]-target;
-					int tsum = abs(sum);
-					if(tsum<min){
-						min = tsum;
-						res = sum + target;
-					}                
-					if(sum==0)
-						return res; 
-					if (sum > 0) {	  
-						end = end - 1;   
-					}  
-					else if(sum <0)  {  
-						begin = begin + 1;  
-					} 
+					int sum = num[i] + num[begin] + num[end];
+					if(abs(sum - target) < abs(min - target))
+						min = sum;
+					if(sum == target)
+						return min; 
+					if(sum > target)	  
+						end--;   
+					else  
+						begin++;  
 				}
 			}
-			return res;    
+			return min;
 		}
 };
