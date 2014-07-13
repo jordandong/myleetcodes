@@ -71,12 +71,9 @@ public:
             count = count->next;
             num++;
         }
-        if(num <= 2)
-            return;
 
         bool odd = num%2;
         int moves = odd?(num-1)/2:(num-2)/2;
-        
         ListNode *curNode, *bHead;
         bHead = new ListNode(-1);
         bHead->next = head;
