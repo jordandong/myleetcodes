@@ -16,6 +16,8 @@ Given {1,2,3,4}, reorder it to {1,4,2,3}.
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+ 
+ 
 class Solution {
 public:
     void reorderList(ListNode *head) {
@@ -55,5 +57,55 @@ public:
         mid = mid->next;
         head->next->next = tmp;
         return head;
+    }
+};
+
+
+//O(n) spaces, but O(n^2) time, cannot pass the time limit
+class Solution {
+public:
+    void reorderList(ListNode *head) {
+        int num = 0;
+        ListNode *count = head;
+        while(count){
+            count = count->next;
+            num++;
+        }
+        if(num <=2)
+            return;
+        
+        bool odd = num%2;
+        int moves = odd?(num-1)/2:(num-2)/2;
+        
+        ListNode *curNode, *newHeadtail, *bHead;
+        bHead = new ListNode(-1);
+        bHead->next = head;
+        head = NULL;
+        while(moves>=0){
+            curNode = bHead;
+            for(int i = moves; i>0; i--){
+                curNode = curNode->next;
+            }
+            if(odd){
+                ListNode *tmp = curNode->next;
+                curNode->next = tmp->next;
+                tmp->next = NULL;
+                head = tmp;
+                newHeadtail = tmp;
+                odd = false;
+            }else{
+                ListNode *tmp = curNode->next;
+                curNode->next = tmp->next->next;
+                tmp->next->next = NULL;
+                if(!head){
+                    head = tmp;
+                    newHeadtail = tmp->next;
+                }else{
+                    newHeadtail->next = tmp;
+                    newHeadtail = newHeadtail->next->next;
+                }
+            }
+            moves--;
+        }
     }
 };
