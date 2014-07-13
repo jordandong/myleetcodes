@@ -71,13 +71,13 @@ public:
             count = count->next;
             num++;
         }
-        if(num <=2)
+        if(num <= 2)
             return;
-        
+
         bool odd = num%2;
         int moves = odd?(num-1)/2:(num-2)/2;
         
-        ListNode *curNode, *newHeadtail, *bHead;
+        ListNode *curNode, *bHead;
         bHead = new ListNode(-1);
         bHead->next = head;
         head = NULL;
@@ -86,25 +86,16 @@ public:
             for(int i = moves; i>0; i--){
                 curNode = curNode->next;
             }
+            ListNode *tmp = curNode->next;
             if(odd){
-                ListNode *tmp = curNode->next;
                 curNode->next = tmp->next;
-                tmp->next = NULL;
-                head = tmp;
-                newHeadtail = tmp;
+                tmp->next = head;
                 odd = false;
             }else{
-                ListNode *tmp = curNode->next;
                 curNode->next = tmp->next->next;
-                tmp->next->next = NULL;
-                if(!head){
-                    head = tmp;
-                    newHeadtail = tmp->next;
-                }else{
-                    newHeadtail->next = tmp;
-                    newHeadtail = newHeadtail->next->next;
-                }
+                tmp->next->next = head;
             }
+            head = tmp;
             moves--;
         }
     }
