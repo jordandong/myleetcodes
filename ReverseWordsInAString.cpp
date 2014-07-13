@@ -16,6 +16,39 @@ How about multiple spaces between two words?
 Reduce them to a single space in the reversed string.
 */
 
+class Solution {
+public:
+    void reverseWords(string &s) {
+        int len = s.length();
+        stack<char> stk;
+        string res;
+        
+        for(int i = len-1; i>=0; i--){
+            if(s[i]==' '){
+                if(stk.empty()){
+                    continue;
+                }else{
+                    while(!stk.empty()){
+                        res.push_back(stk.top());
+                        stk.pop();
+                    }
+                   res.push_back(' ');
+                }
+            }else{
+                stk.push(s[i]);
+            }
+        }
+        while(!stk.empty()){
+            res.push_back(stk.top());
+            stk.pop();
+        }
+        if(res.back()==' ')
+            res.pop_back();
+        s = res;
+    }
+};
+
+
 
 class Solution {
 public:
