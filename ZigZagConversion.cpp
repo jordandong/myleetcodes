@@ -13,6 +13,32 @@
 // string convert(string text, int nRows);
 // convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
 //============================================================================
+class Solution {
+public:
+    string convert(string s, int nRows) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function    
+        if(nRows <= 1)
+            return s;
+        string ret;
+        int offset = 2 * nRows - 2;
+        for(int i = 0; i<nRows; i++) {
+            for(int base = i; ;base += offset) {
+                if(base >= s.size())
+                    break;
+                ret.push_back(s[base]);
+                if(i > 0 && i < nRows - 1) {
+                    //middle need add ziggggging char
+                    int t = base + offset - 2 * i;
+                    if(t < s.size())
+                        ret.push_back(s[t]);
+                }
+            }
+        }
+        return ret;
+    }
+};
+
 
 #include <iostream>
 using namespace std;
