@@ -12,6 +12,30 @@ The solution is guaranteed to be unique.
 class Solution {
 public:
     int canCompleteCircuit(vector<int> &gas, vector<int> &cost) {
+        int size = gas.size();
+        int total_gas_left = 0;
+        int sub_gas_left = 0;
+        int start = 0;
+        for(int i=0; i<size; i++){
+            int diff=gas[i]-cost[i];
+            total_gas_left+=diff;
+            sub_gas_left+=diff;
+            if(sub_gas_left<0){
+                sub_gas_left=0;
+                start=i+1;
+            }
+        }
+        if(total_gas_left<0)
+            return -1;
+        else
+            return start;
+    }
+};
+
+
+class Solution {
+public:
+    int canCompleteCircuit(vector<int> &gas, vector<int> &cost) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         int size = gas.size();
         int start = 0;
