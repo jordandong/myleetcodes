@@ -12,6 +12,36 @@
 class Solution {
 public:
     bool search(int A[], int n, int target) {
+        int lo = 0;
+        int hi = n-1;
+        while(lo<=hi){
+            int mid = lo + (hi - lo)/2;
+            if(A[mid]==target)
+                return true;
+            if(A[lo]<A[mid]){
+                if(A[lo]<=target && target<A[mid]){
+                    hi=mid-1;
+                }else{
+                    lo=mid+1;
+                }
+            }else if(A[mid]<A[lo]){
+                if(A[mid]<target && target<=A[hi]){
+                    lo=mid+1;
+                }else{
+                    hi=mid-1;
+                }
+            }else{//if equal, simply move the lo and compare again
+                lo++;
+            }
+        }
+        return false;
+    }
+};
+
+
+class Solution {
+public:
+    bool search(int A[], int n, int target) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         int lo = 0;
