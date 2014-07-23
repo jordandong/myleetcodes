@@ -15,6 +15,46 @@
 class Solution {
 public:
     vector<int> searchRange(int A[], int n, int target) {
+        int start = -1;
+        int lo = 0;
+        int hi = n-1;
+        while(lo<hi){//find left index
+            int mid = lo + (hi-lo)/2;
+            if(A[mid]<target){
+                lo=mid+1;
+            }else{
+                hi=mid;
+            }
+        }
+        if(A[lo]==target)
+            start=lo;
+        else
+            return vector<int>(2, -1);
+            
+        lo=start;
+        hi=n-1;
+        while(lo<hi){//find right index
+            int mid = lo + (hi-lo+1)/2; //make sure the mid is always the bigger one when even
+            if(target<A[mid]){
+                hi=mid-1;
+            }else{
+                lo=mid;
+            }
+        }
+        vector<int> res;
+        res.push_back(start);
+        res.push_back(lo);
+        return res;
+        
+    }
+};
+
+
+
+
+class Solution {
+public:
+    vector<int> searchRange(int A[], int n, int target) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         vector<int> res;
