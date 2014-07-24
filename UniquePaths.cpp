@@ -10,6 +10,23 @@
 // How many possible unique paths are there?
 //============================================================================
 
+//optimize space use
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        if(m ==0 || n==0)
+            return 0;  
+        vector<int> maxV(n,0);  
+        maxV[0] =1;  
+        for(int i =0; i<m; i++){
+            for(int j =1; j<n; j++)
+                    maxV[j] = maxV[j-1]+maxV[j];  //dp[i][j] = dp[i][j-1] + dp[i-1][j]
+        }  
+        return maxV[n-1];  
+    }
+};
+
+
 class Solution {
 public:
     int uniquePaths(int m, int n) {
