@@ -15,8 +15,27 @@
 // Return 3.
 //============================================================================
 
-#include <iostream>
-using namespace std;
+//optimize space use
+class Solution {
+public:
+    int numDistinct(string S, string T) {  
+    // Start typing your C/C++ solution below  
+    // DO NOT write int main() function  
+ 
+    if(S.size() < T.size())
+        return 0;
+    int dp[T.size()+1];      
+    dp[0] = 1;  
+    for(int i=1; i <= T.size(); i++)  
+        dp[i] = 0;  
+    for(int i=1; i<= S.size(); i ++)  
+        for(int j =T.size(); j>=1; j--)  
+            if(S[i-1] == T[j-1])  
+                dp[j]+= dp[j-1];  
+    return dp[T.size()];
+    } 
+};
+
 
 class Solution {
 public:
@@ -40,10 +59,6 @@ public:
         return dp[M][N];
     }
 };
-
-int main() {
-    return 0;
-}
 
 
 class Solution {
