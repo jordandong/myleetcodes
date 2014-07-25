@@ -9,9 +9,34 @@
 // c) Replace a character
 //============================================================================
 
-#include <string>
-#include <vector>
-using namespace std;
+//Optimize the space use
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        string* longStr=&word1;
+        string* shortStr=&word2;
+        if(word1.size()<word2.size())
+            swap(longStr, shortStr);
+        
+        int * lastDP = new int[shortStr->size()+1];   
+        int* curDP = new int[shortStr->size()+1];
+        for(int i=0; i<= shortStr->size(); i++){
+            curDP[i] = 0;
+            lastDP[i] = i;
+        }
+        
+        for(int i=1; i<=longStr->size(); i++){
+            curDP[0] = i;
+            for(int j= 1; j<=shortStr->size(); j++)
+                curDP[j] = min( min(curDP[j-1], lastDP[j])+1,  lastDP[j-1]+(longStr->at(i-1)!=shortStr->at(j-1)));
+            int* temp = curDP;
+            curDP=lastDP;
+            lastDP = temp;
+        }
+        return lastDP[shortStr->size()];
+    }
+};
+
 
 class Solution {
 public:
@@ -34,10 +59,6 @@ public:
         return dp[M][N];
     }
 };
-
-int main() {
-    return 0;
-}
 
 class Solution {
 public:
