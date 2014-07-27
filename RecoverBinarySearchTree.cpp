@@ -14,40 +14,48 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
+ /**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ 
+ 
+ /* inorder: 1 2 3 7 5 6 4 8 9
+  * first issue 5<7,  so 7(p->l) must be wrong and 5(r) may be wrong
+  * second issue 6>4, so 4(r) must be wrong
+  */
 class Solution {
 public:
-    
-    TreeNode *l;
-    TreeNode *r;
-    TreeNode *p;
     
     void recoverTree(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        l=NULL;
-        r=NULL;
-        p=NULL;
-        rT(root);
+        TreeNode* l=NULL;
+        TreeNode* r=NULL;
+        TreeNode* p=NULL;
+        rT(root, l, r, p);
         swap(l->val, r->val);
     }
     
-    void rT(TreeNode *root){
+    void rT(TreeNode *root, TreeNode* &l, TreeNode* &r, TreeNode* &p){
         if(root==NULL)
             return;
-        rT(root->left);
-        if(p!=NULL&&root->val<p->val){
+        rT(root->left, l, r, p);
+        if(p!=NULL && root->val<p->val){
             if(l==NULL)
                 l=p;
             r=root;
         }
         p=root;
-        rT(root->right);
+        rT(root->right, l, r, p);
     }
 };
-
-
-#include <iostream>
-using namespace std;
 
 /**
  * Definition for binary tree
@@ -80,7 +88,3 @@ public:
         recoverTreeHelper(curNode->right, preNode, first, second);
     }
 };
-
-int main() {
-    return 0;
-}
