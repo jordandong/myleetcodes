@@ -17,6 +17,51 @@ Given {1,2,3,4}, reorder it to {1,4,2,3}.
  * };
  */
  
+ class Solution {
+public:
+    void reorderList(ListNode *head) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        if(!head || !head->next)
+            return;
+        ListNode* slow = head, *fast=head, *first=head;
+        while(fast){
+            if(fast->next){
+                fast=fast->next->next;
+                slow = slow ->next;
+            }
+            else{
+                fast=fast->next;
+            }
+        }//now slow is the first node in the second half
+        reorderListHelper(first, slow);
+    }
+    
+    ListNode* reorderListHelper(ListNode* &first, ListNode* second){
+        if(!second->next){
+            ListNode* tmp = first;
+            first=first->next;
+            tmp->next=second;
+            return second;	
+        }
+
+        ListNode* rtn = reorderListHelper(first, second->next);//rtn is the tail of the list
+        if(first==second){// odd situation
+            second->next=NULL;
+            rtn->next=second;
+            return second;
+        }
+        
+        ListNode* tmp = first;
+        first=first->next;
+        tmp->next=second;
+        second->next=NULL;
+        rtn->next=tmp;
+
+        return second;
+    }
+};
+ 
  
 class Solution {
 public:
