@@ -16,6 +16,56 @@
 class Solution {
 public:
     string simplifyPath(string path) {
+        path.push_back('/'); // deal with the situation ... at tail, e.g. /abc/....
+        int size = path.length();
+        string spath;
+        int dotCnt=0;
+        for(int i=0; i<size;i++){
+            if(path[i]=='/'){
+                if(dotCnt>2){ //... is a directory, add it
+                    while(dotCnt!=0){
+                        spath.push_back('.');
+                        dotCnt--;
+                    }
+                }else if(dotCnt==2){ // .. means the last folder, remove
+                    spath.pop_back();//pop one '/'
+                    while(!spath.empty()&&spath.back()!='/')
+                        spath.pop_back();
+                    dotCnt=0;
+                }else if(dotCnt==1){
+                    dotCnt=0;
+                }
+                
+                if(spath.empty() || spath.back()!='/')
+                    spath.push_back(path[i]);
+
+            }else if(path[i]=='.'){// '.'
+                dotCnt++; //must start with a '/'
+            }else{ // abc
+                while(dotCnt!=0){// if pattern like /.abc, /..abc, /...abc,  then add the dots
+                    spath.push_back('.');
+                    dotCnt--;
+                }
+                spath.push_back(path[i]); // add abc
+                while(i+1<size && path[i+1]=='.')//if pattern like /abc., /abc.., /abc...,  then add the dots
+                    spath.push_back(path[++i]);
+            }
+        }
+        
+        if(spath.size()<2)
+            spath="/";
+        else if(spath.back()=='/'){
+            spath.pop_back();
+        }
+        return spath;
+    }
+};
+
+
+
+class Solution {
+public:
+    string simplifyPath(string path) {
         int N = path.size();
         if (N <= 1)
             return path;
@@ -50,10 +100,6 @@ public:
     }
 };
 
-
-#include <iostream>
-#include <deque>
-using namespace std;
 
 class Solution {
 public:
@@ -97,7 +143,3 @@ public:
         return res;
     }
 };
-
-int main() {
-	return 0;
-}
