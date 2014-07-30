@@ -18,20 +18,40 @@
 //
 //============================================================================
 
-#include <iostream>
-#include <vector>
-#include <stack>
-using namespace std;
-
 /**
  * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
  */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode *root) {
+        vector<int> rtn;
+        stack<TreeNode*> stk;
+        stk.push(root);
+        while(!stk.empty()){
+            TreeNode* cur = stk.top();
+            stk.pop();
+            if(!cur){
+                if(!stk.empty()){
+                    rtn.push_back(stk.top()->val);
+                    stk.pop();
+                }
+                continue;
+            }else{
+                stk.push(cur->right);
+                stk.push(cur);
+                stk.push(cur->left);
+            }
+        }
+        return rtn;
+    }
 };
+
 
 class Solution {
 public:
@@ -76,20 +96,7 @@ public:
     }
 };
 
-int main() {
-    return 0;
-}
 
-
-/**
- * Definition for binary tree
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode *root) {
