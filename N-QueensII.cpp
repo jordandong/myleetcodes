@@ -6,10 +6,6 @@
 // distinct solutions.
 //============================================================================
 
-#include <iostream>
-#include <cmath>
-using namespace std;
-
 class Solution {
 public:
     bool isSafe(int board[], int n, int row, int col) {
@@ -21,7 +17,7 @@ public:
 
     void totalNQueensHelper(int board[], int n, int col, int &count) {
         if (col == n)
-        	count++;
+            count++;
         for (int row = 0; row < n; row++) {
             if (isSafe(board, n, row, col)) {
                 board[col] = row;
@@ -37,7 +33,3 @@ public:
         return count;
     };
 };
-
-int main() {
-	return 0;
-}
