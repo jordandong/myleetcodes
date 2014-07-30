@@ -25,7 +25,7 @@ public:
             minHeap.pop();
             curr = curr->next;
             if (curr->next)
-				minHeap.push(curr->next); // push the Node after the min Node if exsits
+                minHeap.push(curr->next); // push the Node after the min Node if exsits
         }
         curr=head->next;
         delete head;
