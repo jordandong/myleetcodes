@@ -7,9 +7,33 @@
 // "((()))", "(()())", "(())()", "()(())", "()()()"
 //============================================================================
 
-#include <vector>
-#include <iostream>
-using namespace std;
+//optimize the space use
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        string cur;
+        vector<string> rtn;
+        gpHelper(n, n, cur, rtn);
+        return rtn;
+    }
+    
+    void gpHelper(int l, int r, string &cur, vector<string> &rtn){
+        if(l==0 && r==0){
+            rtn.push_back(cur);
+            return;
+        }
+        if(l>0){
+            cur.push_back('(');
+            gpHelper(l-1, r, cur, rtn);
+            cur.pop_back();
+        }
+        if(r>l){
+            cur.push_back(')');
+            gpHelper(l, r-1, cur, rtn);
+            cur.pop_back();
+        }
+    }
+};
 
 class Solution {
 public:
@@ -28,7 +52,3 @@ public:
 			generateParenthesisHeler(l, r - 1, s + ')', result);
     };
 };
-
-int main() {
-    return 0;
-}
