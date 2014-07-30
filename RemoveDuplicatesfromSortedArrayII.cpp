@@ -12,6 +12,29 @@
 class Solution {
 public:
     int removeDuplicates(int A[], int n) {
+        if(n<=2)
+            return n;
+        int k=0, i=0;
+        int found = 0;
+        while(i<n){
+            if(A[i]==A[k]){
+                if(found==1){
+                    A[++k]=A[i];
+                }
+                i++;
+                found++;
+            }else{
+                A[++k]=A[i++];
+                found=1;
+            }
+        }
+        return k+1;
+    }
+};
+
+class Solution {
+public:
+    int removeDuplicates(int A[], int n) {
         unordered_map<int, int> mp;
         int i=0;
         int j=0;
@@ -29,7 +52,6 @@ public:
         return i;
     }
 };
-
 
 class Solution {
 public:
@@ -62,8 +84,6 @@ public:
     }
 };
 
-
-
 class Solution {
 public:
     int removeDuplicates(int A[], int n) {
@@ -89,7 +109,3 @@ public:
         return j + 1;
     }
 };
-
-int main() {
-    return 0;
-}
