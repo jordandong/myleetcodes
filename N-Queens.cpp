@@ -5,11 +5,6 @@
 // such that no two queens attack each other.
 //============================================================================
 
-#include <iostream>
-#include <vector>
-#include <cmath>
-using namespace std;
-
 class Solution {
 public:
     bool isSafe(vector<string> &board, int row, int col) {
@@ -17,15 +12,15 @@ public:
         int i = row, j = 0;
         while(j < col)
             if (board[i][j++] == 'Q')
-				return false;
+                return false;
         i = row, j = col;
         while (i >=0 && j >= 0)
             if (board[i--][j--] == 'Q')
-				return false;
+                return false;
         i = row, j = col;
         while (i < N && j >= 0)
             if (board[i++][j--] == 'Q')
-				return false;
+                return false;
         return true;
     };
 
@@ -52,6 +47,3 @@ public:
         return result;
     }
 };
-int main() {
-	return 0;
-}
