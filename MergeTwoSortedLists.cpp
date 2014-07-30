@@ -17,29 +17,14 @@ public:
     ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if(l1==NULL&&l2==NULL)
-            return NULL;
-        else if(l1==NULL)
-            return l2;
-        else if(l2==NULL)
-            return l1;
+        ListNode *head=new ListNode(-1);
+        ListNode *curr=head;
 
-        ListNode *curr=NULL;
-        if(l1->val<l2->val){
-            curr=l1;
-            l1=l1->next;
-        } else{
-            curr=l2;
-            l2=l2->next;
-        }
-        ListNode* head=curr;
-        
         while(l1!=NULL&&l2!=NULL){
             if(l1->val<l2->val){
                 curr->next = l1;
                 l1=l1->next;
                 curr=curr->next;
-                
             }else{
                 curr->next=l2;
                 l2=l2->next;
@@ -50,31 +35,18 @@ public:
             curr->next=l1;
         else
             curr->next=l2;
-        
-        return head;
+        curr=head->next;
+        delete head;
+        return curr;
     }
 };
 
-
-
-
-#include <iostream>
-using namespace std;
-
-/**
- * Definition for singly-linked list.
- */
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {};
-};
 
 class Solution {
 public:
     ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
         ListNode *head = NULL;
-		ListNode *node = NULL;
+        ListNode *node = NULL;
         while (l1 != NULL && l2 != NULL) {
             if (l1->val < l2->val) {
                 if (head == NULL) {
@@ -98,20 +70,16 @@ public:
         }
         if (l1 == NULL) {
             if (head == NULL)
-				head = l2;
+                head = l2;
             else
-				node->next = l2;
+                node->next = l2;
         }
         else if (l2 == NULL) {
             if (head == NULL)
-				head = l1;
+                head = l1;
             else
-				node->next = l1;
+                node->next = l1;
         }
         return head;
     }
 };
-
-int main() {
-    return 0;
-}
