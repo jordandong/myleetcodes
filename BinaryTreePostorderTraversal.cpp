@@ -22,6 +22,46 @@ Note: Recursive solution is trivial, could you do it iteratively?
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
+ /**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode *root) {
+        vector<int> rtn;
+        stack<TreeNode*> stk;
+        stack<bool> visited;
+        stk.push(root);
+        visited.push(false);
+        while(!stk.empty()){
+            TreeNode* cur=stk.top();
+            bool v = visited.top();
+            stk.pop();
+            visited.pop();
+            if(!cur || v){
+                if(v)
+                    rtn.push_back(cur->val);
+                continue;
+            }
+            stk.push(cur);
+            visited.push(true);
+            stk.push(cur->right);
+            visited.push(false);
+            stk.push(cur->left);
+            visited.push(false);
+        }
+        return rtn;
+    }
+};
+ 
+ 
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode *root) {
