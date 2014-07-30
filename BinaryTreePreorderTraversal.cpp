@@ -22,6 +22,27 @@ Note: Recursive solution is trivial, could you do it iteratively?
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode *root) {
+        vector<int> rtn;
+        stack<TreeNode*> stk;
+        stk.push(root);
+        while(!stk.empty()){
+            TreeNode* cur = stk.top();
+            stk.pop();
+            if(!cur)
+                continue;
+            rtn.push_back(cur->val);
+            stk.push(cur->right);
+            stk.push(cur->left);
+        }
+        return rtn;
+    }
+};
+
+
 class Solution {
 public:
     vector<int> preorderTraversal(TreeNode *root) {
