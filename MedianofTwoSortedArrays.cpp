@@ -4,16 +4,54 @@
 // O(log (m+n)).
 //============================================================================
 
-#include <iostream>
-#include <climits>
-#include <cassert>
-using namespace std;
-
 class Solution {
 public:
     double findMedianSortedArrays(int A[], int m, int B[], int n) {
-//     	return findMedianSortedArrays1(A, m, B, n);
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int len = m + n;
+        if(len%2==0){
+            double a = kthsmallest(A,m,B,n,(m+n)/2);
+            double b = kthsmallest(A,m,B,n,(m+n)/2+1);
+            return a/2+b/2;
+        }
+        else{
+            double a = kthsmallest(A,m,B,n,(m+n)/2+1);
+            return a;
+        }        
+    }
+    
+    int kthsmallest(int* a,int lena, int* b, int lenb, int k){
+        if(lena==0)
+            return b[k-1];
+        if(lenb==0)
+            return a[k-1];
+
+        int ma=lena/2; //ma mb is index now
+        int mb=lenb/2;
+
+    	if(ma + 1 + mb + 1<=k){ //ma+1 + mb+1 it the total length
+            if(a[ma]>b[mb])
+                //discard mb, biggest mb is (k-1)th sicne (ma + 1 - 1) + (mb +1) = k-1
+                return kthsmallest(a,lena,b+mb+1,lenb-mb-1,k-mb-1); 
+            else
+                return kthsmallest(a+ma+1,lena-ma-1,b,lenb,k-ma-1);
+    	}else{	
+            if(a[ma]>b[mb])
+                return kthsmallest(a,ma,b,lenb,k);
+                //discard ma. smallest ma is (k+1)th since ma+ 1 + mb +1 >= k+1
+            else
+                return kthsmallest(a,lena,b,mb,k);
+       }
+    }
+};
+
+//*****************************************************************
+class Solution {
+public:
+    double findMedianSortedArrays(int A[], int m, int B[], int n) {
         return findMedianSortedArrays1(A, m, B, n);
+        return findMedianSortedArrays2(A, m, B, n);
     }
 
     double findMedianSortedArrays1(int A[], int m, int B[], int n) {
@@ -35,7 +73,7 @@ public:
             s--;
         }
         if ((m + n) % 2 == 0)
-			return (m1 + m2) / 2.0;
+            return (m1 + m2) / 2.0;
         return m2;
     };
 
@@ -45,7 +83,7 @@ public:
 
     double findMedianHelper2(const int A[], const int m, const int B[], const int n, const int l, const int r) {
         if (l > r)
-			return findMedianHelper2(B, n, A, m, max(0, (n-m)/2), min(n-1, (m+n)/2));
+            return findMedianHelper2(B, n, A, m, max(0, (n-m)/2), min(n-1, (m+n)/2));
         int i = (l+r)/2;
         int j = (m+n)/2-i;
 
@@ -56,60 +94,12 @@ public:
         int Bj = ((j == n) ? INT_MAX : B[j]);
 
         if (Ai < Bj_1)
-			return findMedianHelper2(A, m, B, n, i+1, r);
+             return findMedianHelper2(A, m, B, n, i+1, r);
         if (Ai > Bj)
-			return findMedianHelper2(A, m, B, n, l, i-1);
+            return findMedianHelper2(A, m, B, n, l, i-1);
 
         if (((m+n) % 2) == 1)
-			return A[i];
+            return A[i];
         return (max(Ai_1, Bj_1) + Ai) / 2.0;
     };
-};
-
-int main() {
-    return 0;
-}
-
-
-
-
-class Solution {
-public:
-    double findMedianSortedArrays(int A[], int m, int B[], int n) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        int len = m+n;
-        if(len%2==0){
-            double a = kthsmallest(A,m,B,n,(m+n)/2);
-            double b = kthsmallest(A,m,B,n,(m+n)/2+1);
-            return a/2+b/2;
-        }
-        else{
-            double a = kthsmallest(A,m,B,n,(m+n)/2+1);
-            return a;
-        }        
-    }
-    
-    int kthsmallest(int* a,int lena, int* b, int lenb, int k){
-        if(lena==0)
-		    return b[k-1];
-	    if(lenb==0)
-		    return a[k-1];
-
-	    int ma=lena/2;
-	    int mb=lenb/2;
-
-    	if(ma+mb+2<=k){
-	    	if(a[ma]>b[mb])
-		    		return kthsmallest(a,lena,b+mb+1,lenb-mb-1,k-mb-1);
-		    else
-			    return kthsmallest(a+ma+1,lena-ma-1,b,lenb,k-ma-1);
-	    }
-	    else{	
-		    if(a[ma]>b[mb])
-			    return kthsmallest(a,ma,b,lenb,k);
-		    else
-			    return kthsmallest(a,lena,b,mb,k);
-	    }
-    }
 };
