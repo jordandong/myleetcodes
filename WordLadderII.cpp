@@ -114,8 +114,10 @@ public:
 					if (s == end)
 						goal = true;
 					if (map.find(s) == map.end() && dict.find(s) != dict.end()){
+						// put it in a temp map first, A  --> A(B, C) ----> A( B(D, E), C(D, F))
+						//A->B->D or A->C->D, so D cannot be bypassed(or inserted into the map) in this level where D is first found
 						if (map2.find(s) == map2.end()) {
-								q2.push(s);
+							q2.push(s);
 						}
 						map2.insert(make_pair(s, word));
 					}
