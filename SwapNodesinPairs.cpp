@@ -9,16 +9,68 @@
 // values in the list, only nodes itself can be changed.
 //============================================================================
 
-#include <iostream>
-using namespace std;
 /**
  * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
  */
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+class Solution {
+public:
+    ListNode *swapPairs(ListNode *head) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        ListNode* nextNode;
+        if(head&&head->next){
+            nextNode=head->next;
+            head->next = swapPairs(nextNode->next);
+            nextNode->next=head;
+        }else{
+            return head;
+        }
+        return nextNode;
+    }
 };
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *swapPairs(ListNode *head) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        stack<ListNode*> stk;
+        ListNode* rtn=new ListNode(-1);
+        ListNode* rtn_tail = rtn;
+        ListNode* cur=head;
+        while(cur){
+            stk.push(cur);
+            cur=cur->next;
+            if(cur){
+                stk.push(cur);
+                cur=cur->next;
+            }
+            while(!stk.empty()){
+                rtn_tail->next=stk.top();
+                stk.pop();
+                rtn_tail=rtn_tail->next;
+            }
+        }
+        rtn_tail->next=cur;
+        cur=rtn->next;
+        delete rtn;
+        return cur;
+    }
+};
+
 
 class Solution {
 public:
@@ -37,37 +89,6 @@ public:
             nextNode->next = curNode;
             preNode = curNode;
             curNode = curNode->next;
-        }
-        return head;
-    }
-};
-int main() {
-    return 0;
-}
-
-
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
-class Solution {
-public:
-    ListNode *swapPairs(ListNode *head) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        ListNode* first, *second;
-        first=head;
-        if(first&&first->next){
-            second=first->next;
-            first->next = swapPairs(second->next);
-            second->next=first;
-            head=second;
-        }else{
-            return first;
         }
         return head;
     }
