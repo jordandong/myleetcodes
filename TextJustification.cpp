@@ -32,9 +32,6 @@
 // In this case, that line should be left-justified.
 //============================================================================
 
-#include <iostream>
-#include <vector>
-using namespace std;
 
 class Solution {
 public:
@@ -46,51 +43,45 @@ public:
         }
         
         int N = words.size();
-        vector<int> spaces;
         int start = 0;
-		int end = 0;
+        int end = 0;
         while (end < N)  {
             // justify one line
-            spaces.clear();
-            int length = words[start].size();
+            vector<int> spaces;
+            int length = words[start].size();//one word, this length must be less than L
             end = start+1;
             while (end < N) {
                 int M = words[end].size();
                 if (length + 1 + M > L)
                 	break;
-                length += 1 + M;
-                spaces.push_back(1);
+                length += 1 + M; //one more word is the total length is less than L
+                spaces.push_back(1); // add a space before words, starting from the second
                 end++;
-            }
+            }//now end is the start position of the next line
             
             int rest = L-length;
-            if (spaces.size() == 0 || end == N) {
-                spaces.push_back(rest);
-            }
-            else if (end < N) {
+            if (spaces.size() == 0 || end == N) { //only one word in this line or this is the last line
+                spaces.push_back(rest); //push all the spaces back
+            } else {// the line int middle with full words
                 int j = 0;
                 while (rest > 0) {
                     spaces[j++] += 1;
-                    if (j == spaces.size())
+                    if (j == spaces.size())//distribute all the spaces after each words
                     	j = 0;
                     rest--;
                 }
-                spaces.push_back(0);
+                spaces.push_back(0);//add 0 spaces after the last word
             }
             // append one line
             string line = "";
             for (int i = start; i < end; i++) {
-                line.append(words[i]); // append words
-                for (int j = 0; j < spaces[i - start]; j++)
-                    line.push_back(' '); // append spaces
+                line.append(words[i]); // append word
+                for (int j = 0; j < spaces[i-start]; j++)
+                    line.push_back(' '); // append spaces after this word
             }
-            result.push_back(line);
-            start = end;
+            result.push_back(line);//append this line
+            start = end;//go to next line
         }
         return result;
     }
 };
-
-int main() {
-    return 0;
-}
