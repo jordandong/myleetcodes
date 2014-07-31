@@ -148,3 +148,74 @@ public:
 		return ret;
 	}
 };
+
+
+//will do it when availiable
+class Solution {
+public:
+	vector<vector<string>> findLadders(string start, string end, unordered_set<string> &dict){
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function    
+        vector<vector<string> > rtn;
+        unordered_map<string, vector<string>> used;
+        unordered_map<string, vector<string>> used2;
+        used[start].push_back(" ");
+        queue<string> q[2];
+        q[0].push(start);
+        bool found = false;
+        
+        while(!q[0].empty()){
+            string current = q[0].front();
+            q[0].pop();
+            
+            int N = current.length();
+            for(int i=0; i<N; i++){
+               for(char s='a';s<='z';s++){
+                    if(current[i]!=s){
+                        string tmp = current;
+                        tmp[i]=s;
+                        if(!tmp.compare(end)){
+                            found = true;
+                            continue;
+                        }
+                        if(dict.find(tmp)!=dict.end() && used.find(tmp)==used.end()){
+                            if (uesd2.find(tmp) == used2.end()) {
+								q[1].push(tmp);
+						    }
+						    used2[tmp].push_back(current);
+                        }
+                    }
+                }
+            }
+            if(q[0].empty()){
+                if(found)
+                    break;
+                for(auto &it:used2){
+                    for(int i=0; i<it.second.size();i++){
+                        used[it.first].push_back(it.second[i]);
+                    }
+                }
+                used2.clear();
+                swap(q[0], q[1]);
+            }
+        }
+        
+        //addPath()
+        return rtn;
+	}
+	
+	//need a recurstion to find all the path
+	void addPath(vector<vector<string> >& rtn, unordered_map<string, vector<string> > &used, string &start, string &end, string cur){
+	    vector<string> path;
+	    path.push_back(end);
+	    while(cur.compare(start)){
+	        path.push_back(cur);
+            for(int i=0; i<used[cur].second.size();i++){
+                cur=used[cur][i];
+            }
+	    }
+	    path.push_back(start);
+	    reverse(path.begin(), path.end());
+	    rtn.push_back(path);
+	}
+};
