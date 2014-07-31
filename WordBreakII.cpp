@@ -52,3 +52,35 @@ public:
         return false;
     }
 };
+
+
+//recursion
+class Solution {
+public:
+    vector<string> wordBreak(string s, unordered_set<string> &dict) {
+        vector<string> rtn;
+        string cur="";
+        vector<bool> dp(s.length(), true); //dp[i] means start form index i, there is a solution
+        wBHelper(s, 0, cur, dict, rtn, dp);
+        return rtn;
+    }
+    void wBHelper(string &s, int start, string cur, unordered_set<string> &dict, vector<string>& rtn, vector<bool> &dp){
+        if(start==s.length()){
+            if(!cur.empty())
+                cur.pop_back();//pop the last space
+            rtn.push_back(cur);
+            return;
+        }
+        
+        for(int end=start; end<s.length(); end++){
+            string sub = s.substr(start, end-start+1);
+            if(dict.find(sub)==dict.end())
+                continue;
+            if(dp[end+1]){ //if no solution, we continue
+                int sol_num = rtn.size(); //sol before go further
+                wBHelper(s, end+1, cur+sub+" ", dict, rtn, dp);
+                dp[end+1] = sol_num!=rtn.size(); //sol after go futher, set false if no sol increasing
+            }
+        }
+    }
+};
