@@ -8,6 +8,46 @@
 // Given 1->1->1->2->3, return 2->3.
 //============================================================================
 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *deleteDuplicates(ListNode *head) {
+        ListNode* rtn = new ListNode(-1);
+        ListNode* rtn_tail=rtn;
+        ListNode* cur=head;
+        bool found = false;
+        while(cur){
+            if(cur->next && cur->val==cur->next->val){
+                ListNode* tmp = cur;
+                cur=cur->next;
+                delete tmp;
+                found=true;
+                continue;
+            }
+            if(found){
+                ListNode* tmp = cur;
+                cur=cur->next;
+                delete tmp;
+                found=false;
+                continue;
+            }
+            rtn_tail->next=cur;
+            rtn_tail=rtn_tail->next;
+            cur=cur->next;
+        }
+        rtn_tail->next=cur;
+        cur=rtn->next;
+        delete rtn;
+        return cur;
+    }
+};
 
 class Solution {
 public:
@@ -52,18 +92,6 @@ public:
 };
 
 
-#include <iostream>
-using namespace std;
-
-/*
- * Definition for singly-linked list.
- */
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
-};
-
 class Solution {
 public:
     ListNode *deleteDuplicates(ListNode *head) {
@@ -102,7 +130,3 @@ public:
         return newHead;
     }
 };
-
-int main() {
-    return 0;
-}
