@@ -19,17 +19,55 @@
 // For k = 3, you should return: 3->2->1->4->5
 //============================================================================
 
-#include <iostream>
-using namespace std;
-
 /**
  * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
  */
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+
+class Solution {
+public:
+    ListNode *reverseKGroup(ListNode *head, int k) {
+        if(k==0 || k==1)
+            return head;
+
+        int len = 0;
+        int rounds = 0;
+        ListNode* cur=head;
+        while(cur){
+            len++;
+            cur=cur->next;
+        }
+        rounds = len/k;
+        if(rounds==0)
+            return head;
+        
+        stack<ListNode*> stk;
+        ListNode *rtn=new ListNode(-1);
+        ListNode *rtn_tail=rtn;
+        cur=head;
+        while(rounds>0){
+            for(int i=1; i<=k; i++){
+                stk.push(cur);
+                cur=cur->next;
+            }
+            while(!stk.empty()){
+                rtn_tail->next = stk.top();
+                stk.pop();
+                rtn_tail=rtn_tail->next;
+            }
+            rounds--;
+        }
+        rtn_tail->next = cur;
+        cur = rtn->next;
+        delete rtn;
+        return cur;
+    }
 };
+
 
 class Solution {
 public:
@@ -75,7 +113,3 @@ public:
         return head;
     }
 };
-
-int main() {
-    return 0;
-}
