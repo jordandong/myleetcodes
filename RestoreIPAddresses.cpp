@@ -13,7 +13,7 @@ class Solution {
 public:
     vector<string> restoreIpAddresses(string s) {
         vector<string> res;
-        string sol="";
+        string sol;
         if (s.size() < 4 || s.size() > 12)
             return res;
         restoreIpAddressesHelper(s, 0, 1, sol, res);
@@ -21,7 +21,7 @@ public:
     }
     
     //start is the index which will be used in the string and k is the kth section in the IP
-    void restoreIpAddressesHelper(string &s, int start, int k, string sol, vector<string> &res) {
+    void restoreIpAddressesHelper(string &s, int start, int k, string &sol, vector<string> &res) {
         if (start == s.size()) {
             if (k == 5)
             	res.push_back(sol);
