@@ -24,3 +24,25 @@ public:
         return res;
     }
 };
+
+
+class Solution {
+public:
+    int maxProduct(int A[], int n) {
+        if(n <= 0)
+            return 0;
+        
+        int maxi = A[0], mini = A[0];
+        int last_maxi, last_mini;
+        int res = A[0];
+
+        for (int i=1; i<n; i++) {
+            last_maxi = maxi;
+            last_mini = mini;
+            maxi = max(max(last_maxi * A[i], last_mini * A[i]), A[i]);
+            mini = min(min(last_maxi * A[i], last_mini * A[i]), A[i]);
+            res = max(res, maxi);
+        }
+        return res;
+    }
+};
