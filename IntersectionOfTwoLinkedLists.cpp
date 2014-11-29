@@ -23,6 +23,41 @@ Your code should preferably run in O(n) time and use only O(1) memory.
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+ 
+ /**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ /*
+ A: aaaaaccccc bbb ccccc
+ B: bbbccccc aaaaa ccccc
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode *a=headA;
+        ListNode *b=headB;
+        bool done_a = false;
+        bool done_b = false;
+        if(!a || !b)
+            return NULL;
+            
+        while(a!=b){
+            a=a->next;
+            b=b->next;
+            if(!a && !done_a)
+                a = headB, done_a = true;
+            if(!b && !done_b)
+                b = headA, done_b = true;
+        }
+        return a;
+    }
+};
+ 
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
