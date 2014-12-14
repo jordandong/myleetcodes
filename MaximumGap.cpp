@@ -36,3 +36,51 @@ public:
         return mx;  
     }
 };
+
+class Solution {
+public:
+    int maximumGap(vector<int> &num) {
+        int sz=num.size();  
+        if(sz<2)  
+            return 0;
+
+        int mx = num[0];
+        int mi = num[0];
+        int delta = 0;
+        for(int i = 1; i < sz; i++){
+            mx = max(mx, num[i]);
+            mi = min(mi, num[i]);
+        }
+        delta = ceil(double(mx-mi)/(sz-1));
+        int bin_sz = (mx-mi)/delta + 1;
+        vector<int> mx_bin(bin_sz, -1);
+        vector<int> mi_bin(bin_sz, -1);
+        
+        for(int i = 0; i < sz; i++){
+            int bin = (num[i] - mi)/delta;
+            if(mi_bin[bin] == -1){
+                mi_bin[bin] = num[i];
+            }else{
+                mi_bin[bin] = min(mi_bin[bin], num[i]);
+            }
+            
+            if(mx_bin[bin] == -1){
+                mx_bin[bin] = num[i];
+            }else{
+                mx_bin[bin] = max(mx_bin[bin], num[i]);
+            }
+        }
+        
+        int res = 0;
+        int last_mx = mx_bin[0];
+        for(int i=0; i<bin_sz; i++){
+            if(mi_bin[i] == -1)
+                continue;
+            if(mi_bin[i] - last_mx >= res){
+                res = mi_bin[i] - last_mx;
+            }
+            last_mx = mx_bin[i];
+        }
+        return res;  
+    }
+};
