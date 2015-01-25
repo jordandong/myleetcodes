@@ -24,6 +24,29 @@ Return the sum = 12 + 13 = 25.
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+class Solution {
+public:
+    int sumNumbers(TreeNode *root) {
+        int sum = 0;
+        sumNumbersHelper(root, 0, sum);
+        return sum;
+    }
+    
+    void sumNumbersHelper(TreeNode *root, int val, int &sum){
+        if(!root)
+            return;
+            
+        val = val*10 + root->val;
+        if(root->left == NULL && root->right == NULL){
+            sum += val;
+            return;
+        }
+        sumNumbersHelper(root->left, val, sum);
+        sumNumbersHelper(root->right,val, sum);
+    }
+};
+ 
 class Solution {
 public:
     int sumNumbers(TreeNode *root) {
