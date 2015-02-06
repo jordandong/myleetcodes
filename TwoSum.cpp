@@ -14,6 +14,7 @@
 // Output: index1=1, index2=2
 //============================================================================
 
+//T:O(n), S:O(n)
 class Solution {
 public:
     vector<int> twoSum(vector<int> &numbers, int target) {
@@ -21,15 +22,16 @@ public:
         // DO NOT write int main() function
         unordered_map<int, int> mp;
         vector<int> res(2,-1);
-        for(int i=0; i<numbers.size();i++)
-            mp[numbers[i]]=i+1;
+        for(int i=0; i < numbers.size();i++)
+            mp[numbers[i]] = i+1; //duplicated value keep the lagestest index
         
-        for(int i=0; i<numbers.size();i++){
-            if(mp.find(target-numbers[i])!=mp.end()){
+        for(int i = 0; i < numbers.size(); i++){
+            if(mp.find(target-numbers[i]) != mp.end()){
                 int index = mp[target-numbers[i]];
-                if(index!=i+1){
+                if(index != i+1){ //avoid found itself
                     res[0]=min(index, i+1);
                     res[1]=max(index, i+1);
+                    break;
                 }
             }
         }
@@ -37,48 +39,38 @@ public:
     }
 };
 
-
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+//T: O(nlogn)  S:O(n) 
+bool cmp(pair<int, int> a, pair<int, int> b){
+    return a.first < b.first;
+}
 
 class Solution {
 public:
     vector<int> twoSum(vector<int> &numbers, int target) {
-        int N = numbers.size();
-        vector<int> copy(numbers.begin(), numbers.end());
-        sort(copy.begin(), copy.end());
-        int i = 0;
-        int j = N - 1;
-        while (i < j) {
-            int sum = copy[i] + copy[j];
-            if (sum > target)
-            	j--;
-            else if (sum < target)
-            	i++;
+        int sz = numbers.size();
+        int lo = 0;
+        int hi = sz - 1;
+        vector<int> res;
+        vector<pair<int, int> > data;
+        while(lo++ < sz)
+            data.push_back(make_pair(numbers[lo-1], lo));
+        sort(data.begin(), data.end(), cmp);
+        
+        lo = 0;
+        while(lo < hi){
+            int sum = data[lo].first + data[hi].first;
+            if(sum < target)
+                lo++;
+            else if(sum > target)
+                hi--;
             else
                 break;
         }
         
-        vector<int> res;
-        for (int k = 0; k < N; k++) {
-            if (copy[i] == numbers[k]) {
-                res.push_back(k + 1);
-                break;
-            }
-        }
-        for (int k = 0; k < N; k++) {
-            if (copy[j] == numbers[k] && (k + 1) != res[0]) {
-                res.push_back(k + 1);
-                break;
-            }
-        }
-        sort(res.begin(), res.end());
+        res.push_back(data[lo].second);
+        res.push_back(data[hi].second);
+        if(data[lo].second > data[hi].second)
+            reverse(res.begin(), res.end());
         return res;
     }
 };
-
-int main() {
-    return 0;
-}
