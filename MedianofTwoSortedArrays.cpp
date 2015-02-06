@@ -4,6 +4,43 @@
 // O(log (m+n)).
 //============================================================================
 
+//T:log(k), k = m+n here
+class Solution {
+public:
+    double findMedianSortedArrays(int A[], int m, int B[], int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int sz = m + n;
+        if((sz % 2) ==  1){
+            return (double)findKth(A, 0, m, B, 0, n, sz/2 + 1); 
+        }else{
+            return (findKth(A, 0, m, B, 0, n, sz/2) + findKth(A, 0, m, B, 0, n, sz/2 + 1))/2.0;
+        }      
+    }
+    
+    int findKth(int A[], int s_a, int l_a, int B[], int s_b, int l_b, int k){
+        if(l_a > l_b)
+            return findKth(B, s_b, l_b, A, s_a, l_a, k);
+
+        if(l_a == 0)
+            return B[s_b + k - 1];
+        if(k == 1)
+            return min(A[s_a], B[s_b]);
+
+        //log(k)
+        int pos_a = min(k/2, l_a);
+        int pos_b = k - pos_a;
+        if(A[s_a + pos_a - 1] == B[s_b + pos_b - 1])
+            return A[s_a + pos_a - 1];
+
+        if(A[s_a + pos_a - 1] > B[s_b + pos_b - 1]){
+            return findKth(A, s_a, l_a, B, s_b + pos_b, l_b - pos_b, k - pos_b);
+        }else{
+            return findKth(A, s_a + pos_a, l_a - pos_a, B, s_b, l_b, k - pos_a);
+        }
+    }
+};
+
 class Solution {
 public:
     double findMedianSortedArrays(int A[], int m, int B[], int n) {
@@ -46,7 +83,6 @@ public:
     }
 };
 
-//*****************************************************************
 class Solution {
 public:
     double findMedianSortedArrays(int A[], int m, int B[], int n) {
@@ -65,8 +101,7 @@ public:
             if (a < b) {
                 m2 = a;
                 i++;
-            }
-            else {
+            }else {
                 m2 = b;
                 j++;
             }
