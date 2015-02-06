@@ -7,57 +7,6 @@
 // Output: 7 -> 0 -> 8
 //============================================================================
 
-#include <cstdlib>
-/**
- * Definition for singly-linked list.
- */
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
-};
-
-class Solution {
-public:
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-        ListNode *l3 = NULL, *node = NULL;
-        int c = 0;
-        while (true) {
-            int a, b;
-            if (l1 != NULL) {
-                a = l1->val;
-                l1 = l1->next;
-            }
-            else
-	            	a = 0;
-
-            if (l2 != NULL) {
-                b = l2->val;
-                l2 = l2->next;
-            }
-            else
-	            	b = 0;
-
-            int s = a + b + c;
-            c = s / 10;
-            if (l3 == NULL)
-	            	l3 = node = new ListNode(s % 10);
-            else
-	            	node->next = new ListNode(s % 10), node = node->next;
-            if (l1 == NULL && l2 == NULL)
-	            	break;
-        }
-        if (c == 1)
-	        	node->next = new ListNode(1);
-        return l3;
-    }
-};
-
-int main() {
-    return 0;
-}
-
-
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -69,61 +18,37 @@ int main() {
 class Solution {
 public:
     ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        return addTwo(l1,l2,0);
-    }
-    
-    ListNode *addTwo(ListNode *l1, ListNode *l2, int carry){
-        
-        if(l1==NULL&&l2==NULL){
-            if(carry){   
-                ListNode* listnode = new ListNode(carry);
-                //listnode->val = carry;
-                listnode->next=NULL;
-                return listnode;
+        ListNode *head = NULL;
+        ListNode *cur = NULL;
+        int carry = 0;
+        while(l1 || l2){
+            ListNode *t = NULL;
+            if(l1 && l2){
+                t = new ListNode((l1->val + l2->val + carry)%10);
+                carry = (l1->val + l2->val + carry)/10;
+                l1 = l1->next;
+                l2 = l2->next;
+            }else if(l1){
+                t = new ListNode((l1->val + carry)%10);
+                carry = (l1->val + carry)/10;
+                l1 = l1->next;
+            }else if(l2){
+                t = new ListNode((l2->val + carry)%10);
+                carry = (l2->val + carry)/10;
+                l2 = l2->next;
             }
-            else{
-                return NULL;
-            }
-        }
-
-        if(l1!=NULL&&l2==NULL){
-            if(carry){   
-                int res = l1->val + carry;
-                carry = res/10;
-                ListNode* listnode = new ListNode(res%10);
-                //listnode->val = res%10;
-                listnode->next = addTwo(l1->next,NULL, carry);
-                return listnode;
-            }
-            else{
-                return l1;
+            
+            if(!head){
+                head = t;
+                cur = head;
+            }else{
+                cur->next = t;
+                cur = cur->next;
             }
         }
-        
-        if(l1==NULL&&l2!=NULL){
-            if(carry){   
-                int res = l2->val + carry;
-                carry = res/10;
-                ListNode* listnode = new ListNode(res%10);
-                //listnode->val = res%10;
-                listnode->next = addTwo(NULL, l2->next, carry);
-                return listnode;
-            }
-            else{
-                return l2;
-            }
+        if(carry){
+            cur->next = new ListNode(carry);
         }
-
-        
-        if(l1!=NULL&&l2!=NULL){
-            int res = l1->val + l2->val + carry;
-            carry = res/10;
-            ListNode* listnode = new ListNode(res%10);
-            //listnode->val = res%10;
-            listnode->next = addTwo(l1->next, l2->next, carry);
-            return listnode;
-        }
+        return head;
     }
 };
