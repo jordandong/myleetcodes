@@ -4,40 +4,32 @@
 // longest palindromic substring.
 //============================================================================
 
-
 class Solution {
 public:
     string longestPalindrome(string s) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        int N = s.size();
-        if(N==1)
-            return s;
-        
-        bool dp[N][N]; // dp[i][j] means start from i and end at j
-        int m = 0;
-        int start;
-        for(int i =0; i<N;i++){
-            for(int j=0; j<N; j++){
-                dp[i][j] = false;
-            }
-        }
-        
-        for(int i= N-1; i>=0;i--){
-            for(int j=i; j<N; j++){
-                if(i==j)
-                    dp[i][j]=true;
-                else if(j-i==1)
-                    dp[i][j]=s[i]==s[j];
-                else
-                    dp[i][j] = dp[i+1][j-1] && s[i]==s[j];
-                if(dp[i][j]&& j-i+1>m){
-                    m = j-i+1;
-                    start=i;
+        int sz = s.length();
+        int mx = 1;
+        int start = 0;
+        bool dp[sz][sz];
+        memset(dp, 0, sizeof(bool)*sz*sz);
+        for(int i = sz-1; i >= 0; i--){
+            for(int j = i; j < sz; j++){
+                if(i == j){
+                    dp[i][j] = true;
+                    continue;
+                }
+                if(s[i] == s[j] && (i + 1 == j || dp[i+1][j-1])){
+                    dp[i][j] = true;
+                    if(j-i+1 > mx){
+                        mx = j-i+1;
+                        start = i;
+                    }
+                }else{
+                    dp[i][j] = false;
                 }
             }
         }
-        return s.substr(start, m);
+        return s.substr(start, mx);
     }
 };
 
@@ -70,7 +62,6 @@ public:
         return s.substr(maxi, maxl);
     }
 };
-
 
 class Solution {
 public:
@@ -105,8 +96,6 @@ public:
         return s.substr(start, m);
     }
 };
-
-
 
 //the below method is not true, since   abcdefgxxiiliigfedcba  v.s. abcdefgiiliixxgfedcba
 class Solution {
