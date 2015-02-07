@@ -1,19 +1,37 @@
-//============================================================================
-// Write a function to find the longest common prefix string amongst an array
-// of strings.
-//============================================================================
+/*
+Write a function to find the longest common prefix string amongst an array of strings.
 
-#include <vector>
-#include <algorithm>
-#include <string>
-using namespace std;
+Hide Tags String
+*/
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string> &strs) {
+        int sz = strs.size();
+        int k = 0;
+        while(++k && sz){
+            if(k > strs[0].size()){
+                return strs[0];
+            }
+            char c = strs[0][k-1]; 
+            for(int i = 1; i < sz; i++){
+                if(k > strs[i].size()){
+                    return strs[i];
+                }
+                if(c != strs[i][k-1])
+                    return strs[i].substr(0, k-1);
+            }
+        }
+        return "";
+    }
+};
 
 class Solution {
 public:
     string longestCommonPrefix(vector<string> &strs) {
         int N = strs.size();
         if (N == 0)
-			return "";
+            return "";
         int l = 0;
         while (l < strs[0].size()) {
             for (int i = 1; i < N; i++) {
@@ -25,7 +43,3 @@ public:
         return strs[0];
     }
 };
-
-int main() {
-    return 0;
-}
