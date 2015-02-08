@@ -1,40 +1,36 @@
-//============================================================================
-// Given a digit string, return all possible letter combinations that the
-// number could represent.
-//
-// Input:Digit string "23"
-// Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
-// Note:
-// Although the above answer is in lexicographical order, your answer could be
-// in any order you want.
-//============================================================================
+/*
+Given a digit string, return all possible letter combinations that the number could represent.
+A mapping of digit to letters (just like on the telephone buttons) is given below.
 
-#include <string>
-#include <vector>
-using namespace std;
+Input:Digit string "23"
+Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+
+Note:
+Although the above answer is in lexicographical order, your answer could be in any order you want.
+
+Hide Tags Backtracking String
+*/
 
 class Solution {
 public:
-    static const string keypad[8];
-    vector<string> result;
     vector<string> letterCombinations(string digits) {
-        result.clear();
-        letterCombinationsHelper(digits, 0, "");
-        return result;
+        string pad[8] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};;
+        vector<string> res;
+        string sol = "";
+        letterCombinationsHelper(pad, digits, 0, sol, res);
+        return res;
     }
 
-    void letterCombinationsHelper(string& digits, int i, string str) {
-        if (i == digits.size()) {
-            result.push_back(str);
+    void letterCombinationsHelper(string pad[], string& digits, int pos, string &sol, vector<string> &res) {
+        if (pos == digits.size()){
+            res.push_back(sol);
+            return;
         }
-        int pos = digits[i] - '2';
-        for (int j = 0; j < keypad[pos].size(); j++) {
-            letterCombinationsHelper(digits, i + 1, str + keypad[pos][j]);
+        int idx = digits[pos] - '2';
+        for (int i = 0; i < pad[idx].size(); i++){
+            sol.push_back(pad[idx][i]);
+            letterCombinationsHelper(pad, digits, pos + 1, sol, res);
+            sol.pop_back();
         }
     }
 };
-const string Solution::keypad[8]  = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-
-int main() {
-    return 0;
-}
