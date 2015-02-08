@@ -1,8 +1,8 @@
-//============================================================================
-// Merge two sorted linked lists and return it as a new list. The new list
-// should be made by splicing together the nodes of the first two lists.
-//============================================================================
+/*
+Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
 
+Hide Tags Linked List
+*/
 
 /**
  * Definition for singly-linked list.
@@ -12,35 +12,34 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+
 class Solution {
 public:
     ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        ListNode *head=new ListNode(-1);
-        ListNode *curr=head;
+        ListNode *head = new ListNode(-1);
+        ListNode *cur = head;
 
-        while(l1!=NULL&&l2!=NULL){
-            if(l1->val<l2->val){
-                curr->next = l1;
-                l1=l1->next;
-                curr=curr->next;
+        while(l1 != NULL && l2 != NULL){
+            if(l1->val < l2->val){
+                cur->next = l1;
+                l1 = l1->next;
             }else{
-                curr->next=l2;
-                l2=l2->next;
-                curr=curr->next;
-            }   
+                cur->next = l2;
+                l2 = l2->next;
+            }
+            cur=cur->next;
         }
-        if(l1!=NULL)
-            curr->next=l1;
+        if(l1 != NULL)
+            cur->next = l1;
         else
-            curr->next=l2;
-        curr=head->next;
+            cur->next = l2;
+        cur = head->next;
         delete head;
-        return curr;
+        return cur;
     }
 };
-
 
 class Solution {
 public:
@@ -73,8 +72,7 @@ public:
                 head = l2;
             else
                 node->next = l2;
-        }
-        else if (l2 == NULL) {
+        }else if (l2 == NULL) {
             if (head == NULL)
                 head = l1;
             else
