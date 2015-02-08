@@ -1,36 +1,35 @@
-//============================================================================
-// Given n pairs of parentheses, write a function to generate all combinations
-// of well-formed parentheses.
-//
-// For example, given n = 3, a solution set is:
-//
-// "((()))", "(()())", "(())()", "()(())", "()()()"
-//============================================================================
+/*
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+For example, given n = 3, a solution set is:
+"((()))", "(()())", "(())()", "()(())", "()()()"
 
-//optimize the space use
+Hide Tags Backtracking String
+*/
+
+//optimize the space
 class Solution {
 public:
     vector<string> generateParenthesis(int n) {
-        string cur;
-        vector<string> rtn;
-        gpHelper(n, n, cur, rtn);
-        return rtn;
+        string sol;
+        vector<string> res;
+        gpHelper(n, n, sol, res);
+        return res;
     }
     
-    void gpHelper(int l, int r, string &cur, vector<string> &rtn){
+    void gpHelper(int l, int r, string &sol, vector<string> &res){
         if(l==0 && r==0){
-            rtn.push_back(cur);
+            res.push_back(sol);
             return;
         }
         if(l>0){
-            cur.push_back('(');
-            gpHelper(l-1, r, cur, rtn);
-            cur.pop_back();
+            sol.push_back('(');
+            gpHelper(l-1, r, sol, res);
+            sol.pop_back();
         }
         if(r>l){
-            cur.push_back(')');
-            gpHelper(l, r-1, cur, rtn);
-            cur.pop_back();
+            sol.push_back(')');
+            gpHelper(l, r-1, sol, res);
+            sol.pop_back();
         }
     }
 };
@@ -45,10 +44,10 @@ public:
 
     void generateParenthesisHeler(int l, int r, string s, vector<string> &result) {
         if (l == 0 && r == 0)
-				result.push_back(s);
+            result.push_back(s);
         if (l > 0)
-			generateParenthesisHeler(l - 1, r, s + '(', result);
+            generateParenthesisHeler(l - 1, r, s + '(', result);
         if (r > l)
-			generateParenthesisHeler(l, r - 1, s + ')', result);
+            generateParenthesisHeler(l, r - 1, s + ')', result);
     };
 };
