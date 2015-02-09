@@ -1,13 +1,13 @@
-//============================================================================
-// Swap Nodes in Pairs
-// Given a linked list, swap every two adjacent nodes and return its head.
-//
-// For example,
-// Given 1->2->3->4, you should return the list as 2->1->4->3.
-//
-// Your algorithm should use only constant space. You may not modify the
-// values in the list, only nodes itself can be changed.
-//============================================================================
+/*
+Given a linked list, swap every two adjacent nodes and return its head.
+
+For example,
+Given 1->2->3->4, you should return the list as 2->1->4->3.
+
+Your algorithm should use only constant space. You may not modify the values in the list, only nodes itself can be changed.
+
+Hide Tags Linked List
+*/
 
 /**
  * Definition for singly-linked list.
@@ -23,10 +23,10 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         ListNode* nextNode;
-        if(head&&head->next){
-            nextNode=head->next;
+        if(head && head->next){
+            nextNode = head->next;
             head->next = swapPairs(nextNode->next);
-            nextNode->next=head;
+            nextNode->next = head;
         }else{
             return head;
         }
@@ -34,14 +34,6 @@ public:
     }
 };
 
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
 class Solution {
 public:
     ListNode *swapPairs(ListNode *head) {
@@ -50,7 +42,7 @@ public:
         stack<ListNode*> stk;
         ListNode* rtn=new ListNode(-1);
         ListNode* rtn_tail = rtn;
-        ListNode* cur=head;
+        ListNode* cur = head;
         while(cur){
             stk.push(cur);
             cur=cur->next;
@@ -70,7 +62,6 @@ public:
         return cur;
     }
 };
-
 
 class Solution {
 public:
