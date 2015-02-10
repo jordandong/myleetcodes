@@ -1,44 +1,45 @@
-//============================================================================
-// Divide two integers without using multiplication, division and mod operator.
-//============================================================================
+/*
+Divide two integers without using multiplication, division and mod operator.
+
+If it is overflow, return MAX_INT.
+
+Hide Tags Math Binary Search
+*/
 
 class Solution {
 public:
     int divide(int dividend, int divisor) {
-        int sign = 1;
-        unsigned int unsigned_dividend, unsigned_divisor;
-        if (dividend < 0) {
-            unsigned_dividend = -dividend;
-            sign = -sign;
+        bool sign = false;
+        unsigned int x, y;
+        unsigned int res = 0;
+        if(dividend < 0) {
+            x = -dividend;
+            sign = !sign;
+        }else{
+            x = dividend;
         }
-        else
-			unsigned_dividend = dividend;
+        
         if (divisor < 0) {
-            unsigned_divisor = -divisor;
-            sign = -sign;
+            y = -divisor;
+            sign = !sign;
+        }else{
+            y = divisor;
         }
-        else
-			unsigned_divisor = divisor;
-        unsigned int result = unsigned_divide(unsigned_dividend, unsigned_divisor);
-        return (sign < 0) ? -result : result;
-    }
-
-    unsigned int unsigned_divide(unsigned int dividend, unsigned int divisor) {
-        unsigned int quotient = 0;
-        while (dividend >= divisor) {
-            unsigned int tmp = divisor;
+        
+        while (x >= y) {
             unsigned int shift = 0;
-            while (((unsigned long long)tmp << 1) <= dividend) {
-                tmp <<= 1;
+            unsigned int tmp = y;
+            while( ( (unsigned long long)tmp << 1) <= x){
+                tmp <<= 1; 
                 shift++;
             }
-            dividend -= tmp;
-            quotient |= (1 << shift);
+            x -= tmp;
+            res |= (1 << shift);
         }
-        return quotient;
+
+        if(!sign && res > INT_MAX)
+            return INT_MAX;
+        else
+            return sign ? -res : res;
     }
 };
-
-int main() {
-    return 0;
-}
