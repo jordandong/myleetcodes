@@ -1,24 +1,29 @@
-//============================================================================
-// Implement strStr().
-//
-// Returns a pointer to the first occurrence of needle in haystack,
-// or null if needle is not part of haystack.
-//============================================================================
+/*
+Implement strStr().
 
+Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+Update (2014-11-02):
+The signature of the function had been updated to return the index instead of the pointer. If you still see your function signature returns a char * or String, please click the reload button  to reset your code definition.
+
+Hide Tags Two Pointers String
+*/
+
+//KMP T: O(n) S:O(m)
 class Solution {
 public:
-    char *strStr(char *haystack, char *needle) {
-        if (!haystack||!needle)
-            return haystack;
+    int strStr(char *haystack, char *needle) {
+        if (!haystack || !needle)
+            return 0;
         int l_h = strlen(haystack);
         int l_n = strlen(needle);
         if(l_n == 0)
-            return haystack;
+            return 0;
         if(l_h == 0)
-            return NULL;
+            return -1;
 
         int pos = KMP(haystack, needle);
-        return pos==-1?NULL:haystack+pos;
+        return pos;
     }
     
     void cal_next(vector<int> &next, char* needle){
@@ -42,7 +47,7 @@ public:
         cal_next(next, needle);
         int i_h = 0;
         int i_n = 0;
-        while(i_h<l_h && i_n<l_n){
+        while(i_h < l_h && i_n < l_n){
             if(i_n == -1 || *(needle+i_n) == *(haystack+i_h)){
                 i_n++;
                 i_h++;
@@ -50,38 +55,29 @@ public:
                 i_n = next[i_n];
             }
         }
-        return i_n==l_n?i_h-i_n:-1;
+        return i_n==l_n ? i_h-i_n : -1;
     }
 };
 
-
-
-
-
-#include <cstring>
-
+//brute force T: O(mn)  S:O(1)
 class Solution {
 public:
-    char *strStr(char *haystack, char *needle) {
+    int strStr(char *haystack, char *needle) {
         if (!haystack||!needle)
-			return haystack;
+            return 0;
         int n = strlen(haystack);
         int m = strlen(needle);
         int i = 0;
-        while (i < n-m+1) {
+        while (i < n - m + 1) {
             int j = 0;
             while (j < m && haystack[i] == needle[j]){
-                i++;
-				j++;
+            	i++;
+            	j++;
             }
             if (j == m)
-				return haystack+(i-j);
-            i = i-j+1;
+                return i - j;
+            i = i - j + 1; //move to the next one
         }
-        return NULL;
+        return -1;
     }
 };
-
-int main() {
-    return 0;
-}
