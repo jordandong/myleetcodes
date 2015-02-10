@@ -1,27 +1,27 @@
-//============================================================================
-// Given a string containing just the characters '(' and ')', find the length
-// of the longest valid (well-formed) parentheses substring.
-//
-// For "(()", the longest valid parentheses substring is "()", which has
-// length = 2.
-//
-// Another example is ")()())", where the longest valid parentheses substring
-// is "()()", which has length = 4.
-//============================================================================
+/*
+Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed) parentheses substring.
 
+For "(()", the longest valid parentheses substring is "()", which has length = 2.
+
+Another example is ")()())", where the longest valid parentheses substring is "()()", which has length = 4.
+
+Hide Tags Dynamic Programming String
+*/
+
+//T : O(n), S : O(n)
 class Solution {
 public:
     int longestValidParentheses(string s) {
         stack<int> stk;
         int size = s.length();
         int maxL = 0;
-        for(int i=0; i<size; i++){
+        for(int i = 0; i < size; i++){
             if(s[i]=='('){
                 stk.push(i);
             }else{
-                if(!stk.empty()&&s[stk.top()]=='('){
+                if(!stk.empty() && s[stk.top()]=='('){
                     stk.pop();
-                    maxL=max(maxL, i-(stk.empty()?-1:stk.top()));
+                    maxL = max(maxL, i - (stk.empty() ? -1:stk.top() ) );
                 }else{
                     stk.push(i);
                 }
@@ -31,41 +31,16 @@ public:
     }
 };
 
-class Solution {
-public:
-    int longestValidParentheses(string s) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        int nMax = 0;
-        const char* p = s.c_str();
-        const char* str=p;
-        stack<const char*> stk;
-        while (*p != 0){
-            if (*p == '(')
-                stk.push(p);
-            else if (*p == ')'){
-                if (!stk.empty() && *stk.top() == '('){
-                    stk.pop();
-                    nMax = max(p - (stk.empty() ? str-1 : stk.top()), nMax);
-                }
-                else
-                    stk.push(p);
-            }
-            p++;
-        }
-        return nMax;
-    }
-};
-
+//T : O(n) S : O(1)
 class Solution {
 public:
     int longestValidParentheses(string s) {
         int N=s.size();
-        if (N<2)
+        if (N < 2)
             return 0;
-        int res=0;
-        int k=0, l=0;
-        for(int i=0; i<N; i++){
+        int res = 0;
+        int k = 0, l = 0;
+        for(int i = 0; i < N; i++){
             if(s[i] == '('){
                 k++;
                 l++;
@@ -73,18 +48,18 @@ public:
                 k--;
                 l++;
             }
-            if(k == 0 && l > res)
+            if(k == 0 && l > res) // match
                 res = l;
-            else if(k < 0){
+            else if(k < 0){//')' is in front, reset
                 k = 0;
                 l = 0;
             }
         }
         //cannot figure out like "(((((())"
         //so need to start from the end again
-        k=0;
-        l=0;
-        for(int i=N-1; i>0; i--){
+        k = 0;
+        l = 0;
+        for(int i = N-1; i > 0; i--){
             if (s[i] == ')'){
                 k++;
                 l++;
