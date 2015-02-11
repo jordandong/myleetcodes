@@ -11,6 +11,50 @@ A valid Sudoku board (partially filled) is not necessarily solvable. Only the fi
 Hide Tags Hash Table
 */
 
+//using bits, T: O(N^2) S: O(3)
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char> > &board) {
+        int M = board.size();
+        if (M == 0 || M != 9)
+            return false;
+        int N = board[0].size();
+        if (N != M)
+        	return false;
+
+        for (int i = 0; i < M; i++) {
+            int row = 0, col = 0, blk = 0;
+            for (int j = 0; j < N; j++) {
+                int r, c, bit;
+                //check row
+                if(board[i][j] != '.'){
+                    bit = 1<<(board[i][j] - '0');
+                    if(row & bit)
+                    	return false;
+                    row |= bit;
+                }
+                //check coloumn
+                if (board[j][i] != '.') {
+                    bit = 1<<(board[j][i] - '0');
+                    if(col & bit)
+                    	return false;
+                    col |= bit;
+                }
+                //check block
+                r = i/3*3 + j/3;
+                c = i%3*3 + j%3;
+                if (board[r][c] != '.') {
+                    bit = 1<<(board[r][c] - '0');
+                    if(blk & bit)
+                    	return false;
+                    blk |= bit;
+                }
+            }
+        }
+        return true;
+    }
+};
+
 //T: O(N^2)  S : O(30)
 class Solution {
 public:
