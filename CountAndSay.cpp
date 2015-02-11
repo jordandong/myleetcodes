@@ -1,49 +1,40 @@
-//============================================================================
-// The count-and-say sequence is the sequence of integers beginning as follows:
-// 1, 11, 21, 1211, 111221, ...
-//
-// 1 is read off as "one 1" or 11.
-// 11 is read off as "two 1s" or 21.
-// 21 is read off as "one 2, then one 1" or 1211.
-// Given an integer n, generate the nth sequence.
-//
-// Note: The sequence of integers will be represented as a string.
-//
-//
-//============================================================================
+/*
+The count-and-say sequence is the sequence of integers beginning as follows:
+1, 11, 21, 1211, 111221, ...
 
-#include <iostream>
-#include <sstream>
-using namespace std;
+1 is read off as "one 1" or 11.
+11 is read off as "two 1s" or 21.
+21 is read off as "one 2, then one 1" or 1211.
+Given an integer n, generate the nth sequence.
+
+Note: The sequence of integers will be represented as a string.
+
+Hide Tags String
+*/
 
 class Solution {
 public:
     string countAndSay(int n) {
         if (n < 1)
-        	return "";
+            return "";
         string res("1");
         while (n > 1) {
-            ostringstream oss;
+            string tmp = "";
             int i = 0;
             while (i < res.size()) {
                 int j = i;
                 while (j < res.size() && res[j] == res[i])
-                	j++;
-                oss << (j-i) << res[i];
+                    j++;
+                tmp.push_back('0' + (j - i));
+                tmp.push_back(res[i]);
                 i = j;
             }
-            res = oss.str();
+            res = tmp;
             n--;
         }
         return res;
     }
 };
-
-int main() {
-    return 0;
-}
-
-
 
 class Solution {
 public:
@@ -52,34 +43,25 @@ public:
         // DO NOT write int main() function
         if (n < 1)
             return ""; 
-        string s="1";
-        for (int i=1;i<n;i++){
-            s=cAS(s);
-        }
+        string s = "1";
+        for (int i = 1; i < n; i++)
+            s = cAS(s);
         return s;
     }
 
     string cAS(string &s){
-        string res;
-        char cur_str=s.at(0);
-        int num=0;
-        for (int i=0;i<s.length();i++)
-        {
-		if (cur_str==s.at(i))
-			num++;
-		else{
-			stringstream ss;
-			ss<<num<<cur_str;
-			res+=ss.str();
-			cur_str=s.at(i);
-			num=1;
-		} 		
+        string res = "";
+        int j = 0;
+        int i = 0;
+        for(i = 0; i < s.length(); i++){
+            if(s[i] != s[j]){
+                res.push_back('0'+ (i - j));
+                res.push_back(s[j]);
+                j = i;
+            } 		
         }
-	if (num>0){
-            stringstream ss;                   
-            ss << num << cur_str;
-            res += ss.str();
-        }
+        res.push_back('0'+ (i - j));
+        res.push_back(s[j]);
         return res;
     }
 };
