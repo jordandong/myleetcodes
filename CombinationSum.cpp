@@ -27,12 +27,11 @@ public:
     }
     
     void combinationSumHelper(vector<int> &data, int start, int tg, vector<int> &sol, vector<vector<int> > &res){
-        if(tg == 0){
-            res.push_back(sol);
+        if(tg <= 0 || start >= data.size()){
+            if(tg == 0)
+                res.push_back(sol);
             return;
         }
-        if(tg < 0 || start >= data.size())
-            return;
         
         for(int i = start; i < data.size(); i++){
             sol.push_back(data[i]);        
