@@ -1,97 +1,78 @@
-//============================================================================
-// Permutation Sequence
-// The set [1,2,3,…,n] contains a total of n! unique permutations.
-//
-// By listing and labeling all of the permutations in order,
-// We get the following sequence (ie, for n = 3):
-//
-// "123"
-// "132"
-// "213"
-// "231"
-// "312"
-// "321"
-// Given n and k, return the kth permutation sequence.
-//
-// Note: Given n will be between 1 and 9 inclusive.
-//============================================================================
+/*
+The set [1,2,3,…,n] contains a total of n! unique permutations.
 
-#include <string>
-#include <cassert>
-using namespace std;
+By listing and labeling all of the permutations in order,
+We get the following sequence (ie, for n = 3):
+
+"123"
+"132"
+"213"
+"231"
+"312"
+"321"
+Given n and k, return the kth permutation sequence.
+
+Note: Given n will be between 1 and 9 inclusive.
+
+Hide Tags Backtracking Math
+*/
 
 class Solution {
 public:
-    void reverse(string &num, int i, int j) {
-        while (i < j)
-			swap(num[i++], num[j--]);
-    };
-
-    void nextPermutation(string &num) {
-        int N=num.size();
-        if (N<2)
-			return;
-        int i=N-2;
-        while(i>=0 && num[i]>=num[i+1])
-			i--;
-        if (i==-1) {
-            reverse(num, 0, N - 1);
-            return;
-        }
-        int j=N-1;
-        while(j>i && num[j]<=num[i])
-			j--;
-        swap(num[i], num[j]);
-        reverse(num, i+1, N-1);
-    };
-
     string getPermutation(int n, int k) {
-        string num="";
-        for(int i=0; i<n; i++)
-			num.push_back('1' + i);
-        for(int i=1; i<k; i++)
-			nextPermutation(num);
-        return num;
+        if(n <= 0 || k <= 0)
+            return "";
+        long long fac = 1;
+        string p(n, '0');
+        string res = "";
+        for(int i = 1; i <= n; i++){
+            fac *= i;
+            p[i - 1] = ('0' + i);//index start from 0
+        };
+        
+        // change range of k from (1,n) to (0, n-1) to adapt the index in p
+        k--;
+        for (int i = n; i >= 1; i--){
+            // divide fact first
+            fac /= i;
+            res.push_back(p[k/fac]); //d0 = k / (n-1)!, also k2 = k % (n-1)!, d1 = k2 % (n-2)!...
+            p.erase(k/fac, 1); //remove the used num
+            k %= fac; //left k
+        };
+        return res;
     }
 };
 
-int main() {
-    return 0;
-}
-
-
-
-
+//Cannot pass TLE
 class Solution {
 public:
     string getPermutation(int n, int k) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        string input;
-        for(int i=1;i<=n;i++){
-            input+=(char)('0'+i);
-        }
-        nextperm(input, n, k);
-        return input;
+        if(n <= 0 || k <= 0)
+            return "";
+        string p(n, '0');
+        for(int i = 1; i <= n; i++)
+            p[i-1] = ('0' + i);
+        while(k-- > 0)
+           getNextPermutation(p);
+        return p;
     }
     
-    void nextperm(string &input, int &n, int &k){
-        while(k>1){
-        	int i = n-2;
-            while(i>=0&&input[i]>input[i+1])
-                i--;
-            int j = n-1;
-            while(j>i&&input[j]<input[i])
-                j--;
+    void getNextPermutation(string &p) {
+        int sz = p.length();
         
-            swap(input[i], input[j]);
-            reverse(input, i+1, n-1);
-            k--;
+        int i = sz - 2;
+        while(i >=0 && p[i] >= p[i + 1])
+            i--;
+        if(i == -1){
+            reverse(p.begin(), p.end());
+            return;
         }
-    }
-    
-    void reverse(string&input, int begin, int end){
-        while(begin<end)
-            swap(input[begin++],input[end--]);
+        
+        int j = sz - 1;
+        while(j > i && p[j] <= p[i])
+            j--;
+        
+        swap(p[i], p[j]);
+        reverse(p.begin()+ i + 1, p.end());
     }
 };
