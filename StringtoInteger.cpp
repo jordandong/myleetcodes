@@ -5,6 +5,9 @@ Hint: Carefully consider all possible input cases. If you want a challenge, plea
 
 Notes: It is intended for this problem to be specified vaguely (ie, no given input specs). You are responsible to gather all the input requirements up front.
 
+Update (2015-02-10):
+The signature of the C++ function had been updated. If you still see your function signature accepts a const char * argument, please click the reload button  to reset your code definition.
+
 spoilers alert... click to show requirements for atoi.
 
 Requirements for atoi:
@@ -21,35 +24,69 @@ Hide Tags Math String
 
 class Solution {
 public:
-    int atoi(const char *str) {
+    int atoi(string str) {
         bool neg = false;
-        while(*str == ' ')
-           str++;
-
-        if(*str == '+')
-            str++;
-        else if(*str == '-'){
-            str++;
-            neg = true;
-        }
+        int start = 0;
+        int end = str.length() - 1;
+        while(start <= end && str[start] == ' ')
+        	start++;
+        	
+        if(str[start] == '+')
+        	start++;
+        else if(str[start] == '-'){
+        	start++;
+			neg = true;
+		}
         	
         long long val = 0;
         int digit;
-        while (*str != '\0') {
-            if(*str < '0' || *str > '9')
-                break;
-            digit = (*str - '0');
+        while (start <= end) {
+            if (str[start] < '0' || str[start] > '9')
+            	break;
+            digit = (str[start] - '0');
             val = val * 10 + digit;
-            str++;
+            start++;
             if(neg){
                 if(-val < INT_MIN)
-                    return  INT_MIN;
+        	        return  INT_MIN;
             }else {
                 if(val > INT_MAX)
-                    return INT_MAX;
+        	       return INT_MAX;
             }
         }
         val = (neg ? -val : val);
         return val;
     }
 };
+
+int myAtoi(char *str) {
+    bool neg = false;
+    while(*str == ' ')
+        str++;
+    
+    if(*str == '+')
+        str++;
+    else if(*str == '-'){
+        str++;
+        neg = true;
+    }
+    
+    long long val = 0;
+    int digit;
+    while (*str != '\0') {
+        if (*str < '0' || *str > '9')
+            break;
+        digit = (*str - '0');
+        val = val * 10 + digit;
+        str++;
+        if(neg){
+            if(-val < INT_MIN)
+                return  INT_MIN;
+        }else {
+            if(val > INT_MAX)
+                return INT_MAX;
+        }
+    }
+    val = (neg ? -val : val);
+    return val;
+}
