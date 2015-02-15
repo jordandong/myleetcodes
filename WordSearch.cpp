@@ -41,7 +41,7 @@ public:
             return true;
         int M = board.size();
         int N = board[0].size();
-        if(r <0 || r == M || c<0 || c == N)
+        if(r < 0 || r == M || c < 0 || c == N)
             return false;
         
         char t = board[r][c];
@@ -49,14 +49,13 @@ public:
             return false;
         
         board[r][c] = '.';
-        if(exsitHelper(r + 1, c, k + 1, board, word))
+        if(exsitHelper(r + 1, c, k + 1, board, word)
+        || exsitHelper(r - 1, c, k + 1, board, word)
+        ||exsitHelper(r, c + 1, k + 1, board, word)
+        || exsitHelper(r, c - 1, k + 1, board, word)){
+            board[r][c] = t;
             return true;
-        if(exsitHelper(r - 1, c, k + 1, board, word))
-            return true;
-        if(exsitHelper(r, c + 1, k + 1, board, word))
-            return true;
-        if(exsitHelper(r, c - 1, k + 1, board, word))
-            return true;
+        }
         board[r][c] = t;
         return false;
     }
