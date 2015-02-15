@@ -61,3 +61,45 @@ public:
         return spath;
     }
 };
+
+class Solution {
+public:
+    string simplifyPath(string path) {
+        //Add a '/' in the end.
+        if (path[path.size() - 1] != '/')
+            path.push_back('/');
+         
+        //main part
+        stack<string> dirs;
+        string str="";
+        int flag = 0;
+        for (int i = 0; i < path.size(); i++){
+            if(path[i] == '/'){
+                if(i > 0 && path[i - 1] == '/')//remove double "/////"
+                    continue;
+                flag++;
+            }
+            if (flag == 1)
+                str.push_back(path[i]);
+            if (flag == 2){
+                if (str == "/.." && !dirs.empty())
+                    dirs.pop();
+                if (str != "/." && str != "/.."){
+                    dirs.push(str);    
+                }
+                flag = 1;
+                str = "/";
+            }
+        }
+         
+        //Output Result
+        if(dirs.empty())
+            return "/";
+        str = "";
+        while (!dirs.empty()){
+            str = dirs.top() + str;
+            dirs.pop();
+        }
+        return str;
+    }
+};
