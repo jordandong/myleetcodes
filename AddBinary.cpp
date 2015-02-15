@@ -1,87 +1,45 @@
-//============================================================================
-// Given two binary strings, return their sum (also a binary string).
-//
-// For example,
-// a = "11"
-// b = "1"
-// Return "100".
-//
-//============================================================================
+/*
+Given two binary strings, return their sum (also a binary string).
 
-#include <string>
-#include <algorithm>
-using namespace std;
+For example,
+a = "11"
+b = "1"
+Return "100".
+
+Hide Tags Math String
+*/
 
 class Solution {
 public:
     string addBinary(string a, string b) {
-        reverse(a.begin(), a.end());
-        reverse(b.begin(), b.end());
-        string::iterator i = a.begin();
-        string::iterator j = b.begin();
-        string c;
+        int la = a.length();
+        int lb = b.length();
+        int lr = max(la, lb) + 1;
+        string res(lr, '0');
+        if(la == 0)
+            return b;
+        if(lb == 0)
+            return a;
+        
+        int ia = la -1, ib = lb - 1, ir = lr - 1;
         int carry = 0;
-        while (true) {
-            int ac, bc;
-            if (i != a.end())
-	            	ac = *(i++) - '0';
+        while(ia >= 0 || ib >= 0){
+            int s = 0;
+            if(ia >= 0 && ib >= 0)
+                s = (a[ia--] - '0') + (b[ib--] - '0') + carry;
+            else if(ia >= 0)
+                s = (a[ia--] - '0') + carry;
             else
-	            	ac = 0;
-            if (j != b.end())
-	            	bc = *(j++) - '0';
-            else
-	            	bc = 0;
-            int s = ac + bc + carry;
-            c.push_back('0' + (s % 2));
+                s = (b[ib--] - '0') + carry;
+            
+            res[ir--] = '0' + s % 2;
             carry = s / 2;
-            if (i == a.end() && j == b.end())
-	            	break;
         }
-        if (carry == 1)
-        		c.push_back('1');
-        reverse(c.begin(), c.end());
-        return c;
-    }
-};
-
-class Solution {
-public:
-    string addBinary(string a, string b) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        return addBC(a,b,0);
-    }
-    
-    string addBC(string a, string b, int carry){
-        int lena = a.length();
-        int lenb = b.length();
-        if(lena==0&&lenb==0){
-            if(carry)
-                return "1";
-            else
-                return "";
+        if(carry){
+            res[ir] = '0' + carry;
+            return res;
+        }else{
+            return res.substr(1);
         }
-        
-        int na;
-        int pa = lena==0?0:lena-1;
-        if(lena==0)
-            na = 0;
-        else
-            na = a[lena-1]-'0';
-            
-            
-        int nb;
-        int pb = lenb==0?0:lenb-1;
-        if(lenb==0)
-            nb = 0;
-        else
-            nb = b[lenb-1]-'0';
-            
-        string res;
-        res.push_back('0'+(na+nb+carry)%2);
-        carry = (na+nb+carry)/2;
-        
-        return addBC(a.substr(0,pa), b.substr(0,pb), carry) + res;
-        
     }
 };
