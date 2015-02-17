@@ -1,71 +1,59 @@
-//============================================================================
-// Remove Duplicates from Sorted List
-// Given a sorted linked list, delete all duplicates such that each element
-// appear only once.
-//
-// For example,
-// Given 1->1->2, return 1->2.
-// Given 1->1->2->3->3, return 1->2->3.
-//============================================================================
+/*
+Given a sorted linked list, delete all duplicates such that each element appear only once.
 
+For example,
+Given 1->1->2, return 1->2.
+Given 1->1->2->3->3, return 1->2->3.
 
+Hide Tags Linked List
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ 
 class Solution {
 public:
     ListNode *deleteDuplicates(ListNode *head) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        if(head==NULL)
-            return NULL;
-        if(head->next==NULL)
-            return head;
-            
-        ListNode *curpos = head;
-        ListNode *unipos = head;
-        while(curpos!=NULL){
-            curpos=curpos->next; 
-            while(curpos!=NULL&&curpos->val == unipos->val){
-                ListNode* tmp = curpos; 
-                curpos = curpos->next;
+        ListNode* dummy = new ListNode(-1);
+        ListNode* tail = dummy;
+        ListNode* cur = head;
+        while(cur){
+            if(cur->next && cur->val == cur->next->val){
+                ListNode* tmp = cur;
+                cur = cur->next;
                 delete tmp;
+                continue;
             }
-            unipos->next =curpos;
-            unipos=unipos->next;        
+            tail->next = cur;
+            tail = tail->next;
+            cur = cur->next;
         }
-        return head;
+        cur = dummy->next;
+        delete dummy;
+        return cur;
     }
 };
 
-#include <iostream>
-
-using namespace std;
-/**
- * Definition for singly-linked list.
- */
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
-};
-
 class Solution {
 public:
     ListNode *deleteDuplicates(ListNode *head) {
-        if (NULL == head)
-        	return NULL;
+        if(!head)
+        	return head;
         ListNode* curNode = head;
-        while(NULL != curNode->next) {
+        while(curNode->next) {
             if(curNode->val == curNode->next->val) {
                 ListNode* nextNode = curNode->next;
                 curNode->next = nextNode->next;
                 delete nextNode;
-            }
-            else
+            }else
             	curNode = curNode->next;
         }
         return head;
     }
 };
-
-int main() {
-    return 0;
-}
