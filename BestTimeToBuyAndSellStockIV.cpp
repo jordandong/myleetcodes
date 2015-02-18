@@ -21,7 +21,7 @@ public:
             
         if(k > n/2)
             return bigK(prices);
-        k = min(k, n/2);//can not pass TLE if don't having bigK
+        //k = min(k, n/2); //can not pass TLE if don't having bigK
         
         vector<vector<int> > dp(2, vector<int>(n, 0));
         int c = 0;
