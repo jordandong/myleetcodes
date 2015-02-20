@@ -47,8 +47,20 @@ public:
         int N = s2.length();
         if(M != N)
             return false;
+        //200+ ms
+        //vector<vector<vector<bool> > > dp(N, vector<vector<bool> >(N, vector<bool>(N + 1, false)));
         
-        vector<vector<vector<bool> > > dp(N, vector<vector<bool> >(N, vector<bool>(N + 1, false)));
+        //62ms
+         bool ***dp = new bool**[N];
+         memset(dp, 0, sizeof(bool)*N);
+         for(int i1 = 0; i1 < N; i1++){
+             dp[i1] = new bool*[N];
+             memset(dp[i1], 0, sizeof(bool)*N);
+             for(int i2 = 0; i2 < N; i2++){
+                 dp[i1][i2] = new bool[N + 1];
+                 memset(dp[i1][i2], 0, sizeof(bool)*(N + 1));
+             }
+         }
         //dp[i][j][l] means in s1 start at i, in s2 start at j, length is l are scramlbe
         for(int i = N - 1; i >= 0; i--){
             for(int j = N-  1; j >= 0; j--){
@@ -70,7 +82,7 @@ public:
     }
 };
 
-//Broute Force
+//Broute Force, 18ms
 class Solution {
 public:
     bool isScramble(string s1, string s2) {
