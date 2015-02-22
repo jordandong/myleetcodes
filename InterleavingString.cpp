@@ -1,123 +1,101 @@
-//============================================================================
-// Interleaving String
-// Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
-//
-// For example,
-// Given:
-// s1 = "aabcc",
-// s2 = "dbbca",
-//
-// When s3 = "aadbbcbcac", return true.
-// When s3 = "aadbbbaccc", return false.
-//============================================================================
+/*
+Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
 
-#include <iostream>
-using namespace std;
+For example,
+Given:
+s1 = "aabcc",
+s2 = "dbbca",
 
+When s3 = "aadbbcbcac", return true.
+When s3 = "aadbbbaccc", return false.
+
+Hide Tags Dynamic Programming String
+*/
+
+//DP, optimaized space most
 class Solution {
 public:
     bool isInterleave(string s1, string s2, string s3) {
-        return isInterleave1(s1, s2, s3);
-		//return isInterleave2(s1, s2, s3);
-    }
+        if(s1.length() > s2.length())
+            return isInterleave(s2, s1, s3);
+        int sz1 = s1.length();
+        int sz2 = s2.length();
+        if(sz1 + sz2 != s3.length())
+            return false;
 
-    bool isInterleave1(string s1, string s2, string s3) {
-        return isInterleaveHelper1(s1.c_str(), s2.c_str(), s3.c_str());
-    }
-
-    bool isInterleaveHelper1(const char *s1, const char *s2, const char *s3) {
-        if(*s1 == '\0' && *s2 == '\0' && *s3 == '\0')
-			return true;
-        if (*s3 == '\0')
-			return false;
-        if (*s1 == '\0' && *s2 == '\0')
-			return false;
-
-        return ((*s1==*s3 && isInterleaveHelper1(s1+1, s2, s3+1)) ||
-                (*s2==*s3 && isInterleaveHelper1(s1, s2+1, s3+1)));
-    }
-
-    bool isInterleave2(string s1, string s2, string s3) {
-        int M = s1.size();
-        int N = s2.size();
-        if (M+N != s3.size())
-			return false;
+        bool dp[sz1 + 1];
+        memset(dp, 0 , sizeof(bool)*(sz1 + 1));
+        dp[0] = true;
+        for(int j = 0; j < sz1; j++)
+            if(s1[j] == s3[j])
+                dp[j + 1] = dp[j];
         
-		bool dp[M+1][N+1];
-        dp[0][0] = true;
-        for (int i = 1; i <= M; i++) {
-            if (dp[i-1][0] && s1[i-1] == s3[i-1])
-				dp[i][0] = true;
-            else
-				dp[i][0] = false;
-        }
-        for (int j = 1; j <= N; j++) {
-            if (dp[0][j-1] && s2[j-1] == s3[j-1])
-				dp[0][j] = true;
-            else
-				dp[0][j] = false;
-        }
-
-        for (int i = 1; i <= M; i++){
-            for (int j = 1; j <= N; j++) {
-                if ((dp[i-1][j] && s1[i-1] == s3[i+j-1]) || (dp[i][j-1] && s2[j-1] == s3[i+j-1]))
-					dp[i][j] = true;
-                else
-					dp[i][j] = false;
+        for(int i = 0; i < sz2; i++){
+            dp[0] = dp[0] && (s2[i] == s3[i]);  
+            for(int j = 0; j < sz1; j++){
+                dp[j + 1] = (dp[j] && s3[i + j + 1] == s1[j]) || (dp[j + 1] && s3[i + j + 1] == s2[i]); 
             }
         }
-
-        for (int i = 0; i <= M; i++) {
-            for (int j = 0; j <= N; j++) {
-                cout << dp[i][j] << " ";
-            }
-            cout << endl;
-        }
-        return dp[M][N];
+        return dp[sz1];
     }
 };
 
-int main() {
-    Solution sol;
-    cout << sol.isInterleave("aabcc", "dbbca", "aadbbcbcac") << endl;
-    cout << sol.isInterleave("aabcc", "dbbca", "aadbbbaccc") << endl;
-    return 0;
-}
-
-
+//DP
 class Solution {
 public:
-
     bool isInterleave(string s1, string s2, string s3) {
         int M = s1.size();
         int N = s2.size();
-        if (M+N != s3.size())
-			return false;
+        if (M + N != s3.size())
+            return false;
         
-		bool dp[2][N+1];
+        bool dp[2][N + 1];
         dp[0][0] = true;
+        int c = 0;
         
         for (int j = 1; j <= N; j++) {
-            if (dp[0][j-1] && s2[j-1] == s3[j-1])
-				dp[0][j] = true;
+            if (dp[c][j-1] && s2[j - 1] == s3[j - 1])
+                dp[c][j] = true;
             else
-				dp[0][j] = false;
+                dp[c][j] = false;
         }
 
         for (int i = 1; i <= M; i++){
-            if (dp[(i-1)%2][0] && s1[i-1] == s3[i-1])
-  	  			dp[i%2][0] = true;
+            if (dp[c][0] && s1[i - 1] == s3[i - 1])
+                dp[c^1][0] = true;
             else
-				dp[i%2][0] = false;
+                dp[c^1][0] = false;
             
             for (int j = 1; j <= N; j++) {
-                if ((dp[(i-1)%2][j] && s1[i-1] == s3[i+j-1]) || (dp[i%2][j-1] && s2[j-1] == s3[i+j-1]))
-					dp[i%2][j] = true;
+                if ((dp[c][j] && s1[i - 1] == s3[i + j - 1]) || (dp[c^1][j - 1] && s2[j - 1] == s3[i + j - 1]))
+                    dp[c^1][j] = true;
                 else
-					dp[i%2][j] = false;
+                    dp[c^1][j] = false;
             }
+            c ^= 1;
         }
+        return dp[c][N];
+    }
+};
 
-        return dp[M%2][N];
+//Recursion, cannot pass TLE
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        if(s1.length() + s2.length() != s3.length())
+            return false;
+        return isInterleaveHelper(s1, s2, s3, 0, 0, 0);
+    }
+
+    bool isInterleaveHelper(string &s1, string &s2, string &s3, int i, int j, int k) {
+        if(i == s1.length() && j == s2.length() && k == s3.length())
+			return true;
+        if (k == s3.length())
+			return false;
+        if (i == s1.length() && j == s2.length())
+			return false;
+
+        return ((s1[i] == s3[k] && isInterleaveHelper(s1, s2, s3, i + 1, j, k + 1)) ||
+                (s2[j] == s3[k] && isInterleaveHelper(s1, s2, s3, i, j + 1, k + 1)));
     }
 };
