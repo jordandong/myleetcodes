@@ -1,127 +1,37 @@
-//============================================================================
-// Binary Tree Level Order Traversal
-// Given a binary tree, return the level order traversal of its nodes' values.
-// (ie, from left to right, level by level).
-//
-// For example:
-// Given binary tree {3,9,20,#,#,15,7},
-//    3
-//   / \
-//  9  20
-//    /  \
-//   15   7
-// return its level order traversal as:
-// [
-//   [3],
-//   [9,20],
-//   [15,7]
-// ]
-//============================================================================
+/*
+Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
 
-#include <iostream>
-#include <vector>
-#include <queue>
-using namespace std;
-
-/**
- * Definition for binary tree
- */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
-class Solution {
-public:
-    vector<vector<int> > levelOrder(TreeNode *root) {
-        return levelOrder1(root);
-    }
-
-    vector<vector<int> > levelOrder1(TreeNode *root) {
-        vector<vector<int> > res;
-        vector<int> row;
-        for (int level = 1; level <= maxHeight(root); level++) {
-            row.clear();
-            levelOrderHelper1(root, level, row);
-            res.push_back(row);
-        }
-        return res;
-    }
-
-    int maxHeight(TreeNode *node) {
-        if(NULL == node)
-        	return 0;
-        return 1 + max(maxHeight(node->left), maxHeight(node->right));
-    };
-
-    void levelOrderHelper1(TreeNode *node, int level, vector<int> &row) {
-        if (level == 0 || node == NULL)
-        	return;
-        if (level == 1) {
-            row.push_back(node->val);
-            return;
-        }
-        levelOrderHelper1(node->left, level-1, row);
-        levelOrderHelper1(node->right, level-1, row);
-    }
-
-    vector<vector<int> > levelOrder2(TreeNode *root) {
-        vector<vector<int> > res;
-        vector<int> row;
-        queue<TreeNode*> currQ, nextQ;
-        if (root)
-        	currQ.push(root);
-        while (!currQ.empty()) {
-            row.clear();
-            while (!currQ.empty()) {
-                TreeNode* front = currQ.front();
-                currQ.pop();
-                row.push_back(front->val);
-                if (front->left)
-                	nextQ.push(front->left);
-                if (front->right)
-                	nextQ.push(front->right);
-            }
-            swap(currQ, nextQ);
-            res.push_back(row);
-        }
-        return res;
-    }
-
-    vector<vector<int> > levelOrder3(TreeNode *root) {
-        vector<vector<int> > res;
-        vector<int> row;
-        queue<TreeNode*> currQ;
-        int currNum = 1, nextNum = 0;
-        if (root)
-        	currQ.push(root);
-        while (!currQ.empty()) {
-            TreeNode* front = currQ.front();
-            currQ.pop();
-            currNum--;
-            row.push_back(front->val);
-            if (front->left)
-            		currQ.push(front->left), nextNum++;
-            if (front->right)
-            		currQ.push(front->right), nextNum++;
-            if (currNum == 0) {
-                res.push_back(row);
-                row.clear();
-                currNum = nextNum;
-                nextNum = 0;
-            }
-        }
-        return res;
-    }
-};
-
-int main() {
-    return 0;
-}
+For example:
+Given binary tree {3,9,20,#,#,15,7},
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its level order traversal as:
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
 
 
+OJ's Binary Tree Serialization:
+The serialization of a binary tree follows a level order traversal, where '#' signifies a path terminator where no node exists below.
+
+Here's an example:
+   1
+  / \
+ 2   3
+    /
+   4
+    \
+     5
+The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
+
+Hide Tags Tree Breadth-first Search
+*/
 
 /**
  * Definition for binary tree
@@ -132,38 +42,68 @@ int main() {
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
+//Two Queues
 class Solution {
 public:
     vector<vector<int> > levelOrder(TreeNode *root) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        queue<TreeNode*> q;
-        q.push(root);
-        vector<vector<int> > res;        
-        vector<int> tmp;
-        queue<TreeNode*> tmpq;
-        
-        if(root==NULL)
-            return res;
-        
-        while(!q.empty()){
-            TreeNode *tn = q.front();
-            q.pop();
-            tmp.push_back(tn->val);
-            if(tn->left!=NULL)
-                tmpq.push(tn->left);
-            if(tn->right!=NULL)
-                tmpq.push(tn->right);
-                
-            if(q.empty()){
-                res.push_back(tmp);
-                tmp.clear();
-                while(!tmpq.empty()){
-                    q.push(tmpq.front());
-                    tmpq.pop();
-                }
+        vector<vector<int> > res;
+        vector<int> l;
+        queue<TreeNode*> q[2];
+        int c = 0;
+
+        if(root)
+            q[c].push(root);
+        while(q[c].size()){
+            TreeNode *t = q[c].front();
+            q[c].pop();
+            l.push_back(t->val);
+            if(t->left)
+                q[c^1].push(t->left);
+            if(t->right)
+                q[c^1].push(t->right);
+            if(q[c].empty()){
+                res.push_back(l);
+                c ^= 1;
+                l.clear();
             }
         }
-        return res;      
+        return res;
+    }
+};
+
+//One queue
+class Solution {
+public:
+    vector<vector<int> > levelOrder(TreeNode *root) {
+        vector<vector<int> > res;
+        vector<int> l;
+        queue<TreeNode*> q;
+        int currNum = 1;
+        int nextNum = 0;
+        if(root)
+        	q.push(root);
+
+        while (q.size()){
+            TreeNode* t = q.front();
+            q.pop();
+            currNum--;
+            l.push_back(t->val);
+            if(t->left){
+                q.push(t->left);
+                nextNum++;
+            }
+            if(t->right){
+                q.push(t->right);
+                nextNum++;
+            }
+            if(currNum == 0) {
+                res.push_back(l);
+                l.clear();
+                currNum = nextNum;
+                nextNum = 0;
+            }
+        }
+        return res;
     }
 };
