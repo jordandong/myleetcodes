@@ -1,62 +1,40 @@
-//============================================================================
-// Given a binary tree, check whether it is a mirror of itself (ie, symmetric
-// around its center).
-//
-// For example, this binary tree is symmetric:
-//
-//     1
-//    / \
-//   2   2
-//  / \ / \
-// 3  4 4  3
-// But the following is not:
-//    1
-//   / \
-//  2   2
-//   \   \
-//   3    3
-// Note:
-// Bonus points if you could solve it both recursively and iteratively.
-//
-//============================================================================
+/*
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+
+For example, this binary tree is symmetric:
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+But the following is not:
+    1
+   / \
+  2   2
+   \   \
+   3    3
+Note:
+Bonus points if you could solve it both recursively and iteratively.
+
+confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
 
 
-#include <iostream>
-using namespace std;
+OJ's Binary Tree Serialization:
+The serialization of a binary tree follows a level order traversal, where '#' signifies a path terminator where no node exists below.
 
-/**
- * Definition for binary tree
- */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-class Solution {
-public:
-    bool isSymmetric(TreeNode *root) {
-        return isSymmetric1(root);
-    }
+Here's an example:
+   1
+  / \
+ 2   3
+    /
+   4
+    \
+     5
+The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
 
-    bool isSymmetric1(TreeNode *root) {
-        if (root == NULL)
-        	return true;
-        return isSymmetricHelper1(root->left, root->right);
-    }
-
-    bool isSymmetricHelper1(TreeNode *a, TreeNode *b) {
-        if (a == NULL || b == NULL)
-        	return (a == b);
-        return (a->val == b->val)&& isSymmetricHelper1(a->left, b->right)&& isSymmetricHelper1(a->right, b->left);
-    }
-};
-
-int main() {
-    return 0;
-}
-
-
+Hide Tags Tree Depth-first Search
+*/
 
 /**
  * Definition for binary tree
@@ -67,11 +45,28 @@ int main() {
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
+//Recursion
 class Solution {
 public:
     bool isSymmetric(TreeNode *root) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
+        if(!root)
+            return true;
+        return isSymmetricHelper(root->left, root->right);
+    }
+    bool isSymmetricHelper(TreeNode *l, TreeNode *r){
+        if(!l || !r)
+            return l == r;
+        if(l->val != r->val)
+            return false;
+        return isSymmetricHelper(l->left, r->right) && isSymmetricHelper(l->right, r->left);
+    }
+};
+
+//Non Recursion, S : O(logN)
+class Solution {
+public:
+    bool isSymmetric(TreeNode *root) {
         if(root == NULL)
             return true;
         
@@ -81,15 +76,15 @@ public:
         s1.push(root->left);
         s2.push(root->right);
         
-        while(!s1.empty()&& !s2.empty()){
+        while(s1.size() && s2.size()){
             TreeNode* n1 = s1.top();
             TreeNode* n2 = s2.top();
             s1.pop();
             s2.pop();
-            if(n1==n2)//both are NULL
+            if(n1 == n2)//both are NULL
                 continue;
-            if(n1==NULL || n2 ==NULL)
-                return n1==n2;
+            if(!n1 || !n2)
+                return n1 == n2;
                 
             if(n1->val != n2->val)
                 return false;
@@ -100,104 +95,8 @@ public:
             s2.push(n2->left);
         }
         
-        if(!s1.empty()||!s2.empty())
+        if(s1.size() || s2.size())
             return false;
-        else
-            return true;
+        return true;
     }
 };
-
-
-class Solution {
-public:
-    bool isSymmetric(TreeNode *root) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        if(root == NULL)
-            return true;
-        
-        vector<int> s1;
-        vector<int> s2;
-        inorder1(root, s1); //inorder should be the same as reverse-inorder
-        inorder2(root, s2);
-        int n1 = s1.size();
-        int n2 = s2.size();
-        if(n1!=n2)
-            return false;
-        for(int i=0; i<n1;i++){
-            if(s1[i]!=s2[i])
-                return false;
-        }
-        return true;
-        
-    }
-    
-    void inorder1(TreeNode *root, vector<int>& s1){
-        if(root==NULL)
-            return;
-        inorder1(root->left, s1);
-        s1.push_back(root->val);
-        inorder1(root->right, s1);
-    }
-        
-    void inorder2(TreeNode *root, vector<int>&s2){
-        if(root==NULL)
-            return;
-        inorder2(root->right, s2);
-        s2.push_back(root->val);
-        inorder2(root->left, s2);
-    }
-};
-
-//Java BFS version
-public class Solution {
-    boolean isSym(ArrayList<TreeNode> al)
-    {
-        int i=0;
-        int j=al.size()-1;
-        while(i<j)
-        {
-            if(al.get(i)==null || al.get(j)==null)
-            {
-                if(al.get(i)!=al.get(j)) return false;
-            }
-            else if(al.get(i).val!=al.get(j).val)
-                return false;
-            i++;
-            j--;
-        }
-        return true;
-    }
-    
-    public boolean isSymmetric(TreeNode root) 
-    {
-        ArrayList<TreeNode>[] all=new ArrayList[2];
-        all[0]=new ArrayList<TreeNode>();
-        all[1]=new ArrayList<TreeNode>();
-        
-        all[0].add(root);
-        int i=0;
-        
-        while(all[i].size()>0)
-        {
-            if(!isSym(all[i])) return false;
-            
-            int next=(i+1)%2;
-            all[next].clear();
-            for(TreeNode n : all[i])
-            {
-                if(n!=null)
-                {
-                    all[next].add(n.left);
-                    all[next].add(n.right);
-                }
-            }
-            
-            i=next;
-        }
-        
-        return true;
-    }
-}
-
-
