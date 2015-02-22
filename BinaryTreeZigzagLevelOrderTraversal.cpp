@@ -1,80 +1,37 @@
-//============================================================================
-// Binary Tree Zigzag Level Order Traversal
-// Given a binary tree, return the zigzag level order traversal of its nodes'
-// values. (ie, from left to right, then right to left for the next level and
-// alternate between).
-//
-//For example:
-// Given binary tree {3,9,20,#,#,15,7},
-//    3
-//   / \
-//  9  20
-//    /  \
-//   15   7
-// return its zigzag level order traversal as:
-// [
-//   [3],
-//   [20,9],
-//   [15,7]
-// ]
-//============================================================================
+/*
+Given a binary tree, return the zigzag level order traversal of its nodes' values. (ie, from left to right, then right to left for the next level and alternate between).
 
-#include <iostream>
-#include <vector>
-#include <stack>
-using namespace std;
+For example:
+Given binary tree {3,9,20,#,#,15,7},
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its zigzag level order traversal as:
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
 
-/**
- * Definition for binary tree
- */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
 
-class Solution {
-public:
-    vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
-        vector<vector<int> > res;
-        if (root == NULL)
-        	return res;
-        vector<int> row;
-        stack<TreeNode*> currS, nextS;
-        currS.push(root);
-        bool leftToRight = true;
-        while (!currS.empty()) {
-            while (!currS.empty()) {
-                TreeNode* front = currS.top();
-                currS.pop();
-                row.push_back(front->val);
-                if (leftToRight) {
-                    if (front->left)
-                    	nextS.push(front->left);
-                    if (front->right)
-                    	nextS.push(front->right);
-                }
-                else {
-                    if (front->right)
-                    	nextS.push(front->right);
-                    if (front->left)
-                    	nextS.push(front->left);
-                }
-            }
-            res.push_back(row);
-            row.clear();
-            swap(currS, nextS);
-            leftToRight = !leftToRight;
-        }
-        return res;
-    }
-};
+OJ's Binary Tree Serialization:
+The serialization of a binary tree follows a level order traversal, where '#' signifies a path terminator where no node exists below.
 
-int main() {
-    return 0;
-}
+Here's an example:
+   1
+  / \
+ 2   3
+    /
+   4
+    \
+     5
+The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
 
+Hide Tags Tree Breadth-first Search Stack
+*/
 /**
  * Definition for binary tree
  * struct TreeNode {
@@ -84,56 +41,42 @@ int main() {
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
 class Solution {
 public:
-    vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        queue<TreeNode*> q;
-        q.push(root);
+    vector<vector<int>> zigzagLevelOrder(TreeNode *root) {
         vector<vector<int> > res;
-        vector<int> tmp;
-        queue<TreeNode*> tmpq;
-        
-        if(root==NULL)
-            return res;
-        
-        while(!q.empty()){
-            TreeNode *tn = q.front();
-            q.pop();
-            tmp.push_back(tn->val);
-            if(tn->left!=NULL)
-                tmpq.push(tn->left);
-            if(tn->right!=NULL)
-                tmpq.push(tn->right);
-                
-            if(q.empty()){
-                res.push_back(tmp);
-                tmp.clear();
-                while(!tmpq.empty()){
-                    q.push(tmpq.front());
-                    tmpq.pop();
-                }
+        vector<int> level;
+        stack<TreeNode*> s[2];
+        bool reverse = false;
+        int c = 0;
+
+        if(root)
+            s[c].push(root);
+
+        while(s[c].size()){
+            TreeNode* t = s[c].top();
+            s[c].pop();
+            level.push_back(t->val);
+            if(reverse){
+                if(t->right)
+                    s[c^1].push(t->right);
+                if(t->left)
+                    s[c^1].push(t->left);
+            }else{
+                if(t->left)
+                    s[c^1].push(t->left);
+                if(t->right)
+                    s[c^1].push(t->right);
+            }
+            
+            if(s[c].empty()){
+                res.push_back(level);
+                level.clear();
+                c ^= 1;
+                reverse=!reverse;
             }
         }
-        
-        vector<vector<int> > res1;
-        
-        for(int i=0;i<res.size();i++){
-            if(i%2==0){
-                res1.push_back(res.at(i));
-            }
-            else{
-                vector<int> v = res.at(i);
-                vector<int> rv;
-                while(!v.empty()){
-                    rv.push_back(v.back());
-                    v.pop_back();
-                }
-                res1.push_back(rv);
-            }
-        }       
-        
-        return res1;
+        return res;
     }
 };
