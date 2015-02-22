@@ -89,12 +89,11 @@ public:
 
     bool isInterleaveHelper(string &s1, string &s2, string &s3, int i, int j, int k) {
         if(i == s1.length() && j == s2.length() && k == s3.length())
-			return true;
+            return true;
         if (k == s3.length())
-			return false;
+            return false;
         if (i == s1.length() && j == s2.length())
-			return false;
-
+            return false;
         return ((s1[i] == s3[k] && isInterleaveHelper(s1, s2, s3, i + 1, j, k + 1)) ||
                 (s2[j] == s3[k] && isInterleaveHelper(s1, s2, s3, i, j + 1, k + 1)));
     }
