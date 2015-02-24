@@ -1,75 +1,10 @@
-//============================================================================
-// Balanced Binary Tree
-// Given a binary tree, determine if it is height-balanced.
-//
-// An example of a height-balanced tree. A height-balanced tree is a tree
-// whose subtrees differ in height by no more than one and the subtrees are
-// height-balanced, too.
-//============================================================================
+/*
+Given a binary tree, determine if it is height-balanced.
 
-#include <iostream>
-#include <cmath>
-#include <climits>
-using namespace std;
+For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
 
-/**
- * Definition for binary tree
- */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
-class Solution {
-public:
-    bool isBalanced(TreeNode *root) {
-        return isBalanced1(root);
-    }
-
-    bool isBalanced1(TreeNode *root) {
-        return isBalancedHelper1(root);
-    }
-
-    bool isBalancedHelper1(TreeNode* node) {
-        if (node == NULL)
-	        	return true;
-        int leftHeight = height(node->left);
-        int rightHeight = height(node->right);
-        if (abs(leftHeight - rightHeight) > 1)
-	        	return false;
-        return isBalancedHelper1(node->left) && isBalancedHelper1(node->right);
-    }
-
-    int height(TreeNode *node) {
-        if (node == NULL)
-	        	return 0;
-        return (1 + max(height(node->left), height(node->right)));
-    }
-
-    bool isBalanced2(TreeNode *root) {
-        int height;
-        return isBalancedHelper2(root, height);
-    }
-
-    bool isBalancedHelper2(TreeNode *node, int &height) {
-        if (node == NULL) {
-	            height = 0;
-            return true;
-        }
-        int leftHeight, rightHeight;
-        bool leftBalanced = isBalancedHelper2(node->left, leftHeight);
-        bool rightBalanced = isBalancedHelper2(node->right, rightHeight);
-        height = 1+max(leftHeight, rightHeight);
-        return (leftBalanced && rightBalanced && abs(leftHeight-rightHeight) <= 1);
-    }
-};
-
-int main() {
-    return 0;
-}
-
+Hide Tags Tree Depth-first Search
+*/
 
 /**
  * Definition for binary tree
@@ -80,34 +15,66 @@ int main() {
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
 class Solution {
 public:
     bool isBalanced(TreeNode *root) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
+        int h;
+        return isBalancedHelper(root, h);
+    }
+    
+    bool isBalancedHelper(TreeNode *root, int &h){
+        if(!root){
+            h = 1;
+            return true;
+        }
+        int l_h = 0;
+        bool l = isBalancedHelper(root->left, l_h);
+        if(l == false)
+            return l;
+        int r_h = 0;
+        bool r = isBalancedHelper(root->right, r_h);
+        if(r == false)
+            return r;
+        h = max(l_h, r_h) + 1;
+        return abs(l_h - r_h) <= 1;
+    }
+};
+
+class Solution {
+public:
+    bool isBalanced(TreeNode *root) {
         if(root==NULL)
             return true;
             
         int left = height(root->left);
-        int right = height(root->right);
-        if(left<0||right<0)
+        if(left < 0)
             return false;
-        else if(abs(left-right)<=1)
+
+        int right = height(root->right);
+        if(right < 0)
+            return false;
+
+        if(abs(left - right) <= 1)
             return true;
         else
             return false;
     }
     
     int height(TreeNode *root){
-        if(root==NULL)
+        if(root == NULL)
             return 0;
         
         int left = height(root->left);
-        int right = height(root->right);
-        if(left<0||right<0)
+        if(left < 0)
             return -1;
-        else if(abs(left-right)<=1)
-            return left>right?left+1:right+1;
+        
+        int right = height(root->right);
+        if(right < 0)
+            return -1;
+        
+        if(abs(left - right) <= 1)
+            return left > right ? left + 1:right + 1;
         else
             return -1;          
     }
