@@ -1,49 +1,11 @@
-//============================================================================
-// Construct Binary Tree from Inorder and Postorder Traversal
-// Given inorder and postorder traversal of a tree, construct the binary tree.
-//
-// Note:
-// You may assume that duplicates do not exist in the tree.
-//============================================================================
+/*
+Given inorder and postorder traversal of a tree, construct the binary tree.
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
+Note:
+You may assume that duplicates do not exist in the tree.
 
-/**
- * Definition for binary tree
- */
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
-class Solution {
-public:
-    TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
-        return buildTreeHelper(inorder.begin(), postorder.begin(), inorder.size());
-    }
-
-    TreeNode *buildTreeHelper(vector<int>::iterator inorder, vector<int>::iterator postorder, size_t n) {
-        if (n == 0)
-        		return NULL;
-        vector<int>::iterator it = find(inorder, inorder + n, *(postorder+n-1));
-        int idx = it - inorder;
-        TreeNode* root = new TreeNode(*it);
-        root->left = buildTreeHelper(inorder, postorder, idx);
-        root->right = buildTreeHelper(inorder+idx+1, postorder+idx, n-idx-1);
-        return root;
-    }
-};
-
-int main() {
-    return 0;
-}
-
-
+Hide Tags Tree Array Depth-first Search
+*/
 
 /**
  * Definition for binary tree
@@ -54,33 +16,56 @@ int main() {
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
 class Solution {
 public:
     TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        TreeNode *newTree = createTreeFromPostorderInorder(postorder,inorder,0,postorder.size()-1,postorder.size()-1);
-        return newTree;
+        int sz_po = postorder.size();
+        int sz_in = inorder.size();
+        if(sz_po != sz_in || sz_po == 0)
+            return NULL;
+        return buildTreeHelper(inorder, postorder, sz_po - 1, 0, sz_in - 1);
     }
     
-    TreeNode* createTreeFromPostorderInorder(vector<int> &postorder,vector<int> &inorder,int left,int right, int pos){
-        if(left > right){
-            return NULL;        
-        }      
-        TreeNode *t = new TreeNode(postorder.at(pos));
-        int index = search(inorder,left, right, t->val);
-        t->right = createTreeFromPostorderInorder(postorder, inorder, index +1, right, pos -1);
-        t->left = createTreeFromPostorderInorder(postorder, inorder, left, index-1, pos - 1 - (right - index));
-        return t;
+    TreeNode* buildTreeHelper(vector<int> &inorder, vector<int> &postorder, int po_id, int in_id_s, int in_id_e){
+        if(in_id_e < in_id_s)
+            return NULL;
+        
+        int val = postorder[po_id];
+        int found_idx = inorder_find(val, in_id_s, in_id_e, inorder);
+        TreeNode* left = buildTreeHelper(inorder, postorder, po_id - (in_id_e - found_idx) - 1, in_id_s, found_idx - 1);
+        TreeNode* right = buildTreeHelper(inorder, postorder, po_id - 1, found_idx + 1, in_id_e);
+        TreeNode* node = new TreeNode(val);
+        node->left = left;
+        node->right = right;
+        return node;
     }
-
-    int search(vector<int> &inorder,int left, int right,int key){
-        for(int i=left; i <= right; i++){
-            if( key == inorder.at(i)){
-                return i;
-                
-            }          
+    
+    int inorder_find(int val, int s, int e, vector<int> &inorder){
+        while(s <= e){
+            if(inorder[s] == val)
+                return s;
+            else
+                s++;
         }
         return  -1;
+    }
+};
+
+class Solution {
+public:
+    TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
+        return buildTreeHelper(inorder.begin(), postorder.begin(), inorder.size());
+    }
+
+    TreeNode *buildTreeHelper(auto inorder, auto postorder, int n) {
+        if(n == 0)
+            return NULL;
+        auto it = find(inorder, inorder + n, *(postorder + n - 1));
+        int idx = it - inorder;
+        TreeNode* root = new TreeNode(*it);
+        root->left = buildTreeHelper(inorder, postorder, idx);
+        root->right = buildTreeHelper(inorder + idx + 1, postorder + idx, n - idx - 1);
+        return root;
     }
 };
