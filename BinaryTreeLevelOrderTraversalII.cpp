@@ -73,16 +73,7 @@ public:
     }
 };
 
-/**
- * Definition for binary tree
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-
+//reverse uses less time
 class Solution {
 public:
     vector<vector<int> > levelOrderBottom(TreeNode *root) {
