@@ -1,29 +1,23 @@
-//============================================================================
-// Pascal's Triangle
-// Given numRows, generate the first numRows of Pascal's triangle.
-//
-// For example, given numRows = 5,
-// Return
-//
-// [
-//      [1],
-//     [1,1],
-//    [1,2,1],
-//   [1,3,3,1],
-//  [1,4,6,4,1]
-// ]
-//============================================================================
+/*
+Given numRows, generate the first numRows of Pascal's triangle.
 
-#include <iostream>
-#include <vector>
+For example, given numRows = 5,
+Return
 
-using namespace std;
+[
+     [1],
+    [1,1],
+   [1,2,1],
+  [1,3,3,1],
+ [1,4,6,4,1]
+]
 
-class Solution
-{
+Hide Tags Array
+*/
+
+class Solution{
 public:
-    vector<vector<int> > generate(int numRows)
-    {
+    vector<vector<int> > generate(int numRows){
         vector<vector<int> > res;
         if (numRows < 1)
         	return res;
@@ -31,13 +25,12 @@ public:
         res.push_back(vector<int>(1, 1));
         
         int m = 1;
-        while (m < numRows)
-        {
+        while (m < numRows){
             vector<int> row;
-            row.reserve(m+1);
+            row.reserve(m + 1);
             row.push_back(1);
-            for (int i = 0; i < m-1; i++)
-                row.push_back(res[m-1][i] + res[m-1][i+1]);
+            for (int i = 0; i < m - 1; i++)
+                row.push_back(res[m - 1][i] + res[m - 1][i + 1]);
             row.push_back(1);
             res.push_back(row);
             m++;
@@ -46,42 +39,29 @@ public:
     }
 };
 
-int main()
-{
-    return 0;
-}
-
-
 //11^n should be the results, but overflow, so small n is fine
 class Solution {
 public:
     vector<vector<int> > generate(int numRows) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
         vector<vector<int> > res;
-        if(numRows==0)
+        if(numRows == 0)
             return res;
         
-        for(int i=0;i<numRows;i++){
+        for(int i = 0; i < numRows; i++){
             vector<int> row;
-            for(int j=0;j<=i;j++){
-                if(i==0&&j==0){
+            for(int j = 0;j <= i; j++){
+                if(i == 0 && j == 0){
                     row.push_back(1);
-                }
-                else if(j==0){
-                    row.push_back(0+res[i-1][j]);
-                }
-                else if(j==i){
-                    row.push_back(0+res[i-1][i-1]);
-                }
-                else{
+                }else if(j == 0){
+                    row.push_back(0 + res[i-1][j]);
+                }else if(j == i){
+                    row.push_back(0 + res[i-1][i-1]);
+                }else{
                     row.push_back(res[i-1][j-1]+res[i-1][j]);
                 }
             }
             res.push_back(row);
         }
-        
         return res;
     }
 };
-
