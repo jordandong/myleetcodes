@@ -38,6 +38,29 @@ Hide Tags Tree Depth-first Search
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+//in place 
+class Solution {
+public:
+    void flatten(TreeNode *root) {
+        TreeNode *cur = root;
+        while(cur){
+            if(cur->left){
+                if(cur->right){//cut right subtree of cur and paste it to the rightmost of left subtree 
+                    TreeNode *t = cur->left;
+                    while(t->right)
+                        t = t->right;
+                    t->right = cur->right;
+                }
+                cur->right = cur->left;
+                cur->left = NULL;
+            }
+            cur = cur->right;
+        }
+    }
+};
+
+//Recursion
 class Solution {
 public:
     void flatten(TreeNode *root) {
@@ -61,6 +84,7 @@ public:
     }
 };
 
+//Non recursion
 class Solution {
 public:
     void flatten(TreeNode *root) {
