@@ -1,73 +1,23 @@
-//============================================================================
-// Best Time to Buy and Sell Stock
-//
-// Say you have an array for which the ith element is the price of a given
-// stock on day i.
-//
-// If you were only permitted to complete at most one transaction (ie, buy
-// one and sell one share of the stock), design an algorithm to find the
-// maximum profit.
-//
-//============================================================================
+/*
+Say you have an array for which the ith element is the price of a given stock on day i.
 
-#include <iostream>
-#include <vector>
-using namespace std;
+If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.
 
-class Solution
-{
-public:
-    int maxProfit(vector<int> &prices)
-    {
-        size_t min_i = 0;
-        int res = 0;
-        for (size_t i = 0; i < prices.size(); i++)
-        {
-            if (prices[i] < prices[min_i])
-	            	min_i = i;
-	        int diff = prices[i] - prices[min_i];
-            if (diff > res)
-            	res = diff;
-        }
-        return res;
-    }
-};
-
-int main()
-{
-    return 0;
-}
-
-
-
-
+Hide Tags Array Dynamic Programming
+*/
 
 class Solution {
 public:
     int maxProfit(vector<int> &prices) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        if(prices.size()==0)
+        int N = prices.size();
+        if(N == 0)
             return 0;
-        vector<int> diff;
-        for(int i=0;i<prices.size()-1;i++)
-        {
-            diff.push_back(prices[i+1]-prices[i]);
+        int mi = prices[0];
+        int res = 0;
+        for(auto e : prices){
+            mi = min(e, mi);
+            res = max(res, e - mi);
         }
-        
-        int sum =0;
-        int max =0;
-        for(int j=0;j<diff.size();j++)
-        {
-            if(sum+diff[j]>0)
-                sum+=diff[j];
-            else
-                sum=0;
-                
-            if(sum>max)
-                max =sum;
-        }
-        
-        return max;
+        return res;
     }
 };
