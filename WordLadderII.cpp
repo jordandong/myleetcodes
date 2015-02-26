@@ -1,4 +1,5 @@
-/*Given two words (start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, such that:
+/*
+Given two words (start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, such that:
 
 Only one letter can be changed at a time
 Each intermediate word must exist in the dictionary
@@ -13,16 +14,15 @@ Return
     ["hit","hot","dot","dog","cog"],
     ["hit","hot","lot","log","cog"]
   ]
+Note:
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+
+Hide Tags Array Backtracking Breadth-first Search String
 */
 
 class Solution {
 public:
-    /**
-      * @param start, a string
-      * @param end, a string
-      * @param dict, a set of string
-      * @return a list of lists of string
-      */
     //find the possible relationship between prev words and next words, one next word mapping to mutiple prev words
     vector<vector<string>> findLadders(string start, string end, unordered_set<string> &dict) {
         // write your code here
