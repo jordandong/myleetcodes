@@ -7,56 +7,26 @@ Return the starting gas station's index if you can travel around the circuit onc
 
 Note:
 The solution is guaranteed to be unique.
+
+Hide Tags Greedy
 */
 
 class Solution {
 public:
     int canCompleteCircuit(vector<int> &gas, vector<int> &cost) {
-        int size = gas.size();
+        int sz = gas.size();
         int total_gas_left = 0;
         int sub_gas_left = 0;
         int start = 0;
-        for(int i=0; i<size; i++){
-            int diff=gas[i]-cost[i];
-            total_gas_left+=diff;
-            sub_gas_left+=diff;
-            if(sub_gas_left<0){
-                sub_gas_left=0;
-                start=i+1;
+        for(int i = 0; i < sz; i++){
+            int diff = gas[i] - cost[i];
+            total_gas_left += diff;
+            sub_gas_left += diff;
+            if(sub_gas_left < 0){
+                sub_gas_left = 0;
+                start = i + 1;
             }
         }
-        if(total_gas_left<0)
-            return -1;
-        else
-            return start;
-    }
-};
-
-
-class Solution {
-public:
-    int canCompleteCircuit(vector<int> &gas, vector<int> &cost) {
-        // Note: The Solution object is instantiated only once and is reused by each test case.
-        int size = gas.size();
-        int start = 0;
-        do{
-            int left = 0;
-            int k = start;
-            int end = start;
-            int flag = 0;
-            do{
-                if(0 <= left + gas[k]- cost[k]){
-                    left = left + gas[k]-cost[k];
-                    k=(k+1)%size;
-                    flag = 1;
-                }else{
-                    start = k>=start ? k+1:size;
-                    break;
-                }
-            }while(k!=end);
-            if((k==end) && flag)
-                return start;
-        }while(start<size);
-        return -1;
+        return total_gas_left < 0 ? -1 : start;
     }
 };
