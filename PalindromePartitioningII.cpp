@@ -20,7 +20,6 @@ public:
         for(int i = 1; i <= len; i++)
             dp[i] = len;
         dp[0] = -1;
-        dp[1] = 0;
         
         bool dp1[len][len]; // from index i to j is palindrome
         for(int i = 0; i < len; i++)
