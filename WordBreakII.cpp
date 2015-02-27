@@ -8,79 +8,74 @@ s = "catsanddog",
 dict = ["cat", "cats", "and", "sand", "dog"].
 
 A solution is ["cats and dog", "cat sand dog"].
+
+Hide Tags Dynamic Programming Backtracking
 */
 
+//DP to avoid dup calculation
 class Solution {
 public:
     vector<string> wordBreak(string s, unordered_set<string> &dict) {
-        // Note: The Solution object is instantiated only once and is reused by each test case.
-        int size = s.size();
-        vector<string> set;
-        bool dp[size+1];
-        for(int i =0; i<=size; i++)
-            dp[i]=false;
-        dp[0] = true;
-        
-        for(int j=0; j<size; j++){
-            for(int k=j; k>=0; k--){
-                if(dict.find(s.substr(k,j-k+1))!=dict.end()&&dp[k]){
-                    dp[j+1] = true;
-                }
-            }
-        }
-        
-        if(dp[size])
-            get_path(s,dict,"", set, 0, dp);
-        return set;
+        vector<string> res;
+        vector<bool> dp(s.length(), true); //dp[i] means start from index i, there is a solution
+        wordBreakHelper(s, 0, "", dict, res, dp);
+        return res;
     }
-    
-    bool get_path(string &s, unordered_set<string> &dict, string tmp, vector<string> &set, int last, bool *dp){
-        if(last==s.size()){
-            set.push_back(tmp);
-            return true;
-        }
-        
-        for(int i=last; i<s.size(); i++){
-            if(!dp[i+1])
-                continue;
-            string sub = s.substr(last,i-last+1);
-            if(dict.find(sub)!=dict.end()){
-                string sub1 = tmp + (tmp.size()?(" "+ sub):sub);
-                get_path(s,dict,sub1, set, i+1, dp);
-            }
-        }
-        return false;
-    }
-};
-
-
-//recursion
-class Solution {
-public:
-    vector<string> wordBreak(string s, unordered_set<string> &dict) {
-        vector<string> rtn;
-        string cur="";
-        vector<bool> dp(s.length(), true); //dp[i] means start form index i, there is a solution
-        wBHelper(s, 0, cur, dict, rtn, dp);
-        return rtn;
-    }
-    void wBHelper(string &s, int start, string cur, unordered_set<string> &dict, vector<string>& rtn, vector<bool> &dp){
-        if(start==s.length()){
-            if(!cur.empty())
-                cur.pop_back();//pop the last space
-            rtn.push_back(cur);
+    void wordBreakHelper(string &s, int start, string sol, unordered_set<string> &dict, vector<string>& res, vector<bool> &dp){
+        if(start == s.length()){
+            if(!sol.empty())
+                sol.pop_back();//pop the last space
+            res.push_back(sol);
             return;
         }
         
-        for(int end=start; end<s.length(); end++){
-            string sub = s.substr(start, end-start+1);
-            if(dict.find(sub)==dict.end())
+        for(int end = start; end < s.length(); end++){
+            string sub = s.substr(start, end - start + 1);
+            if(dict.find(sub) == dict.end())
                 continue;
-            if(dp[end+1]){ //if no solution, we continue
-                int sol_num = rtn.size(); //sol before go further
-                wBHelper(s, end+1, cur+sub+" ", dict, rtn, dp);
-                dp[end+1] = sol_num!=rtn.size(); //sol after go futher, set false if no sol increasing
+            if(dp[end + 1]){ //if no solution, we continue
+                int sol_num = res.size(); //sol before go further
+                wordBreakHelper(s, end + 1, sol + sub + " ", dict, res, dp);
+                dp[end+1] = sol_num != res.size(); //sol after go futher, set false if no sol increasing
             }
         }
+    }
+};
+
+class Solution {
+public:
+    vector<string> wordBreak(string s, unordered_set<string> &dict) {
+        int len = s.length();
+        vector<string> res;
+        vector<bool> dp(len + 1, false);//ending at length j, it can be break or not
+        dp[0] = true;
+        
+        for(int j = 0; j < len; j++){
+            for(int k = j; k >= 0; k--){
+                if(dict.find(s.substr(k, j - k + 1)) != dict.end() && dp[k])
+                    dp[j + 1] = true;
+            }
+        }
+        
+        if(dp[len])
+            wordBreakHepler(s, "", 0, res, dp, dict);
+        return res;
+    }
+    
+    bool wordBreakHepler(string &s, string sol, int last, vector<string> &res, vector<bool> &dp, unordered_set<string> &dict){
+        if(last == s.length()){
+            res.push_back(sol);
+            return true;
+        }
+        for(int i = last; i < s.length(); i++){
+            if(!dp[i + 1])
+                continue;
+            string sub = s.substr(last, i - last + 1);
+            if(dict.find(sub) != dict.end()){
+                string sub1 = sol + (sol.size() ? (" " + sub) : sub);
+                wordBreakHepler(s, sub1, i+1, res, dp, dict);
+            }
+        }
+        return false;
     }
 };
