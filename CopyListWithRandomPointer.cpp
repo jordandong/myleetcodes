@@ -3,6 +3,7 @@ A linked list is given such that each node contains an additional random pointer
 
 Return a deep copy of the list.
 
+Hide Tags Hash Table Linked List
 */
 
 /**
@@ -16,41 +17,38 @@ Return a deep copy of the list.
 class Solution {
 public:
     RandomListNode *copyRandomList(RandomListNode *head) {
-        // Note: The Solution object is instantiated only once and is reused by each test case.
         if(!head)
             return NULL;
         
         unordered_map<RandomListNode*, RandomListNode*> old_new;
         unordered_map<RandomListNode*, RandomListNode*>::const_iterator got;
         RandomListNode *new_head = new RandomListNode(head->label);
-        RandomListNode *tmp = head;
-        RandomListNode *new_tmp = new_head;
-        old_new.insert(make_pair(tmp, new_tmp));
+        RandomListNode *cur = head;
+        RandomListNode *new_cur = new_head;
+        old_new[cur] = new_cur;
         
-        while(tmp->next || tmp->random){
-            if(tmp->next){
-                got=old_new.find(tmp->next);
-                if(got!=old_new.end()){
-                    new_tmp->next = got->second;
+        while(cur){
+            if(cur->random){
+                got = old_new.find(cur->random);
+                if(got != old_new.end()){
+                    new_cur->random = got->second;
                 }else{
-                    new_tmp->next = new RandomListNode(tmp->next->label);
-                    old_new.insert(make_pair(tmp->next, new_tmp->next));
+                    new_cur->random = new RandomListNode(cur->random->label);
+                    old_new[cur->random] = new_cur->random;
                 }
             }
             
-            if(tmp->random){
-                got=old_new.find(tmp->random);
-                if(got!=old_new.end()){
-                    new_tmp->random = got->second;
+            if(cur->next){
+                got = old_new.find(cur->next);
+                if(got != old_new.end()){
+                    new_cur->next = got->second;
                 }else{
-                    new_tmp->random = new RandomListNode(tmp->random->label);
-                    old_new.insert(make_pair(tmp->random, new_tmp->random));
+                    new_cur->next = new RandomListNode(cur->next->label);
+                    old_new[cur->next] = new_cur->next;
                 }
             }
-            if(!tmp->next)
-                break;
-            tmp=tmp->next;
-            new_tmp=new_tmp->next;
+            cur = cur->next;
+            new_cur = new_cur->next;
         }
         return new_head;
     }
