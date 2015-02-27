@@ -19,8 +19,10 @@ Visually, the graph looks like the following:
       / \
      /   \
     0 --- 2
-           / \
-          \_/
+         / \
+         \_/
+
+Hide Tags Depth-first Search Breadth-first Search Graph
 */
 
 /**
@@ -31,39 +33,39 @@ Visually, the graph looks like the following:
  *     UndirectedGraphNode(int x) : label(x) {};
  * };
  */
+
 class Solution {
 public:
     UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
-        // Note: The Solution object is instantiated only once and is reused by each test case.
         if(!node)
             return NULL;
         
         set<UndirectedGraphNode*> visited;
         unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> old_new;
         UndirectedGraphNode* new_node = new UndirectedGraphNode(node->label);
-        old_new.insert(make_pair(node, new_node));
-        DFS(node, new_node, old_new, visited);
+        old_new[node] = new_node;
+        cloneGraphHelper(node, new_node, old_new, visited);
         return new_node;
     }
-    
-    void DFS(UndirectedGraphNode *node, UndirectedGraphNode *new_node, unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> &old_new, set<UndirectedGraphNode*> &visited){
+
+    //DFS    
+    void cloneGraphHelper(UndirectedGraphNode *node, UndirectedGraphNode *new_node, unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> &old_new, set<UndirectedGraphNode*> &visited){
         
-        if(!node||visited.find(node)!=visited.end())
+        if(!node || visited.find(node) != visited.end())
             return;
         
         visited.insert(node);
         int n_size = node->neighbors.size();
         for(int i =0; i<n_size; i++){
-            unordered_map<UndirectedGraphNode*, UndirectedGraphNode*>::iterator got;
-            got = old_new.find(node->neighbors[i]);
-            if(got!=old_new.end()){
+            auto got = old_new.find(node->neighbors[i]);
+            if(got != old_new.end()){
                 new_node->neighbors.push_back(got->second);
             }else{
                 UndirectedGraphNode* tmp = new UndirectedGraphNode(node->neighbors[i]->label);
                 new_node->neighbors.push_back(tmp);
-                old_new.insert(make_pair(node->neighbors[i], tmp));
+                old_new[node->neighbors[i]] = tmp;
             }
-            DFS(node->neighbors[i], new_node->neighbors[i], old_new, visited);
+            cloneGraphHelper(node->neighbors[i], new_node->neighbors[i], old_new, visited);
         }
     }
 };
