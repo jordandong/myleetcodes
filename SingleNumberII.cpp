@@ -3,28 +3,30 @@ Given an array of integers, every element appears three times except for one. Fi
 
 Note:
 Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+Hide Tags Bit Manipulation
 */
 
 class Solution {
 public:
     int singleNumber(int A[], int n) {
-        // Note: The Solution object is instantiated only once and is reused by each test case.
-        int map[32];
-        for(int i=0; i<32; i++)
-            map[i] = 0;
-        for(int j=0; j<n; j++){
-            int pos = 0;
-            while(pos<32) {
-                if(1&(A[j]>>pos))
-                    map[pos]++;
-                pos++;    
+        int size = 32;
+        int res = 0;
+        int cnt[size];
+        memset(cnt, 0, sizeof(int)*size);
+
+        for(int i = 0; i < n; i++){
+            int shift = 0;
+            while(shift < size){
+                if(A[i] & (1<<shift))
+                    cnt[shift]++;
+                shift++;
             }
         }
-        int rtn = 0;
-        for(int k=0; k<32; k++){
-            if(map[k]%3)
-              rtn=rtn^(1<<k);
-        }
-        return rtn;
+        
+        for(int i = 0; i < size; i++)
+            if(cnt[i] % 3)
+                res ^= (1<<i);
+        return res;
     }
 };
