@@ -57,6 +57,29 @@ class Solution {
 public:
     vector<int> postorderTraversal(TreeNode *root) {
         vector<int> res;
+        stack<pair<TreeNode*, bool> > stk;
+        stk.push(make_pair(root, false));
+        while(stk.size()){
+            auto t = stk.top();
+            stk.pop();
+            if(!t.first || t.second){
+                if(t.second)
+                    res.push_back(t.first->val);
+                continue;
+            }
+            t.second = true;
+            stk.push(t);
+            stk.push(make_pair(t.first->right, false));
+            stk.push(make_pair(t.first->left, false));
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode *root) {
+        vector<int> res;
         stack<TreeNode*> stk;
         set<TreeNode*> st;
         while(stk.size() || root){
