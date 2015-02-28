@@ -3,6 +3,8 @@ Given a linked list, return the node where the cycle begins. If there is no cycl
 
 Follow up:
 Can you solve it without using extra space?
+
+Hide Tags Linked List Two Pointers
 */
 
 /**
@@ -13,12 +15,11 @@ Can you solve it without using extra space?
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        // IMPORTANT: Please reset any member data you declared, as
-        // the same Solution instance will be reused for each test case.
-        if(!head || !head->next)
+        if(!head)
             return NULL;
             
         ListNode *slow = head;
@@ -28,14 +29,14 @@ public:
                 return NULL;;
             slow = slow->next;
             fast = fast->next->next;
-            if(slow==fast)
+            if(slow == fast)
                 break;
         }
         
         slow = head;
-        while(slow!=fast){
-            slow=slow->next;
-            fast=fast->next;
+        while(slow != fast){
+            slow = slow->next;
+            fast = fast->next;
         }
         return slow;
     }
