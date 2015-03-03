@@ -95,14 +95,14 @@ public:
 
 class Solution {
 public:
-   int compareVersionHelper(string &s, int &begin){
-       while(begin < s.length() && s[begin] == '0')//heading zeros
-           begin++;
-       int end = begin;
-       while(end < s.length() && s[end] != '.')
-           end++;
-       return end - begin;
-   }
+    int compareVersionHelper(string &s, int &begin){
+        while(begin < s.length() && s[begin] == '0')//heading zeros
+            begin++;
+        int end = begin;
+        while(end < s.length() && s[end] != '.')
+            end++;
+        return end - begin;
+    }
    
     int compareVersion(string version1, string version2) {
         int begin1 = 0;
