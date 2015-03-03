@@ -92,3 +92,39 @@ public:
         return 0;
     }
 };
+
+class Solution {
+public:
+   int compareVersionHelper(string &s, int &begin){
+       while(begin < s.length() && s[begin] == '0')//heading zeros
+           begin++;
+       int end = begin;
+       while(end < s.length() && s[end] != '.')
+           end++;
+       return end - begin;
+   }
+   
+    int compareVersion(string version1, string version2) {
+        int begin1 = 0;
+        int begin2 = 0;
+        while(begin1 < version1.length() || begin2 < version2.length()) {
+            int l1 = compareVersionHelper(version1, begin1);
+            int l2 = compareVersionHelper(version2, begin2);
+            if (l1 < l2) 
+                return -1;
+            if (l1 > l2)
+                return 1;
+            for(int i = 0; i < l1; ++i) {
+                if(version1[begin1] < version2[begin2])
+                    return -1;
+                if(version1[begin1] > version2[begin2])
+                    return 1;
+                begin1++;
+                begin2++;
+            }
+            begin1++;
+            begin2++;
+        }
+        return 0;
+    }
+};
