@@ -7,7 +7,12 @@ Return 0 if the array contains less than 2 elements.
 
 You may assume all elements in the array are non-negative integers and fit in the 32-bit signed integer range.
 
+Credits:
+Special thanks to @porker2008 for adding this problem and creating all test cases.
+
+Hide Tags Sort
 */
+
 /*
 Suppose there are N elements and they range from A to B.
 
@@ -21,27 +26,11 @@ Since the maximum difference between elements in the same buckets will be at mos
 
 For each non-empty buckets p, find the next non-empty buckets q, then q.min - p.max could be the potential answer to the question. Return the maximum of all those values.
 */
-
 class Solution {
 public:
     int maximumGap(vector<int> &num) {
-        int sz=num.size();  
-        if(sz<2)  
-            return 0;  
-        sort(num.begin(),num.end());  
-        int mx=num[1]-num[0];  
-        for(int i = 2; i < sz; i++){
-            mx=max(num[i]- num[i-1], mx);  
-        }  
-        return mx;  
-    }
-};
-
-class Solution {
-public:
-    int maximumGap(vector<int> &num) {
-        int sz=num.size();  
-        if(sz<2)  
+        int sz = num.size();  
+        if(sz < 2)  
             return 0;
 
         int mx = num[0];
@@ -51,8 +40,8 @@ public:
             mx = max(mx, num[i]);
             mi = min(mi, num[i]);
         }
-        delta = ceil(double(mx-mi)/(sz-1));
-        int bin_sz = (mx-mi)/delta + 1;
+        delta = ceil(double(mx - mi)/(sz - 1));
+        int bin_sz = (mx - mi)/delta + 1;
         vector<int> mx_bin(bin_sz, -1);
         vector<int> mi_bin(bin_sz, -1);
         
@@ -73,7 +62,7 @@ public:
         
         int res = 0;
         int last_mx = mx_bin[0];
-        for(int i=0; i<bin_sz; i++){
+        for(int i = 0; i < bin_sz; i++){
             if(mi_bin[i] == -1)
                 continue;
             if(mi_bin[i] - last_mx >= res){
@@ -82,5 +71,20 @@ public:
             last_mx = mx_bin[i];
         }
         return res;  
+    }
+};
+
+class Solution {
+public:
+    int maximumGap(vector<int> &num) {
+        int sz = num.size();
+        if(sz < 2)  
+            return 0;  
+        sort(num.begin(),num.end());  
+        int mx = num[1] - num[0];  
+        for(int i = 2; i < sz; i++){
+            mx = max(num[i] - num[i-1], mx);  
+        }  
+        return mx;  
     }
 };
