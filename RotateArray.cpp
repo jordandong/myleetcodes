@@ -10,13 +10,17 @@ Try to come up as many solutions as you can, there are at least 3 different ways
 
 Hint:
 Could you do it in-place with O(1) extra space?
+Credits:
+Special thanks to @Freezen for adding this problem and creating all test cases.
+
+Hide Tags Array
 */
 
 class Solution {
 public:
     void rotate(int nums[], int n, int k) {
         k %= n;
-        if(n == 0 || k == 0)
+        if(n <= 1 || k == 0)
             return;
         reverse(nums, 0, n - k - 1);
         reverse(nums, n - k, n - 1);
