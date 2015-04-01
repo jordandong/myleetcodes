@@ -20,9 +20,8 @@ public:
         int no_rob_mx = 0;
         for(int i = 0; i < sz; i++){
             int rob_mx_tmp = no_rob_mx + num[i];
-            int no_rob_mx_tmp = max(rob_mx, no_rob_mx);
+            no_rob_mx = max(rob_mx, no_rob_mx);
             rob_mx = rob_mx_tmp;
-            no_rob_mx = no_rob_mx_tmp;
         }
         return max(rob_mx, no_rob_mx);
     }
