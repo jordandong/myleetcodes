@@ -12,6 +12,21 @@ Hide Tags Bit Manipulation
 class Solution {
 public:
     int rangeBitwiseAnd(int m, int n) {
+        int mask = 0;
+        mask = m ^ n;//find all the different bits, >= the highest one must need to set zero
+        if(mask == 0)
+            return m;
+        while(mask & mask - 1)//find the highest 1 bit
+            mask &= mask - 1;
+        mask |= mask - 1;
+        mask = ~mask;
+        return mask & m;
+    }
+};
+
+class Solution {
+public:
+    int rangeBitwiseAnd(int m, int n) {
         int N = 31;
         int res = 0;
         while(N >= 0){     
