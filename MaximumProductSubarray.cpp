@@ -10,20 +10,19 @@ Hide Tags Array Dynamic Programming
  //less operations
 class Solution {
 public:
-    int maxProduct(int A[], int n) {
-        if(n <= 0)
+    int maxProduct(vector<int>& nums) {
+        int sz = nums.size();
+        if(sz == 0)
             return 0;
-        int maxi = A[0], mini = A[0];
-        int res  = A[0];
-
-        for (int i = 1; i < n; i++) {
-            int maxi_copy = max(maxi, 1);
-            if (A[i] > 0) {
-                maxi = maxi_copy*A[i];
-                mini *= A[i];
-            } else {
-                maxi = mini*A[i];
-                mini = maxi_copy*A[i];
+        int maxi = nums[0], mini = nums[0], res = nums[0];
+        for(int i = 1; i < sz; i++){
+            int maxi_copy = max(1, maxi);	
+            if(nums[i] > 0){
+                maxi = maxi_copy * nums[i];    
+                mini *= nums[i];
+            }else{
+                maxi = mini * nums[i];
+                mini = maxi_copy * nums[i];    
             }
             res = max(res, maxi);
         }
@@ -33,19 +32,43 @@ public:
 
 class Solution {
 public:
-    int maxProduct(int A[], int n) {
-        if(n <= 0)
+    int maxProduct(vector<int>& nums) {
+        int sz = nums.size();
+        if(sz == 0)
             return 0;
-        
-        int maxi = A[0], mini = A[0];
+        int maxi = nums[0], mini = nums[0];
         int last_maxi, last_mini;
-        int res = A[0];
-
-        for (int i = 1; i < n; i++) {
+        int res = maxi;
+        for(int i = 1; i < sz; i++){
             last_maxi = maxi;
             last_mini = mini;
-            maxi = max(max(last_maxi * A[i], last_mini * A[i]), A[i]);
-            mini = min(min(last_maxi * A[i], last_mini * A[i]), A[i]);
+            if(nums[i] > 0){
+                maxi = max(last_maxi*nums[i], nums[i]);
+                mini = min(last_mini*nums[i], nums[i]);
+            }else{
+                maxi = max(last_mini*nums[i], nums[i]);
+                mini = min(last_maxi*nums[i], nums[i]);
+            }
+            res = max(res, maxi);
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int sz = nums.size();
+        if(sz == 0)
+            return 0;
+        int maxi = nums[0], mini = nums[0];
+        int last_maxi, last_mini;
+        int res = maxi;
+        for(int i = 1; i < sz; i++){
+            last_maxi = maxi;
+            last_mini = mini;
+            maxi = max(max(last_maxi*nums[i], last_mini*nums[i]), nums[i]);
+            mini = min(min(last_maxi*nums[i], last_mini*nums[i]), nums[i]);
             res = max(res, maxi);
         }
         return res;
