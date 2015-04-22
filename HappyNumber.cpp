@@ -5,12 +5,32 @@ A happy number is a number defined by the following process: Starting with any p
 
 Example: 19 is a happy number
 
-12 + 92 = 82
-82 + 22 = 68
-62 + 82 = 100
-12 + 02 + 02 = 1
+1^2 + 9^2 = 82
+8^2 + 2^2 = 68
+6^2 + 8^2 = 100
+1^2 + 0^2 + 0^2 = 1
 Hide Tags Hash Table Math
 */
+
+class Solution {
+public:
+    bool isHappy(int n) {
+        unordered_map<int, bool> mp;
+        while(mp[n] == false){
+            if(n == 1)
+                return true;
+            mp[n] = true;
+            int m = 0;
+            while(n){
+                int t = n%10;
+                m += t*t;
+                n /= 10;
+            }
+            n = m;
+        }
+        return false;
+    }
+};
 
 class Solution {
 public:
