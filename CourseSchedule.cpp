@@ -22,15 +22,15 @@ Hide Tags Depth-first Search Breadth-first Search Graph Topological Sort
 
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
         vector<vector<int> > g(numCourses, vector<int>()); //edge x->y
         vector<int> indgree(numCourses);//indgree for y
         stack<int> stk;
         int taken = 0;
 
         for (int i = 0; i < prerequisites.size(); i++) { //build graph
-            int x = prerequisites[i][0];
-            int y = prerequisites[i][1];
+            int x = prerequisites[i].first;
+            int y = prerequisites[i].second;
             g[x].push_back(y);
             indgree[y]++;
         }
