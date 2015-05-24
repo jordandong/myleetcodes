@@ -24,13 +24,13 @@ public:
         int j = 0;
         int k = -1;
         next[0] = k;
-	    while (j < ns.length() - 1) {
-    		if(k == -1 || ns[j] == ns [k]){
-	    		next[++j] = ++k;
-	    	}else{
-		    	k = next[k];
-		    }
-	    }
+        while (j < ns.length() - 1) {
+            if(k == -1 || ns[j] == ns [k]){
+                next[++j] = ++k;
+            }else{
+                k = next[k];
+            }
+        }
         return rs.substr(0, rs.length() - next[ns.length() - 1]) + s;
     }
 };
