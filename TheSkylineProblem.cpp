@@ -115,3 +115,72 @@ public:
         }
     }
 };
+
+//Similar to swipe line
+class Solution {
+public:
+    vector<pair<int, int> > getSkyline(vector<vector<int> >& buildings) {
+        map<int, vector<int> > starts;
+        map<int, vector<int> > ends;
+        set<int> points;
+
+        for(int i = 0; i < buildings.size(); ++i) {
+            starts[buildings[i][0]].push_back(buildings[i][2]);
+            ends[buildings[i][1]].push_back(buildings[i][2]);
+            points.insert(buildings[i][0]);
+            points.insert(buildings[i][1]);
+        }
+
+        vector<pair<int, int> > res;
+        pair<int, int> tResult;
+        map<int, int> tree;
+        int currMax = -1;
+        int currStart = -1;
+
+        for(set<int>::iterator iter = points.begin(); iter != points.end(); ++iter) {//BST increasing order
+            vector<int> start = starts[*iter];
+            vector<int> end = ends[*iter];
+
+            //begin and end with same height are cancelled
+            for(int i = 0; i < start.size(); ++i) {
+                tree[start[i]]++;
+            }
+
+            for(int i = 0; i < end.size(); ++i) {
+                tree[end[i]]--;
+                if(tree[end[i]] == 0) {
+                    tree.erase(end[i]);
+                }
+            }
+
+            if (tree.size() == 0){
+                tResult.first = *iter;
+                tResult.second = 0;
+                res.push_back(tResult);
+
+                currStart = -1;
+                currMax = -1;
+
+            } else {
+                if(currMax == -1) {
+                    currStart = *iter;
+                    currMax = tree.rbegin()->first;
+
+                    tResult.first = currStart;
+                    tResult.second = currMax;
+                    res.push_back(tResult);
+                } else {
+                    int max = tree.rbegin()->first;
+                    if(max != currMax) {
+                        currStart = *iter;
+                        currMax = max;
+                        tResult.first = currStart;
+                        tResult.second = currMax;
+                        res.push_back(tResult);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
