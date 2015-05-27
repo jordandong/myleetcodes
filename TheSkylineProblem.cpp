@@ -88,69 +88,40 @@ public:
     }
 };
 
-//Similar to swipe line
+//Similar to swipe line, using BST instead of PriorityQueue since delete edge is easy in BST
+//T:O(NlogN) S:O(N)
 class Solution {
 public:
+    enum {
+        start,
+        end,
+        height
+    };
+    
     vector<pair<int, int> > getSkyline(vector<vector<int> >& buildings) {
-        map<int, vector<int> > starts;
-        map<int, vector<int> > ends;
-        set<int> points;
-
-        for(int i = 0; i < buildings.size(); ++i) {
-            starts[buildings[i][0]].push_back(buildings[i][2]);
-            ends[buildings[i][1]].push_back(buildings[i][2]);
-            points.insert(buildings[i][0]);
-            points.insert(buildings[i][1]);
+        int curr_max = 0;
+        vector<pair<int, int>> res;
+        map<int, int> count; // <height, ref_cnt>. map is a BST internally. Query/Insert/Delete O(logN)
+        map<int, vector<pair<int, bool> > > edges; //< pos, <height, start> >
+        for (auto& building : buildings) { //O(NlogN) build BST
+            edges[building[start]].push_back(make_pair(building[height], true));
+            edges[building[end]].push_back(make_pair(building[height], false));
         }
 
-        vector<pair<int, int> > res;
-        pair<int, int> tResult;
-        map<int, int> tree;
-        int currMax = -1;
-        int currStart = -1;
+        for (auto& e : edges) { //sorted order. O(1), each of 2N
+            auto& pos = e.first;
+            auto& heights = e.second;
 
-        for(set<int>::iterator iter = points.begin(); iter != points.end(); ++iter) {//BST increasing order
-            vector<int> start = starts[*iter];
-            vector<int> end = ends[*iter];
-
-            //begin and end with same height are cancelled
-            for(int i = 0; i < start.size(); ++i) {
-                tree[start[i]]++;
+            for (auto& h : heights) { //O(logN) 
+                if (h.second) //start, add
+                    ++count[h.first];
+                else if(--count[h.first] == 0) //end, remove
+                    count.erase(h.first); //same height, cancelled
             }
 
-            for(int i = 0; i < end.size(); ++i) {
-                tree[end[i]]--;
-                if(tree[end[i]] == 0) {
-                    tree.erase(end[i]);
-                }
-            }
-
-            if (tree.size() == 0){
-                tResult.first = *iter;
-                tResult.second = 0;
-                res.push_back(tResult);
-
-                currStart = -1;
-                currMax = -1;
-
-            } else {
-                if(currMax == -1) {
-                    currStart = *iter;
-                    currMax = tree.rbegin()->first;
-
-                    tResult.first = currStart;
-                    tResult.second = currMax;
-                    res.push_back(tResult);
-                } else {
-                    int max = tree.rbegin()->first;
-                    if(max != currMax) {
-                        currStart = *iter;
-                        currMax = max;
-                        tResult.first = currStart;
-                        tResult.second = currMax;
-                        res.push_back(tResult);
-                    }
-                }
+            if (count.empty() || curr_max != count.crbegin()->first) { //end pos OR new start pos
+                curr_max = count.empty() ? 0 : count.crbegin()->first; //highest height
+                res.push_back(make_pair(pos, curr_max));
             }
         }
         return res;
