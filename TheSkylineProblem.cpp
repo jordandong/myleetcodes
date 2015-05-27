@@ -30,27 +30,19 @@ public:
         end,
         height
     };
+  
     vector<pair<int, int>> getSkyline(vector<vector<int> > &buildings) {
         int N = buildings.size();
         if(N == 0)
             return vector<pair<int, int> >();
-        vector<vector<int> > res = getSkylineHelper(buildings, 0, N - 1);
-        vector<pair<int, int> > res_p;
-        res_p.push_back(make_pair(res[0][start], res[0][height]));
-        for (int i = 1; i < res.size(); i++) {
-            if(res[i - 1][end] != res[i][start])
-                res_p.push_back(make_pair(res[i - 1][end], 0));
-            res_p.push_back(make_pair(res[i][start], res[i][height]));
-        }
-        res_p.push_back(make_pair(res.back()[end], 0));
-        return res_p;
+        return getSkylineHelper(buildings, 0, N - 1);
     }
     
     // Divide
-    vector<vector<int> > getSkylineHelper(vector<vector<int>>& buildings, int l, int r) {
+    vector<pair<int, int> > getSkylineHelper(vector<vector<int>>& buildings, int l, int r) {
         if (l == r)
-            return vector<vector<int> > (1, buildings[l]);
-
+            return vector<pair<int, int> > { make_pair(buildings[l][start], buildings[l][height]),
+                                             make_pair(buildings[l][end], 0) };
         int mid = l + (r - l) / 2;
         auto l_rtn = getSkylineHelper(buildings, l, mid);
         auto r_rtn = getSkylineHelper(buildings, mid + 1, r);
@@ -58,61 +50,41 @@ public:
     }
     
     // Merge
-    vector<vector<int> > getSkylineMerge(vector<vector<int>>& l_rtn, vector<vector<int>>& r_rtn) {
+    vector<pair<int, int> > getSkylineMerge(vector<pair<int, int> > &l_rtn, vector<pair<int, int> > &r_rtn) {
+        vector<pair<int, int> > rtn;
         int i = 0, j = 0;
-        vector<vector<int>> rtn;
+        int hl = -1, hr = -1, mh = -1;
         
         while (i < l_rtn.size() && j < r_rtn.size()) {
-            if (l_rtn[i][end] < r_rtn[j][start]) { //l is separated 
-                rtn.push_back(l_rtn[i++]);
-            } else if (r_rtn[j][end] < l_rtn[i][start]) { //r is separated
-                rtn.push_back(r_rtn[j++]);
-            } else if (l_rtn[i][start] <= r_rtn[j][start]) {//small start is always as the first argu
-                MergeInterval(rtn, l_rtn[i], i, r_rtn[j], j);
+            if (l_rtn[i].first < r_rtn[j].first) {
+                hl = l_rtn[i].second;
+                mh = max(hl, hr);
+                if (rtn.empty() || rtn.back().second != mh)
+                    rtn.push_back(make_pair(l_rtn[i].first, mh));	
+                i++;
+            } else if (l_rtn[i].first > r_rtn[j].first) {
+                hr = r_rtn[j].second;
+                mh = max(hl, hr);
+                if (rtn.empty() || rtn.back().second != mh)
+                    rtn.push_back(make_pair(r_rtn[j].first, mh));	
+                j++;
             } else {
-                MergeInterval(rtn, r_rtn[j], j, l_rtn[i], i);
+                hl = l_rtn[i].second;
+                hr = r_rtn[j].second;
+                mh = max(hl, hr);
+                if (rtn.empty() || rtn.back().second != mh)
+                    rtn.push_back(make_pair(l_rtn[i].first, mh));
+                i++;
+                j++;
             }
         }
-        
+
         // remaining l/r_rtn
         if(i < l_rtn.size())
             rtn.insert(rtn.end(), l_rtn.begin() + i, l_rtn.end());
         if(j < r_rtn.size())
             rtn.insert(rtn.end(), r_rtn.begin() + j, r_rtn.end());
         return rtn;
-    }
-    
-    void MergeInterval(vector<vector<int> >& rtn, vector<int>& x, int& x_i, vector<int>& y, int& y_i) {
-        if (x[end] <= y[end]) { // x overlays y
-            if (x[height] > y[height]) {
-                if (x[end] != y[end]) { //x covers y, add x, update y start
-                    rtn.push_back(x);
-                    x_i++;
-                    y[start] = x[end];
-                } else { // x covers y fully, remove y
-                    y_i++; 
-                }
-            } else if (x[height] == y[height]) { //x connects y with same height, update y start with smaller one, remove x
-                y[start] = x[start];
-                x_i++;
-            } else { // y covers x
-                if (x[start] != y[start]) { //add part of x
-                    rtn.push_back(vector<int>{x[start], y[start], x[height]});
-                }
-                x_i++; //remove x
-            }
-        } else { //x contains whole y
-            if (x[height] >= y[height]) { //x fully covers y, remove y, update x start with the remaning
-                y_i++;
-            } else { //add first part of x and whole y
-                if (x[start] != y[start]) {
-                    rtn.push_back(vector<int>{x[start], y[start], x[height]});
-                }
-                rtn.push_back(y);
-                y_i++;
-                x[start] = y[end];
-            }
-        }
     }
 };
 
