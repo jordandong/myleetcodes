@@ -4,7 +4,7 @@ Given an array of integers, find out whether there are two distinct indices i an
 Hide Tags Sort Binary Search Tree
 */
 
-//T:O(NlogK) S:O(K)
+//T: O(NlogK) S: O(K)
 class Solution {
 public:
     bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
