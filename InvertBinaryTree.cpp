@@ -30,6 +30,8 @@ Hide Tags Tree
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
+ //Recursion
 class Solution {
 public:
     TreeNode* invertTree(TreeNode* root) {
@@ -39,6 +41,27 @@ public:
         TreeNode *r = invertTree(root->left);
         root->left = l;
         root->right = r;
+        return root;
+    }
+};
+
+//Non-Recursion
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if (!root)
+            return NULL;
+        queue<TreeNode*> q;
+        q.push(root);
+        while (q.size()) {
+            TreeNode *t = q.front();
+            q.pop();
+            if (!t)
+                continue;
+            q.push(t->left);
+            q.push(t->right);
+            swap(t->left, t->right);
+        }
         return root;
     }
 };
