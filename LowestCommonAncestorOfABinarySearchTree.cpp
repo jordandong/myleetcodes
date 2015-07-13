@@ -14,7 +14,7 @@ According to the definition of LCA on Wikipedia: “The lowest common ancestor i
 For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6. Another example is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
 */
 
-/**
+ /**
  * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
@@ -23,33 +23,36 @@ For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6. Another exa
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+//BST property, non-recursion 
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        int lca_count = 0;
-        TreeNode* res = LCAHelper(root, p, q, lca_count);
-        return lca_count == 2 ? res : NULL;
-
+        while (root) {
+            if(p->val == root->val || q->val == root->val ||
+                (p->val < root->val && q->val > root->val) ||
+                (q->val < root->val && p->val > root->val))
+                break;
+            else if(p->val < root->val && q->val < root->val)
+                root = root->left;
+            else
+                root = root->right;
+        }
+        return root;
     }
-    
-    TreeNode* LCAHelper(TreeNode *root, TreeNode *A, TreeNode *B, int &lca_count){
-        if (!root)
-            return NULL;
-        
-        TreeNode* left_rtn = LCAHelper(root->left, A, B, lca_count);
-        if (lca_count == 2 && left_rtn) // avoid the unecessary search after we found two
-            return left_rtn;
+};
 
-        TreeNode* right_rtn = LCAHelper(root->right, A, B, lca_count);
-        if(left_rtn && right_rtn){
+//BST property, recursion
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(p->val == root->val || q->val == root->val ||
+            (p->val < root->val && q->val > root->val) ||
+            (q->val < root->val && p->val > root->val))
             return root;
-        }else if(root->val == A->val || root->val == B->val){
-            if(root->val == A->val && root->val == B->val)
-                lca_count++;
-            lca_count++;
-            return root;
-        }else{
-            return left_rtn ? left_rtn : right_rtn;
-        }    
+        else if(p->val < root->val && q->val < root->val)
+            return lowestCommonAncestor(root->left, p, q);
+        else
+            return lowestCommonAncestor(root->right, p, q);  
     }
 };
