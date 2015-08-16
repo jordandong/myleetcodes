@@ -11,8 +11,7 @@ Hint:
 A naive implementation of the above process is trivial. Could you come up with other methods?
 1. What are all the possible results?
 2. How do they occur, periodically or randomly?
-3. You may find this Wikipedia article useful.
-
+3. You may find this Wikipedia article useful. https://en.wikipedia.org/wiki/Digital_root
 Credits:
 Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.
 
