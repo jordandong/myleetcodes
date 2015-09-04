@@ -10,6 +10,29 @@ Credits:
 Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.
 */
 
+//T : O(1), S:O(N)
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int N = citations.size();
+        if (N == 0)
+            return 0;
+        int *index = new int[N + 1];
+        memset(index, 0, sizeof(int) * (N + 1));
+        for (auto &e : citations) {
+            if (e > N)
+                index[N]++;
+            else
+                index[e]++;
+        }
+        int total = 0;
+        for (int i = N; i >= 0; i--) {
+            total += index[i];
+            if (total >= i)
+                return i;
+        }
+    }
+};
 
 //T : O(NlogN), S : O(1)
 class Solution {
