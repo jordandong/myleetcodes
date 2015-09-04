@@ -11,6 +11,7 @@ Special thanks to @jianchao.li.fighter for adding this problem and creating all 
 */
 
 
+//T : O(NlogN), S : O(1)
 class Solution {
 public:
     int hIndex(vector<int>& citations) {
@@ -21,6 +22,20 @@ public:
             if (citations[i] >= N - i)
                 break;
         }
+        return N - i;
+    }
+};
+
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int N = citations.size();
+        if (N == 0)
+            return 0;
+        sort(citations.begin(), citations.end());
+        int i = 0;
+        while (i < N && citations[i] < N - i)
+            i++;
         return N - i;
     }
 };
