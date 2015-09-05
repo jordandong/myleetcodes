@@ -17,8 +17,7 @@ public:
         int N = citations.size();
         if (N == 0)
             return 0;
-        int *index = new int[N + 1];
-        memset(index, 0, sizeof(int) * (N + 1));
+        vector<int> index(N + 1, 0);
         for (auto &e : citations) {
             if (e > N)
                 index[N]++;
@@ -38,8 +37,29 @@ public:
 class Solution {
 public:
     int hIndex(vector<int>& citations) {
-        sort(citations.begin(), citations.end());
         int N = citations.size();
+        if (N == 0)
+            return 0;
+        sort(citations.begin(), citations.end());
+        int lo = 0, hi = N - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo)/2;
+            if (citations[mid] >= N - mid)
+                hi--;
+            else
+                lo++;
+        }
+        return N - lo;
+    }
+};
+
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int N = citations.size();
+        if (N == 0)
+            return 0;
+        sort(citations.begin(), citations.end());
         int i = 0;
         for (i = 0; i < N; i++) {
             if (citations[i] >= N - i)
