@@ -13,16 +13,17 @@ Special thanks to @davidtan1890 for adding this problem and creating all test ca
 Hide Tags Divide and Conquer
 */
 
+//DFS
 class Solution {
 public:
     vector<string> addOperators(string num, int target) {
         vector<string> res;
         string sol = "";
-        addOperators(num, target, 0, 0, 0, sol, res);
+        addOperatorsHelper(num, target, 0, 0, 0, sol, res);
         return res;
     }
     
-    void addOperators(string &num, int target, int pos, long long operand1, long long operand2, string &sol, vector<string> &res) {
+    void addOperatorsHelper(string &num, int target, int pos, long long operand1, long long operand2, string &sol, vector<string> &res) {
         if (pos == num.length()) {
             if (operand1 + operand2 == target)
                 res.push_back(sol);
@@ -40,19 +41,20 @@ public:
                 
             if (sol.length() == 0) {
                 sol += cur_operand_str;
-                addOperators(num, target, i + 1, 0, cur_operand, sol, res);
+                addOperatorsHelper(num, target, i + 1, 0, cur_operand, sol, res);
                 sol.erase(slen, sol.length() - slen);
+            
             } else {
                 sol = sol + "+" + cur_operand_str;
-                addOperators(num, target, i + 1, operand1 + operand2, cur_operand, sol, res);
+                addOperatorsHelper(num, target, i + 1, operand1 + operand2, cur_operand, sol, res);
                 sol.erase(slen, sol.length() - slen);
             
                 sol = sol + "-" + cur_operand_str;
-                addOperators(num, target, i + 1, operand1 + operand2, -cur_operand, sol, res);
+                addOperatorsHelper(num, target, i + 1, operand1 + operand2, -cur_operand, sol, res);
                 sol.erase(slen, sol.length() - slen);
             
                 sol = sol + "*" + cur_operand_str;
-                addOperators(num, target, i + 1, operand1, operand2*cur_operand, sol, res);
+                addOperatorsHelper(num, target, i + 1, operand1, operand2*cur_operand, sol, res);
                 sol.erase(slen, sol.length() - slen);
             }
             if (cur_operand == 0)
