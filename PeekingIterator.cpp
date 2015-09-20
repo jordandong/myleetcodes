@@ -20,52 +20,51 @@ Hide Tags Design
 // Below is the interface for Iterator, which is already defined for you.
 // **DO NOT** modify the interface for Iterator.
 class Iterator {
-  struct Data;
-	Data* data;
+    struct Data;
+    Data* data;
 public:
-	Iterator(const vector<int>& nums);
-	Iterator(const Iterator& iter);
-	virtual ~Iterator();
-	// Returns the next element in the iteration.
-	int next();
-	// Returns true if the iteration has more elements.
-	bool hasNext() const;
+    Iterator(const vector<int>& nums);
+    Iterator(const Iterator& iter);
+    virtual ~Iterator();
+    // Returns the next element in the iteration.
+    int next();
+    // Returns true if the iteration has more elements.
+    bool hasNext() const;
 };
 
-
 class PeekingIterator : public Iterator {
-  bool last_op_peek;
-  int peek_val;
+    bool last_op_peek;
+    int peek_val;
 public:
-	PeekingIterator(const vector<int>& nums) : Iterator(nums) {
-	    // Initialize any member here.
-	    // **DO NOT** save a copy of nums and manipulate it directly.
-	    // You should only use the Iterator interface methods.
-	    last_op_peek = false;
-	    peek_val = -1;
-	}
+    PeekingIterator(const vector<int>& nums) : Iterator(nums) {
+        // Initialize any member here.
+        // **DO NOT** save a copy of nums and manipulate it directly.
+        // You should only use the Iterator interface methods.
+        last_op_peek = false;
+        peek_val = -1;
+    }
 
-  // Returns the next element in the iteration without advancing the iterator.
-	int peek() {
+    // Returns the next element in the iteration without advancing the iterator.
+    int peek() {
         if (last_op_peek)
             return peek_val;
         peek_val = hasNext() ? next() : -1;
         last_op_peek = true;
         return peek_val;
-	}
+    }
 
-	// hasNext() and next() should behave the same as in the Iterator interface.
-	// Override them if needed.
-	int next() {
-	    if (last_op_peek) {
-	        last_op_peek = false;
-	        return peek_val;
-	    } else {
-	        return Iterator::next();
-	    }
-	}
+    // hasNext() and next() should behave the same as in the Iterator interface.
+    // Override them if needed.
+    int next() {
+        if (last_op_peek) {
+            last_op_peek = false;
+            return peek_val;
+        } else {
+            return Iterator::next();
+        }
+    }
 
-	bool hasNext() const {
-	    return last_op_peek ? true : Iterator::hasNext();
-	}
+    bool hasNext() const {
+        return last_op_peek ? true : Iterator::hasNext();
+    }
 };
