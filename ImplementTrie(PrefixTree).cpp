@@ -11,10 +11,10 @@ class TrieNode {
 public:
     // Initialize your data structure here.
     TrieNode *node[26];
-    bool is_end[26];
+    bool is_end;
     TrieNode() {
         memset(node, 0, sizeof(node));
-        memset(is_end, 0, sizeof(is_end));
+        is_end = false;
     }
 };
 
@@ -31,10 +31,9 @@ public:
             int idx = s[i] - 'a'; 
             if (t->node[idx] == NULL) 
                 t->node[idx] = new TrieNode();
-            if(i == s.length() - 1) // the end of insert
-                t->is_end[idx] = true;
             t = t->node[idx];
         }
+        t->is_end = true;
     }
 
     // Returns if the word is in the trie.
@@ -44,10 +43,9 @@ public:
             int idx = key[i] - 'a'; 
             if (NULL == t->node[idx])
                 return false;
-            if (i == key.length() - 1) //check the end
-                return t->is_end[idx];
             t = t->node[idx];
         }
+        return t->is_end;
     }
 
     // Returns if there is any word in the trie
