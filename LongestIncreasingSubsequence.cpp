@@ -14,6 +14,38 @@ Subscribe to see which companies asked this question
 Hide Tags Dynamic Programming Binary Search
 */
 
+//replace candidates, T : O(NlogN), S : O(N)
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int N = nums.size();
+        if(N == 0 || N == 1)
+            return N;
+
+        vector<int> lis;
+        lis.push_back(nums[0]);
+        
+        for (int i = 1; i < N; i++) {
+            if (nums[i] > lis.back()) {
+                lis.push_back(nums[i]);
+            } else {
+                int hi = lis.size() - 1;
+                int lo = 0;
+                while (lo < hi) {
+                    int mid = lo + (hi - lo)/2;
+                    if (lis[mid] < nums[i]) {
+                        lo = mid + 1;
+                    } else {
+                        hi = mid;
+                    }
+                }
+                lis[lo] = nums[i];
+            }
+        }
+        return lis.size();
+    }
+};
+
 //DP, T : O(N^2), S : O(N)
 class Solution {
 public:
