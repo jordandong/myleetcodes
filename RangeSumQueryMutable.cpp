@@ -15,8 +15,6 @@ You may assume the number of calls to update and sumRange function is distribute
 Subscribe to see which companies asked this question
 
 Hide Tags Segment Tree Binary Indexed Tree
-Hide Similar Problems (E) Range Sum Query - Immutable (H) Range Sum Query 2D - Mutable
-Have you met this question in a real interview? Yes  No
 */
 
 class STNode {
