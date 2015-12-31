@@ -25,7 +25,7 @@ Special thanks to @dietpepsi for adding this problem and creating all test cases
 Hide Tags Dynamic Programming Greedy
 */
 
-//T : O(K*(m + n)) S : O(m + n)
+//T : O(K*(m + n)^2) S : O(m + n)
 class Solution {
 public:
     vector<int> maxNumber(vector<int>& nums1, vector<int>& nums2, int k) {
@@ -35,7 +35,7 @@ public:
         for (int k1 = max(k - n2, 0); k1 <= min(k, n1); ++k1) { //O(k)
             vector<int> res1 = maxNumberHelper1(nums1, k1); //O(n)
             vector<int> res2 = maxNumberHelper1(nums2, k - k1); //O(m)
-            res = max(res, maxNumberHelper2(res1, res2)); //O(m + n)
+            res = max(res, maxNumberHelper2(res1, res2)); //O((m + n)^2)
         }
         return res;
     }
@@ -54,6 +54,7 @@ public:
         return res;
     }
 
+    //O ((m+n)^2)
     vector<int> maxNumberHelper2(vector<int> &nums1, vector<int> &nums2) {
         vector<int> res;
         auto i1 = nums1.begin(), end1 = nums1.end();
