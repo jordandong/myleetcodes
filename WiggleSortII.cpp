@@ -17,6 +17,7 @@ Special thanks to @dietpepsi for adding this problem and creating all test cases
 Hide Similar Problems (M) Wiggle Sort
 */
 
+//T:O(nlogn) S:O(n)
 class Solution {
 public:
     void wiggleSort(vector<int>& nums) {
