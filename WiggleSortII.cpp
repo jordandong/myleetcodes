@@ -17,6 +17,34 @@ Special thanks to @dietpepsi for adding this problem and creating all test cases
 Hide Similar Problems (M) Wiggle Sort
 */
 
+// T:  O(n) ~ O(n^2), S : O(1)
+// three way Partition (aka Dutch National Flag Problem) with virtual index solution.
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        int mid = (nums.size() - 1) / 2;
+        nth_element(nums.begin(), nums.begin() + mid, nums.end());  // O(n) ~ O(n^2) time
+        reversedTriPartition(nums, nums[mid]);  // O(n) time, O(1) space
+    }
+
+    void reversedTriPartition(vector<int>& nums, int val) {
+        const int N = nums.size() / 2 * 2 + 1;
+        //1, 3, 5, 7, 9, ..., 0, 2, 4, 6, 8, ...
+        #define Nums(i) nums[(1 + 2 * (i)) % N]
+        int i = 0, j = 0, n = nums.size() - 1;
+        //place bigger value at 1,3,5,7,... and smaller value at 2,4,6,8,...
+        while (j <= n) {
+            if (Nums(j) > val) {
+                swap(Nums(i++), Nums(j++));
+            } else if (Nums(j) < val) {
+                swap(Nums(j), Nums(n--));
+            } else {
+                ++j;
+            }
+        }
+    }
+};
+
 //T:O(nlogn) S:O(n)
 class Solution {
 public:
