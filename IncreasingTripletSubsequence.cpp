@@ -18,6 +18,23 @@ Special thanks to @DjangoUnchained for adding this problem and creating all test
 class Solution {
 public:
     bool increasingTriplet(vector<int>& nums) {
+        int s = INT_MAX, b = INT_MAX;
+        for (int &e : nums) {
+            if (e <= s) {
+                s = e;
+            } else if (e <= b) {
+                b = e; 
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+class Solution {
+public:
+    bool increasingTriplet(vector<int>& nums) {
         stack<int> stk;
         int i = 0;
         for  (auto &e : nums) {
