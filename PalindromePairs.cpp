@@ -29,19 +29,21 @@ public:
             string cur = words[i];
             for (int k = 0; k <= cur.size(); k++) {
                 if (isPal(cur, 0, k - 1)) {
-                    string tmp = cur.substr(k);
+                    string tmp = cur.substr(k); //the right side
                     reverse(tmp.begin(), tmp.end());
+                    //found match which could be attached to left
                     if(table.find(tmp) != table.end() && table[tmp] != i)
                         res.push_back({table[tmp], i});
                 }
-                if (isPal(cur, k, cur.size() - 1)) {
-                    string tmp = cur.substr(0, k); 
+                //k < cur.size() condition is to avoid duplication when the cur string itself is not Pal, which is used in above codes
+                if (k < cur.size() && isPal(cur, k, cur.size() - 1)) {
+                    string tmp = cur.substr(0, k);  //the left side
                     reverse(tmp.begin(), tmp.end());
-                    if (table.find(tmp) != table.end() && i != table[tmp] && cur.size() > words[table[tmp]].size())
+                    //found match which could be atached to right
+                    if (table.find(tmp) != table.end() && i != table[tmp])
                         res.push_back({i, table[tmp]});
                 }
             }
-
         }
         return res;
     }
