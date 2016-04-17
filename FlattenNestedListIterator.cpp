@@ -31,6 +31,43 @@ Hide Similar Problems (M) Flatten 2D Vector (M) Zigzag Iterator
  *     const vector<NestedInteger> &getList() const;
  * };
  */
+ //less space used
+ class NestedIterator {
+public:
+    using IT = vector<NestedInteger>::const_iterator;
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        // Initialize your data structure here.
+        depth_.emplace(nestedList.cbegin(), nestedList.cend());
+    }
+
+    // @return {int} the next element in the iteration
+    int next() {
+        // Write your code here
+        return (depth_.top().first++)->getInteger();
+    }
+    
+    // @return {boolean} true if the iteration has more element or false
+    bool hasNext() {
+        // Write your code here
+        while (!depth_.empty()) {
+            auto& cur = depth_.top();
+            if (cur.first == cur.second) {
+                depth_.pop();
+            } else if (cur.first->isInteger()) {
+                return true;
+            } else {
+                auto& nestedList = cur.first->getList();
+                ++cur.first;
+                depth_.emplace(nestedList.cbegin(), nestedList.cend());
+            }
+        }
+        return false;
+    }
+
+private:
+    stack<pair<IT, IT>> depth_;
+};
+ 
  
 class NestedIterator {
 private:
