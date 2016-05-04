@@ -28,15 +28,15 @@ public:
         bool neg = false;
         int start = 0;
         int end = str.length() - 1;
-        while(start <= end && str[start] == ' ')
-        	start++;
+        while (start <= end && str[start] == ' ')
+     		start++;
         	
-        if(str[start] == '+')
-        	start++;
-        else if(str[start] == '-'){
-        	start++;
-			neg = true;
-		}
+        if (str[start] == '+')
+            start++;
+        else if (str[start] == '-') {
+            start++;
+	    neg = true;
+	}
         	
         long long val = 0;
         int digit;
@@ -48,10 +48,10 @@ public:
             start++;
             if(neg){
                 if(-val < INT_MIN)
-        	        return  INT_MIN;
-            }else {
+        	    return  INT_MIN;
+            } else {
                 if(val > INT_MAX)
-        	       return INT_MAX;
+	            return INT_MAX;
             }
         }
         val = (neg ? -val : val);
