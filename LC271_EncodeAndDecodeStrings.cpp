@@ -64,7 +64,7 @@ public:
         for (size_t i = 0; i < strs.size(); ++i) {
             size_t len = strs[i].length();
             string tmp;
-            for (size_t i = 0, mask = 0xff; i < sizeof(size_t); ++i, mask <<= 8) {
+            for (size_t i = 0, mask = 0xff; i < sizeof(size_t); ++i, len >>= 8) {
                 tmp.push_back(len & mask);
             }
             reverse(tmp.begin(), tmp.end());
