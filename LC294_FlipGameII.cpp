@@ -21,3 +21,31 @@ public:
     }
 };
 
+//use O(1) string space
+class Solution {
+private:
+  int len;
+  string ss;
+public:
+    bool canWin(string s) {
+        len = s.size();
+        ss = s;
+        return canWin();
+    }
+    
+    bool canWin() {
+        for (int is = 0; is <= len - 2; ++is) {
+            if (ss[is] == '+' && ss[is+1] == '+') {
+                ss[is] = '-'; 
+                ss[is+1] = '-';
+                bool wins = !canWin(); 
+                ss[is] = '+';
+                ss[is+1] = '+';
+                if (wins)
+                    return true;
+            }
+        }
+        return false;
+    }
+};
+
