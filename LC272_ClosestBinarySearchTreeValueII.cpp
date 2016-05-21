@@ -28,6 +28,94 @@ Hint:
  * };
  */
 
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+#include <queue>
+#include <cmath>
+#include <climits>
+#include <string>
+
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+//T : O(klogN), S : O(logN)
+class Solution {
+public:
+    vector<int> closestKValues(TreeNode* root, double target, int k) {
+        vector<int> res;
+        stack<TreeNode*> pred, succ;
+        initStack(pred, succ, root, target);
+        while (k-- > 0){
+            if (succ.empty() || !pred.empty() && target - pred.top()->val < succ.top()->val - target){
+                res.push_back(pred.top()->val);
+                getPredecessor(pred);
+            } else {//Since N > k, always have something to add
+                res.push_back(succ.top()->val);
+                getSuccessor(succ);
+            }
+        }
+        return res;
+    }
+
+private:
+    void initStack(stack<TreeNode*> &pred, stack<TreeNode*> &succ, TreeNode *root, double target) {
+        while (root){
+            if (root->val <= target) {
+                pred.push(root);
+                root = root->right;
+            } else{
+                succ.push(root);
+                root = root->left;
+            }
+        }
+    }
+
+    void getPredecessor(stack<TreeNode*> &st) {
+        TreeNode *node = st.top();
+        st.pop();
+        if (node->left) {
+            st.push(node->left);
+            while (st.top()->right)
+                st.push(st.top()->right);
+        }
+    }
+
+    void getSuccessor(stack<TreeNode*> &st) {
+        TreeNode *node = st.top();
+        st.pop();
+        if (node->right) {
+            st.push(node->right);
+            while (st.top()->left)
+                st.push(st.top()->left);
+        }
+    }
+};
+
+int main() {
+    TreeNode* root = new TreeNode(4);
+    root->left = new TreeNode(2);
+    root->left->left = new TreeNode(1);
+    root->left->right = new TreeNode(3);
+    root->right = new TreeNode(6);
+    root->right->left = new TreeNode(5);
+    root->right->right = new TreeNode(7);
+    Solution sol;
+    vector<int> res = sol.closestKValues(root, 2.2, 4);
+    for (auto e : res)
+        cout<<e;
+    cout<<endl;
+    cout<<"SUCCESS"<<endl;
+	return 0;
+}
+2314
+
 //T : O(N + Nlogk), S : O(k)
 class Solution {
 public:
