@@ -14,9 +14,7 @@ Follow Up:
 Can you do it in O(n) time?
 */
 
-// Time:  O(n)
-// Space: O(n)
-
+//T : O(N) , S : O(N)
 class Solution {
 public:
     int maxSubArrayLen(vector<int>& nums, int k) {
