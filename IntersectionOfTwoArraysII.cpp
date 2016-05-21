@@ -15,6 +15,23 @@ Follow up:
 Hide Tags Binary Search Hash Table Two Pointers Sort
 */
 
+//T : O(N) , S : O(N)
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int, int> mp;
+        vector<int> res;
+        for (auto &e : nums1)
+            mp[e]++;
+        for (auto &e : nums2) {
+            if (mp[e]-- > 0)
+                res.push_back(e);
+        }
+        return res;
+    }
+};
+
+//T : O(NlogN) , S : O(1)
 class Solution {
 public:
     vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
