@@ -24,7 +24,76 @@ Once a dot is crossed, you can jump over it.
 4-1-3-6 x     4-1-9-2 x    2-4-1-3-6 y  6-5-4-1-9-2 y
 */
 
-class AndroidLockPattern {
+// DP solution. T : O(2^9 * 9^2) , S : O(2^9 * 9)
+class Solution {
+public:
+    int numberOfPatterns(int m, int n) {
+        // dp[i][j]: i is the set of the numbers in binary representation,
+        // dp[i][j] is the number of ways ending with the number j.
+        vector<vector<int>> dp(1 << 9 , vector<int>(9, 0));
+        for (int i = 0; i < 9; ++i)
+            dp[merge(0, i)][i] = 1;
+
+        int res = 0;
+        for (int used = 0; used < dp.size(); ++used) { //binary , x bit means x is used
+            const auto number = number_of_keys(used);
+            if (number > n)
+                continue;
+
+            for (int i = 0; i < 9; ++i) {
+                if (!contain(used, i)) //last key number used
+                    continue;
+
+                if (m <= number && number <= n) {
+                    res += dp[used][i];
+                }
+
+                const auto x1 = i / 3;
+                const auto y1 = i % 3;
+                for (int j = 0; j < 9; ++j) {
+                    if (contain(used, j)) //current key shoule be not used before
+                        continue;
+
+                    const auto x2 = j / 3;
+                    const auto y2 = j % 3;
+                    if (((x1 == x2 && abs(y1 - y2) == 2) ||
+                         (y1 == y2 && abs(x1 - x2) == 2) ||
+                         (abs(x1 - x2) == 2 && abs(y1 - y2) == 2)) &&
+                        !contain(used, convert((x1 + x2) / 2, (y1 + y2) / 2))) {
+                            //exception cases, accross one key and that key is not used
+                            continue;
+                    }
+                    dp[merge(used, j)][j] += dp[used][i]; //dp adding
+                }
+            }
+        }
+        return res;
+    }
+
+private:
+    inline int merge(int i, int j) {
+        return i | (1 << j);
+    }
+
+    inline int number_of_keys(int i) {
+        int number = 0;
+        for (; i; i &= i - 1) {
+            ++number;
+        }
+        return number;
+    }
+
+    inline bool contain(int i, int j) {
+        return i & (1 << j);
+    }
+
+    inline int convert(int i, int j) {
+        return 3 * i + j;
+    }
+};
+
+// T : O(9!) , S : O(1)
+class Solution {
 private:
     bool used[9];
     bool isValid(int index, int last) {		
@@ -64,9 +133,9 @@ private:
     }
 
 public:
-    int numberOfPatterns() {
+    int numberOfPatterns(int m, int n) {
         int res =0;
-        for (int len = 4; len <= 9; len++) {				
+        for (int len = m; len <= n; len++) {				
             res += calcPatterns(-1, len);	
             for (int i = 0; i < 9; i++) {
                 used[i] = false;					
@@ -77,8 +146,8 @@ public:
 };
 
 int main() {
-    AndroidLockPattern alp;
-    cout<<alp.numberOfPatterns()<<endl;
+    Solution alp;
+    cout<<alp.numberOfPatterns(4, 9)<<endl;
     return 0;
 }
 
