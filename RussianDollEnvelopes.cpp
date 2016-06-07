@@ -8,6 +8,36 @@ Given envelopes = [[5,4],[6,4],[6,7],[2,3]], the maximum number of envelopes you
 
 Hide Tags Binary Search Dynamic Programming
 */
+bool cmp (pair<int, int> i, pair<int, int> j) {
+    if (i.first == j.first)
+        return i.second > j.second;
+    return i.first < j.first;
+}
+
+class Solution {
+public:
+    int maxEnvelopes(vector<pair<int, int>>& envelopes) {
+        int N = envelopes.size();
+        vector<int> candidates;
+        sort(envelopes.begin(), envelopes.end(), cmp);
+        for (int i = 0; i < N; i++) {
+            int lo = 0, hi = candidates.size() - 1;
+            while (lo <= hi) {
+                int mid = lo + (hi - lo)/2;
+                if (envelopes[i].second > envelopes[candidates[mid]].second)
+                    lo = mid + 1;
+                else
+                    hi = mid - 1;
+            }
+            if (lo == candidates.size())
+                candidates.push_back(i);
+            else
+                candidates[lo] = i;
+        }
+        return candidates.size();
+    }
+};
+
 
 bool cmp (pair<int, int> i, pair<int, int> j) {
     if (i.first == j.first)
