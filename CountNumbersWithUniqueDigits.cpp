@@ -18,17 +18,14 @@ Hide Tags Dynamic Programming Backtracking Math
 class Solution {
 public:
     int countNumbersWithUniqueDigits(int n) {
-        int res = 0, sum = 9;
         if (n == 0 || n == 1)
             return n ? 11 : 2;
         if (n > 10)
             n = 10;
-        for (int i = 1; i <= n; i++) {
-            if (i == 1)
-                res += 10;
-            else
-                res += sum;
-            sum *= 9 - i + 1;
+        int res = 10, sum = 9;
+        for (int i = 1; i < n; i++) {
+            sum *= 10 - i;
+            res += sum;
         }
         return res;
     }
