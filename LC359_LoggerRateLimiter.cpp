@@ -19,6 +19,32 @@ logger.shouldPrintMessage(10,"foo"); returns false;
 logger.shouldPrintMessage(11,"foo"); returns true;
 */
 
+//T : O(1), S : O(k)
+class Logger {
+public:
+    /** Initialize your data structure here. */
+    Logger() {}
+    
+    /** Returns true if the message should be printed in the given timestamp, otherwise returns false. The timestamp is in seconds granularity. */
+    bool shouldPrintMessage(int timestamp, string message) {
+        while (!dq_.empty() && dq_.front().first <= timestamp - 10) {
+            printed_.erase(dq_.front().second);
+            dq_.pop_front();
+        }
+        if (printed_.count(message)) {
+            return false;
+        }
+        dq_.push_back({timestamp, message});
+        printed_.insert(message);
+        return true;
+    }
+
+private:
+    deque<pair<int, string>> dq_;
+    unordered_set<string> printed_;
+};
+
+//T : O(1), S : O(N)
 class Logger {
 public:
     Logger() {}
