@@ -72,6 +72,60 @@ public:
     }
 };
 
+class Solution {
+public:
+    int maxKilledEnemies(vector<vector<char>>& grid) {
+        int res = 0;
+        if (grid.empty() || grid[0].empty())
+            return res;
+
+        int M = grid.size(), N = grid[0].size();
+        vector<vector<int>> col(M, vector<int>(N));
+        vector<vector<int>> row(M, vector<int>(N));
+        for (int i = M - 1; i >= 0; --i) {
+            for (int j = N - 1; j >= 0; --j) {
+                if (grid[i][j] != 'Y') {
+                    if (i + 1 < M)
+                        col[i][j] = col[i + 1][j];
+
+                    if (j + 1 < N)
+                        row[i][j] = row[i][j + 1];
+                    
+                    if (grid[i][j] == 'X') {
+                        ++col[i][j];
+                        ++row[i][j];
+                    }
+                }
+            }
+        }
+
+        int sum = 0;
+        for (int i = 0; i < M; ++i) {
+            for (int j = 0; j < N; ++j) {
+                sum = col[i][j] + row[i][j];
+                col[i][j] = 0;
+                row[i][j] = 0;
+                if (grid[i][j] != 'Y') {
+                    if (i - 1 >= 0)
+                        col[i][j] = col[i - 1][j];
+
+                    if (j - 1 >= 0)
+                        row[i][j] = row[i][j - 1];
+                    
+                    if (grid[i][j] == 'X') {
+                        ++col[i][j];
+                        ++row[i][j];
+                    }
+                    if (grid[i][j] == '0')
+                        res = max(res, sum + col[i][j] + row[i][j]);
+                }
+            }
+        }
+
+        return res;
+    }
+};
+
 int main(void) {
     vector<vector<char>> data = {{'0','X','0','0'}, {'X','0','Y','X'}, {'0','X','0','0'}};
     Solution sol;
@@ -80,5 +134,3 @@ int main(void) {
 }
 
 3
-
-
