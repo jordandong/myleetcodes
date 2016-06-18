@@ -24,6 +24,33 @@ In the example, if you put a bomb at (1,1) you will kill 3 enemies which is the 
 #include <queue>
 using namespace std;
 
+//T : O(MN), S : O(N)
+class Solution {
+public:
+    int maxKilledEnemies(vector<vector<char>>& grid) {
+        int M = grid.size(), N = M ? grid[0].size() : 0;
+        int res = 0, row, col[N];
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < N; j++) {
+                if (j == 0 || grid[i][j - 1] == 'Y') {
+                    row = 0;
+                    for (int k = j; k < N && grid[i][k] != 'Y'; k++)
+                        row += grid[i][k] == 'X';
+                }
+                if (i == 0 || grid[i - 1][j] == 'Y') {
+                    col[j] = 0;
+                    for (int k = i; k < M && grid[k][j] != 'Y'; k++)
+                        col[j] += grid[k][j] == 'X';
+                }
+                if (grid[i][j] == '0')
+                    res = max(res, row + col[j]);
+            }
+        }
+        return res;
+    }
+};
+
+//T : O(MN), S : O(MN + N)
 class Solution {
 public:
     int maxKilledEnemies(vector<vector<char>>& grid) {
@@ -72,6 +99,7 @@ public:
     }
 };
 
+//T : O(MN), S : O(MN)
 class Solution {
 public:
     int maxKilledEnemies(vector<vector<char>>& grid) {
