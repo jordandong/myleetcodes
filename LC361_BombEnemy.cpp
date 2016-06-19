@@ -1,17 +1,14 @@
 /*
-TBD
-We have a 2D grid. Each cell is either a wall, an enemy or empty.
+Given a 2D grid, each cell is either a wall 'Y', an enemy 'X' or empty '0' (the number zero), return the maximum enemies you can kill using one bomb.
+The bomb kills all the enemies in the same row and column from the planted point until it hits the wall since the wall is too strong to be destroyed.
+Note that you can only put the bomb at an empty cell.
 
-For example (0-empty, X-enemy, Y-wall):
+Example:
+For the given grid
 0 X 0 0
 X 0 Y X
 0 X 0 0
-You have one bomb and you want to kill as many as possible enemies with it.
-The bomb will kill all the enemies in the same row and column from the planted point until it hits the wall since the wall is too strong to be destroyed.
-
-Given such a grid, return the maximum enemies you can kill with one bomb.
-Note that you can only put the bomb at empty cell.
-
+return 3. (Placing a bomb at (1,1) kills 3 enemies)
 In the example, if you put a bomb at (1,1) you will kill 3 enemies which is the best you can get. You can not kill the guy behind the wall at (1,3).
 */
 
@@ -94,7 +91,6 @@ public:
                 }
             }
         }
-
         return res;
     }
 };
@@ -149,7 +145,6 @@ public:
                 }
             }
         }
-
         return res;
     }
 };
