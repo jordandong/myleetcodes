@@ -22,6 +22,25 @@ TBD
  
 class Solution {
 public:
+    int depthSumInverse(vector<NestedInteger>& nestedList) {
+        int unweighted = 0, weighted = 0;
+        while (!nestedList.empty()) {
+            vector<NestedInteger> nextLevel;
+            for (auto ni : nestedList) {
+                if (ni.isInteger())
+                    unweighted += ni.getInteger();
+                else
+                    nextLevel.insert(nextLevel.end(), ni.getList().begin(), ni.getList().end());
+            }
+            weighted += unweighted;
+            nestedList = nextLevel;
+        }
+        return weighted;
+    }
+};
+ 
+class Solution {
+public:
     void getLevel(vector<NestedInteger>& nestedList, int level, int& maxLevel) {
         maxLevel = max(level, maxLevel);
         for (NestedInteger ni : nestedList) {
