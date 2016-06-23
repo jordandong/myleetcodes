@@ -49,3 +49,36 @@ public:
         return depthSumInverseHelper(nestedList, maxLevel);
     }
 };
+
+class Solution {
+public:
+    void depthSumInverseHelper(vector<NestedInteger>& nestedList, int depth, map<int,int> &M) {
+        for(auto ni : nestedList) {
+            if(ni.isInteger()) {
+                // accumulate all integers in same depth
+                if(M.find(depth) == M.end()) {
+                    M[depth] = ni.getInteger();
+                } else {
+                    M[depth] += ni.getInteger();
+                }               
+            } else {
+                depthSumInverseHelper(ni.getList(), depth + 1, M);
+            }
+        }
+    }
+
+    int depthSumInverse(vector<NestedInteger>& nestedList) {
+        int ret = 0;
+        map<int, int> M; //sorted
+        depthSumInverseHelper(nestedList, 1, M);
+        if(M.empty())
+            return 0;
+        auto it = prev(M.end(), 1);
+        int higestDepth = it->first + 1, depth = 1;
+        for(auto iter = M.begin(); iter != M.end(); ++iter) {
+            depth = higestDepth - iter->first;
+            ret += depth*iter->second;
+        }
+        return ret;
+    }
+};
