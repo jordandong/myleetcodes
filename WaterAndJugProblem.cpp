@@ -19,11 +19,12 @@ Hide Tags Math
 */
 
 //x = md, y = nd, z = kd,  amd - bnd = kd -> am - bn = k
-//there exists ax + (-by) = t (t = 0 , t = 1), then t + 1 = a'x + (-b'y) exsits, then t = [1 ~ max(x, y)] exists 
+//there exists ax + (-by) = t (t = 0 , t = 1), then t + 1 = a'x + (-b'y) exsits, then t = [1 ~ (x + y)] exists 
 class Solution {
 public:
     bool canMeasureWater(int x, int y, int z) {
-        return z <= max(x, y) && z % GCD(x, y) == 0;
+        int d = GCD(x, y);
+        return d == z || ((z <= x + y) && (z % d == 0));
     }
     
     int GCD(int x, int y) {
