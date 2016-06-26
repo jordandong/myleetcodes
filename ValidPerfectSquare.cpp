@@ -13,6 +13,22 @@ Returns: False
 Hide Tags Binary Search
 */
 
+/*
+1 = 1
+4 = 1 + 3
+9 = 1 + 3 + 5
+...
+SUM(1, 3, 5, ... , 2n - 1)  = (1 + 2n - 1) * n / 2 = n^n
+*/
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        for (int i = 1; num > 0; i += 2)
+            num -= i;
+        return num == 0;
+    }
+};
+
 class Solution {
 public:
     bool isPerfectSquare(int num) {
