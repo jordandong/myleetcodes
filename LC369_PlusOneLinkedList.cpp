@@ -21,6 +21,32 @@ using namespace std;
  * };
  */
 
+//T : O(N), S : O(N) 
+class Solution {
+public:
+    ListNode* plusOne(ListNode* head) {
+        int carry  = plusOneHelper(head);
+        if (carry > 0 && head) {
+            ListNode* new_head = new ListNode(carry);
+            new_head->next = head;
+            return new_head;
+        }
+        return head;
+    }
+
+    int plusOneHelper(ListNode* head) {
+        if (!head)
+            return 1;
+        int carry = plusOneHelper(head->next);
+        if (carry > 0) {
+            head->val += carry;
+            carry = head->val / 10;
+            head->val %= 10;
+        }
+        return carry;
+    }
+};
+
 // T : O(3*N), S : O(1)
 class Solution {
 public:
