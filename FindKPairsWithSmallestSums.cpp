@@ -27,6 +27,51 @@ Special thanks to @elmirap and @StefanPochmann for adding this problem and creat
 Hide Tags Heap
 */
 
+/*
+  1  2  3  4  5
+1 2  3  4  5  6
+2 3  4  5  6  7
+3 4  5  6  7  8
+4 5  6  7  8  9
+5 6  7  8  9  10
+*/
+
+// T : O(k*log(min(M, N, k))), S : O(min(M, N, k))
+class Solution {
+public:
+    vector<pair<int, int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        if (nums1.size() > nums2.size()) {
+            auto rtn = kSmallestPairs(nums2, nums1, k);
+            for (auto &pair : rtn) {
+                swap(pair.first, pair.second);
+            }
+            return rtn;
+        }
+
+        vector<pair<int, int>> pairs;
+        using P = pair<int, pair<int, int>>;
+        priority_queue<P, vector<P>, greater<P>> q;
+        auto push = [&nums1, &nums2, &q](int i, int j) {
+            if (i < nums1.size() && j < nums2.size()) {
+                q.emplace(nums1[i] + nums2[j], make_pair(i, j));
+            }
+        };
+
+        push(0, 0);
+        while (!q.empty() && pairs.size() < k) {
+            auto tmp = q.top();
+            q.pop();
+            int i, j;
+            tie(i, j) = tmp.second;
+            pairs.emplace_back(nums1[i], nums2[j]);
+            push(i, j + 1); //update in the same row
+            if (j == 0) {
+                push(i + 1, 0);  //update the first pair in the next row
+            }
+        }
+        return pairs; 
+    }
+};
 
 //T : O(k*min(M,N)), S : O(min(M, N))
 class Solution {
