@@ -28,6 +28,29 @@ Special thanks to @agave and @StefanPochmann for adding this problem and creatin
 Hide Tags Dynamic Programming Greedy
 */
 
+// T : O(N), S : O(1)
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        int N = nums.size();
+        if (N < 2)
+            return N;
+        
+        int res = 1;
+        int up = 0;
+
+        for (int i = 1; i < N; ++i) {
+            if (nums[i - 1] < nums[i] && (up == 0 || up == -1)) {
+                ++res;
+                up = 1;
+            } else if (nums[i - 1] > nums[i] && (up == 0 || up == 1)) {
+                ++res;
+                up = -1;
+            }
+        }
+        return res;
+    }
+};
 
 //T : O(N), S : O(1)
 class Solution {
