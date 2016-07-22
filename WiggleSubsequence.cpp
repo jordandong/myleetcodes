@@ -29,25 +29,23 @@ Hide Tags Dynamic Programming Greedy
 */
 
 
-//T : O(N), S : O(N)
+//T : O(N), S : O(1)
 class Solution {
 public:
     int wiggleMaxLength(vector<int>& nums) {
         int N = nums.size();
         if (N == 0 || N == 1)
             return N;
-        vector<int> diffs;
-        for (int i = 0; i + 1 < N; i++)
-            diffs.push_back(nums[i + 1] - nums[i]);
 
         int res = 1;
-        int sum = -diffs[0];
-        for (int i = 0; i < diffs.size(); i++) {
-            if (diffs[i] * sum < 0) {
+        int sum = nums[0] - nums[1];
+        for (int i = 0; i + 1 < N; i++) {
+            int diff = nums[i + 1] - nums[i];
+            if (diff * sum < 0) {
                 sum = 0;
                 res += 1;
             }
-            sum += diffs[i];
+            sum += diff;
         }
         return res;
     }
