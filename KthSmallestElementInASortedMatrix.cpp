@@ -31,16 +31,16 @@ public:
         int lo = matrix[0][0], hi = matrix[M - 1][M - 1];
         while (lo < hi) {
             int mid = lo + (hi - lo) / 2;
-			int num = 0;
-			for (int i = 0; i < M; i++)
-				num += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
-			if (num < k)
-				lo = mid + 1;
-			else
-				hi = mid;
-		}
-		return lo;
-	}
+            int num = 0;
+            for (int i = 0; i < M; i++)
+            	num += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
+            if (num < k)
+                lo = mid + 1;
+            else
+                hi = mid;
+        }
+        return lo;
+    }
 };
 
 // T:  O(k * log(min(M, N, k))) , S: O(min(M, N, K))
