@@ -26,25 +26,40 @@ Hide Tags Array Hash Table Design
 */
 
 class RandomizedSet {
+private:
+    unordered_map<int, int> v2idx;
+    vector<int> data;
 public:
     /** Initialize your data structure here. */
     RandomizedSet() {
-        
     }
     
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     bool insert(int val) {
-        
+        if (v2idx.find(val) != v2idx.end())
+            return false;
+        data.push_back(val);
+        v2idx[val] = data.size() - 1;
+        return true;
     }
     
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     bool remove(int val) {
-        
+        if (v2idx.find(val) == v2idx.end())
+            return false;
+        int idx = v2idx[val];
+        data[idx] = data.back();
+        v2idx[data[idx]] = idx;
+        v2idx.erase(val);
+        data.pop_back();
+        return true;
     }
     
     /** Get a random element from the set. */
     int getRandom() {
-        
+        if (data.size() == 0)
+            return 0;
+        return data[rand()%data.size()];
     }
 };
 
