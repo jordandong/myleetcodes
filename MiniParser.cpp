@@ -57,6 +57,8 @@ Hide Tags Stack String
 class Solution {
 public:
     NestedInteger deserialize(string s) {
+        if (s == "")
+            return NestedInteger();
         istringstream in(s);
         return deserializeHelper(in);
     }
