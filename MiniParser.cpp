@@ -79,3 +79,34 @@ private:
         return list;
     }
 };
+
+// T : O(N), S : O(N)
+class Solution{
+public:
+    NestedInteger deserialize(string s) {
+        if (s == "")
+            return NestedInteger();
+        int i = 0;
+        return deserializeHelper(s, i);
+    }
+private:
+    NestedInteger deserializeHelper(const string &s, int &i) {
+        NestedInteger result;
+        if (s[i] != '[') {
+            int j = i;
+            while (j < s.length() && (s[j] == '-' || isdigit(s[j])))
+                ++j;
+            result.setInteger(stoi(s.substr(i, j - i + 1)));
+            i = j;
+        } else {
+            ++i;
+            while (i < s.length() && s[i] != ']') {
+                result.add(deserializeHelper(s, i));
+                if (i < s.length() && s[i] == ',')
+                    ++i;
+            }
+            ++i;
+        }
+        return result;
+    }
+};
