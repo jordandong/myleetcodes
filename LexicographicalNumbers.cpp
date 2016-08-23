@@ -33,3 +33,31 @@ public:
         }
     }
 };
+
+// T : O(N), S : O(1)
+class Solution {
+public:
+    vector<int> lexicalOrder(int n) {
+        vector<int> res;
+        for (int i = 1, num = 1; res.size() < n; i = num + 1) {
+            for (int k = 0; i * pow(10, k) <= n; ++k) {
+                res.push_back(i * pow(10, k));
+            }
+
+            for (num = res.back() + 1; num <= n && num % 10; ++num) {
+                res.push_back(num);
+            }
+
+            if (num % 10 == 0) {
+                --num;
+            } else {
+                num /= 10;
+            }
+
+            while (num % 10 == 9) {
+                num /= 10;
+            }
+        }
+        return res;
+    }
+};
