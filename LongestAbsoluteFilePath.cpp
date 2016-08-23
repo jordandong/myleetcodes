@@ -52,6 +52,7 @@ public:
             if (name.find('.') != string::npos) {
                 max_len = max(max_len, path_len[depth] + name.length());
             } else {
+                //update current depth length, must have dir first then file
                 path_len[depth + 1] = path_len[depth] + name.length() + 1;
             }
         }
