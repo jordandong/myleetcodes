@@ -15,3 +15,10 @@ n = 9,
 Output:
 6
 */
+
+class Solution {
+public:
+    int lastRemaining(int n) {
+ 
+    }
+};
