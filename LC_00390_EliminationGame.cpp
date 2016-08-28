@@ -16,9 +16,23 @@ Output:
 6
 */
 
+//T : O(logN), S : O(1)
 class Solution {
 public:
     int lastRemaining(int n) {
- 
+        int begin = 1,  step = 1, round = 0;
+        int end;
+        while (n > 1) {
+            n /= 2;
+            round++;
+            step *= 2;
+            if (round % 2) {//left to right
+                end = begin + step/2 + step * (n - 1);
+            } else { //right to left
+                end = begin - step/2 - step * (n - 1);
+            }
+            begin = end;
+        }
+        return begin;
     }
 };
