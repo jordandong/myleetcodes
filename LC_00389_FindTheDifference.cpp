@@ -14,6 +14,31 @@ Explanation:
 'e' is the letter that was added.
 */
 
+// T : O(N), S : O(1)
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        char r = 0;
+        for (auto c : t)
+            r ^= c;
+        for (auto c : s)
+            r ^= c;
+        return r;
+    }
+};
+
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        long long sum = t[t.length() - 1];
+        for (int i = 0; i < s.length(); i++) {
+            sum -= s[i];
+            sum += t[i];
+        }
+        return char(sum);
+    }
+};
+
 // T : O(N), S : O(K)
 class Solution {
 public:
