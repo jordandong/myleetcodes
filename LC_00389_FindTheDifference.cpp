@@ -14,6 +14,7 @@ Explanation:
 'e' is the letter that was added.
 */
 
+// T : O(N), S : O(K)
 class Solution {
 public:
     char findTheDifference(string s, string t) {
@@ -28,5 +29,19 @@ public:
             }
         }
         return 'x';
+    }
+};
+
+//T : O(NlogN), S : O(1)
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        sort(s.begin(), s.end());
+        sort(t.begin(), t.end());
+        for (int i = 0; i < t.length() - 1; i++) {
+            if (s[i] != t[i])
+                return t[i];
+        }
+        return t[t.length() - 1];
     }
 };
