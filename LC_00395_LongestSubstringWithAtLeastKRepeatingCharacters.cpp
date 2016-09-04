@@ -19,6 +19,34 @@ The longest substring is "ababb", as 'a' is repeated 2 times and 'b' is repeated
 class Solution {
 public:
     int longestSubstring(string s, int k) {
+        return longestSubstringHelper(s, k, 0, s.length());
+    }
+private:
+    int longestSubstringHelper(string &s, int k, int start, int end) {
+        vector<int> mp(26, 0);
+        for (int i = start; i < end; i++)
+            mp[s[i] - 'a']++;
+        int res = 0;
+        for(int i = start; i < end; i++) {
+            while (i < end && mp[s[i] - 'a'] < k)
+                ++i;
+            if (i == end)
+                break;
+            int j = i;
+            while (j < end && mp[s[j] - 'a'] >= k)
+                ++j;
+            if (i == start && j == end)
+                return end - start; 
+            res = max(res, longestSubstringHelper(s, k, i, j));
+            i = j;
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int longestSubstring(string s, int k) {
         if (s == "")
             return 0;
         vector<int> mp(26, 0);
