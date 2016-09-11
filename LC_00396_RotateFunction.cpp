@@ -28,7 +28,7 @@ public:
         }
 
         int res = fi;
-        for (int i = 1; i <= A.size(); ++i) {
+        for (int i = 1; i < A.size(); ++i) {
             fi += sum - A.size() * A[A.size() - i];
             res = max(res, fi);
         }
