@@ -14,17 +14,30 @@ solution.pick(3);
 
 // pick(1) should return 0. Since in the array only nums[0] is equal to 1.
 solution.pick(1);
+
+Hide Tags Reservoir Sampling
 */
 
 class Solution {
 public:
     Solution(vector<int> nums) {
-        
+        nums_ = nums;
     }
     
     int pick(int target) {
-        
+        auto reservoir = -1;
+        int n = 0;
+        for (int i = 0; i < nums_.size(); ++i) {
+            if (nums_[i] != target)
+                continue;
+            if (++n == 1 || rand() % n == 0)
+                reservoir = i;
+        }
+        return reservoir;
     }
+
+private:
+    vector<int> nums_;
 };
 
 /**
