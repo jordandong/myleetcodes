@@ -20,5 +20,17 @@ So the maximum value of F(0), F(1), F(2), F(3) is F(3) = 26.
 class Solution {
 public:
     int maxRotateFunction(vector<int>& A) {
+        int sum = 0, fi = 0;
+        for (int i = 0; i < A.size(); ++i) {
+            fi += i * A[i];
+            sum += A[i];
+        }
 
+        int res = fi;
+        for (int i = 1; i <= A.size(); ++i) {
+            fi += sum - A.size() * A[A.size() - i];
+            res = max(res, fi);
+        }
+        return res;
+    }
 };
