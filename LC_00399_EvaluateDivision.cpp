@@ -19,9 +19,46 @@ The input is always valid.
 You may assume that evaluating the queries will result in no division by zero and there is no contradiction.
 */
 
+// T : O(E + q * |V|), |V| is the number of variables
+// S : O(E)
 class Solution {
 public:
-    vector<double> calcEquation(vector<pair<string, string>> equations, vector<double>& values, vector<pair<string, string>> query) {
-        
+    vector<double> calcEquation(vector<pair<string, string>> equations,
+        vector<double>& values, vector<pair<string, string>> query) {
+
+        unordered_map<string, unordered_map<string, double>> lookup;
+        for (int i = 0; i < values.size(); ++i) {
+            lookup[equations[i].first].emplace(equations[i].second, values[i]);
+            if (values[i] != 0) {
+                lookup[equations[i].second].emplace(equations[i].first, 1 / values[i]);
+            }
+        }
+
+        vector<double> result;
+        for (const auto& i : query) {
+            unordered_set<string> visited;
+            const auto tmp = check(i.first, i.second, lookup, &visited);
+            result.emplace_back(tmp.second);
+        }
+        return result;
+    }
+
+private:
+    pair<bool, double> check(string up, string down, 
+            unordered_map<string, unordered_map<string, double>> &lookup,
+            unordered_set<string> *visited) {
+        if (lookup[up].find(down) != lookup[up].end()) {
+            return {true, lookup[up][down]};
+        }
+        for (const auto& q : lookup[up]) {
+            if (!visited->count(q.first)) {
+                visited->emplace(q.first);
+                const auto tmp = check(q.first, down, lookup, visited);
+                if (tmp.first) {
+                    return {true, q.second * tmp.second};
+                }
+            }
+        }
+        return {false, -1};
     }
 };
