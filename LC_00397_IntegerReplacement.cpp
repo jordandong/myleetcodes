@@ -28,6 +28,26 @@ Hide Tags Math
 class Solution {
 public:
     int integerReplacement(int n) {
+        long long num = n;
+        int res = 0;
+        while (num != 1) {
+            long long r = num & 0x3;
+            //make more power of 2 ASAP
+            if (r == 1 || num == 3)
+                num--;
+            else if (r == 3)
+                num++;
+            else
+                num /= 2;
+            res++;
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int integerReplacement(int n) {
         return integerReplacementHelper(n);
     }
     
