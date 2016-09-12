@@ -19,6 +19,46 @@ The input is always valid.
 You may assume that evaluating the queries will result in no division by zero and there is no contradiction.
 */
 
+// T : O(|V|^3 + |E| + q), S : O(|V| + |V|^2)
+class Solution {
+public:
+    vector<double> calcEquation(vector<pair<string, string>> equations,
+        vector<double>& values, vector<pair<string, string>> query) {
+        
+        if (equations.size() != values.size())
+            return {};
+        
+        unordered_map<string, double> lookup;
+        set<string> V;
+        vector<double> res;
+        for (int i = 0; i < values.size(); i++) {
+            lookup[equations[i].first + " " + equations[i].second] = values[i];
+            if (values[i])
+                lookup[equations[i].second + " " + equations[i].first] = 1.0/values[i];
+            V.insert(equations[i].first);
+            V.insert(equations[i].second);
+        }
+        
+        for (auto it = V.begin(); it != V.end(); it++) {
+            lookup[*it + " " + *it] = 1.0;
+            for (auto itx = V.begin(); itx != V.end(); itx++) {
+                for (auto ity = V.begin(); ity != V.end(); ity++) {
+                    if (lookup.find(*itx + " " + *it) != lookup.end() && lookup.find(*it + " " + *ity) != lookup.end())
+                        lookup[*itx + " " + *ity] = lookup[*itx + " " + *it] * lookup[*it + " " + *ity]; 
+                }
+            }
+        }
+        
+        for (auto q : query) {
+            if(lookup.find(q.first + " " + q.second) != lookup.end())
+                res.push_back(lookup[q.first + " " + q.second]);
+            else
+                res.push_back(-1.0);
+        }
+        return res;
+    }
+};
+
 // T : O(E + q * |V|), |V| is the number of variables
 // S : O(E)
 class Solution {
