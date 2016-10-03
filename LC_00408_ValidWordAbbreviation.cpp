@@ -22,6 +22,7 @@ Return false.
 #include <iostream>
 using namespace std;
 
+//T : O(N) , S : O(1)
 class Solution {
 public:
     bool validWordAbbreviation(string word, string abbr) {
@@ -51,9 +52,9 @@ public:
 };
 
 int main() {
-	Solution s;
-	cout<<s.validWordAbbreviation("asdwewqe", "a3e2e")<<endl;
-	cout<<s.validWordAbbreviation("foot", "f4")<<endl;
-	return 0;
+    Solution s;
+    cout<<s.validWordAbbreviation("asdwewqe", "a3e2e")<<endl;
+    cout<<s.validWordAbbreviation("foot", "f4")<<endl;
+    return 0;
 }
 
