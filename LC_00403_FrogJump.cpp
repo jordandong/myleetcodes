@@ -38,6 +38,33 @@ Hide Tags Dynamic Programming
 class Solution {
 public:
     bool canCross(vector<int>& stones) {
+        unordered_map<int, bool> dp;
+        return canCrossHelper(stones, 0, 0, dp);
+    }
+    
+    bool canCrossHelper(vector<int>& stones, int pos, int k, unordered_map<int, bool> &dp) {
+        int key = pos | k << 11; // max k is 1100 at step 1100, pos is less than 1100
+
+        if (dp.count(key) > 0)
+            return dp[key];
+
+        for (int i = pos + 1; i < stones.size(); i++) {
+            int gap = stones[i] - stones[pos];
+            if (gap < k - 1)
+                continue;
+            if (gap > k + 1)
+                return dp[key] = false;
+            if (canCrossHelper(stones, i, gap, dp))
+                return dp[key] = true;
+        }
+
+        return dp[key] = (pos == stones.size() - 1);
+    }
+};
+
+class Solution {
+public:
+    bool canCross(vector<int>& stones) {
         return canCrossHelper(stones, 0, 0);
     }
     
