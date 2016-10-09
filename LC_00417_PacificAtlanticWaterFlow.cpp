@@ -26,6 +26,38 @@ Hide Tags Depth-first Search Breadth-first Search
 class Solution {
 public:
     vector<pair<int, int>> pacificAtlantic(vector<vector<int>>& matrix) {
-        
+        int M = matrix.size();
+        if (M == 0)
+            return {};
+        int N = matrix[0].size();
+        if (N == 0)
+            return {};
+            
+        vector<pair<int, int> > res;
+        set<int> pac, alt;
+        for (int i = 0; i < M; i++)
+            DFS(i, 0, -1, matrix, pac);
+        for (int j = 0; j < N; j++)
+            DFS(0, j, -1, matrix, pac);
+        for (int i = 0; i < M; i++)
+            DFS(i, N - 1, -1, matrix, alt);
+        for (int j = 0; j < N; j++)
+            DFS(M - 1, j, -1, matrix, alt);
+        for (auto &e : pac) {
+            if(alt.count(e)) {
+                res.push_back(make_pair(e >> 16, e & 0xffff));
+            }
+        }      
+        return res;
+    }
+    
+    void DFS(int x, int y, int last_val, vector<vector<int>> &m, set<int> &visited) {
+        if (x < 0 || x >= m.size() || y < 0 || y >= m[0].size() || visited.count((x<<16) | y) || m[x][y] < last_val)
+            return;
+        visited.insert((x<<16) | y);
+        DFS(x + 1, y, m[x][y], m, visited);
+        DFS(x - 1, y, m[x][y], m, visited);
+        DFS(x, y + 1, m[x][y], m, visited);
+        DFS(x, y - 1, m[x][y], m, visited);
     }
 };
