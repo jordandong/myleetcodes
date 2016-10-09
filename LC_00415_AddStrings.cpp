@@ -16,21 +16,19 @@ public:
         int n1 = num1.size(), n2 = num2.size();
         string res = "";
         int carry = 0;
-        while (n1 || n2) {
-            int v1 = 0, v2 = 0;
+        while (n1 || n2 || carry) {
+            int v = carry;
             if (n1) {
-                v1 = (num1[--n1] - '0'); 
-            }
-            
+                v += (num1[--n1] - '0'); 
+            }            
             if (n2) {
-                v2 = (num2[--n2] - '0'); 
+                v += (num2[--n2] - '0'); 
             }
-            int v =  v1 + v2 + carry;
             carry = v/10;
             v %= 10;
             string s(1, '0' + v);
             res = s + res;
         }
-        return carry ? "1" + res : (res == "" ? "0" : res);
+        return res == "" ? "0" : res;
     }
 };
