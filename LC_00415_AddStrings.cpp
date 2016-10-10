@@ -14,6 +14,24 @@ class Solution {
 public:
     string addStrings(string num1, string num2) {
         int n1 = num1.size(), n2 = num2.size();
+        if (n1 < n2)
+            return addStrings(num2, num1);
+        int carry = 0;
+        while (n2 || (carry && n1)) {
+            carry += (num1[--n1] - '0');
+            if (n2 > 0)
+                carry += (num2[--n2] - '0'); 
+            num1[n1] = carry % 10 + '0';
+            carry /= 10;
+        }
+        return carry ? "1" + num1 : num1;
+    }
+};
+
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        int n1 = num1.size(), n2 = num2.size();
         string res = "";
         int carry = 0;
         while (n1 || n2 || carry) {
