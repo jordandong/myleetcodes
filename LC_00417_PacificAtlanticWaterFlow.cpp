@@ -35,19 +35,21 @@ public:
             
         vector<pair<int, int> > res;
         set<int> pac, alt;
-        for (int i = 0; i < M; i++)
+        for (int i = 0; i < M; i++) {
             DFS(i, 0, -1, matrix, pac);
-        for (int j = 0; j < N; j++)
-            DFS(0, j, -1, matrix, pac);
-        for (int i = 0; i < M; i++)
             DFS(i, N - 1, -1, matrix, alt);
-        for (int j = 0; j < N; j++)
+        }
+            
+        for (int j = 0; j < N; j++) {
+            DFS(0, j, -1, matrix, pac);
             DFS(M - 1, j, -1, matrix, alt);
+        }
+        
         for (auto &e : pac) {
-            if(alt.count(e)) {
+            if(alt.count(e))
                 res.push_back(make_pair(e >> 16, e & 0xffff));
-            }
-        }      
+        }
+            
         return res;
     }
     
