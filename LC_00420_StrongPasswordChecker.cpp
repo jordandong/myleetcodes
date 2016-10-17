@@ -12,6 +12,50 @@ Insertion, deletion and replace of any one character are all considered as one c
 class Solution {
 public:
     int strongPasswordChecker(string s) {
+        bool lower = false, upper = false, digit = false;
+        int required = 0, removed = 0, replaced = 0, inserted = 0;
+        int repeat = 0, len = s.length();
+        char prev = '\0', total = 0;
+        int MINI_LEN = 6, MAXI_LEN = 20, REP_LEN = 3;
+
+        for (char c : s) {
+            lower |= (c >= 'a' && c <= 'z'); //lower case
+            upper |= (c >= 'A' && c <= 'Z'); //upper case
+            digit |= (c >= '0' && c <= '9'); //digit case
+            if (c == prev) {
+                if(++repeat == REP_LEN) {
+                    if (len > MAXI_LEN) {//remove 3rd char
+                        len--;
+                        removed++;
+                        repeat--;
+                    } else if (len >= MINI_LEN && len <= MAXI_LEN) {//replace 3rd char with required char
+                        replaced++;
+                        repeat = 0;
+                    } else if (len < MINI_LEN) { //insert required char before 3rd char
+                        inserted++;
+                        repeat = 1;
+                        len++;
+                    }
+                }
+            } else {
+                prev = c;
+                repeat = 1;
+            }
+        }
+        required = !lower + !upper + !digit;
+        total = required - replaced - inserted;
+        if (total < 0) {// all used when relpacing and inserting
+            total = replaced + inserted + removed;
+        } else {
+            total += (replaced + inserted + removed); //adding required case as well
+        }
         
+        if (len > MAXI_LEN) {
+            total += (len - MAXI_LEN);
+        }
+        if (len + required < MINI_LEN) {
+            total += (MINI_LEN - len - required);
+        }
+        return total;
     }
 };
