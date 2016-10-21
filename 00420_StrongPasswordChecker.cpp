@@ -6,7 +6,7 @@ A password is considered strong if below conditions are all met:
 
 Write a function strongPasswordChecker(s), that takes a string s as input, and return the MINIMUM change required to make s a strong password.
 If s is already strong, return 0.
-Insertion, deletion and replace of any one character are all considered as one change.
+Insertion, deletion or replace of any one character are all considered as one change.
 */
 
 class Solution {
@@ -18,23 +18,33 @@ public:
         char prev = '\0', total = 0;
         int MINI_LEN = 6, MAXI_LEN = 20, REP_LEN = 3;
 
-        for (char c : s) {
+        for (int i = 0; i < s.length(); i++) {
+            char c = s[i];
             lower |= (c >= 'a' && c <= 'z'); //lower case
             upper |= (c >= 'A' && c <= 'Z'); //upper case
             digit |= (c >= '0' && c <= '9'); //digit case
             if (c == prev) {
                 if(++repeat == REP_LEN) {
-                    if (len > MAXI_LEN) {//remove 3rd char
-                        len--;
-                        removed++;
-                        repeat--;
-                    } else if (len >= MINI_LEN && len <= MAXI_LEN) {//replace 3rd char with required char
+                    if (len > MAXI_LEN) { //remove 3rd char
+                        if (i + 1 < s.length() && c == s[i + 1]) {
+                            //if more than three repeating, relpaced first, e.g "aaaabbaaabbaaa123456A"
+                            replaced++;
+                            repeat = 0;
+                            prev = '\0';
+                        } else {
+                            len--;
+                            removed++;
+                            repeat--;
+                        }
+                    } else if (len >= MINI_LEN && len <= MAXI_LEN) { //replace 3rd char with required char
                         replaced++;
                         repeat = 0;
+                        prev = '\0';
                     } else if (len < MINI_LEN) { //insert required char before 3rd char
                         inserted++;
                         repeat = 1;
                         len++;
+                        prev = '\0';
                     }
                 }
             } else {
@@ -44,7 +54,7 @@ public:
         }
         required = !lower + !upper + !digit;
         total = required - replaced - inserted;
-        if (total < 0) {// all used when relpacing and inserting
+        if (total < 0) { // all used when relpacing and inserting
             total = replaced + inserted + removed;
         } else {
             total += (replaced + inserted + removed); //adding required case as well
