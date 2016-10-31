@@ -68,3 +68,58 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        int len1 = 0, len2 = 0, len = 0;
+        ListNode *t = l1, *res;
+        while (t) {
+            len1++;
+            t= t->next;
+        }
+        t = l2;
+        while (t) {
+            len2++;
+            t= t->next;
+        }
+        len = max(len1, len2);
+        
+        res = new ListNode(0);
+        t = res;
+        while (len) {
+            t->next = new ListNode(0);
+            t = t->next;
+            if (len <= len1) {
+                t->val += l1->val;
+                l1 = l1->next;
+            }
+            if (len <= len2) {
+                t->val += l2->val;
+                l2 = l2->next;
+            }
+            len--;
+        }
+        
+        t = res;
+        while (t) {
+            ListNode *q = t->next;
+            while (q && q->val == 9) {
+                q = q->next;
+            }
+            if (q && q->val > 9) {
+                while (t != q) {
+                    t->val += 1;
+                    t = t->next;
+                    t->val -= 10;
+                }
+            } else {
+                t = q;
+            }
+        }
+        if (res->val)
+            return res;
+        else
+            return res->next;
+    }
+};
