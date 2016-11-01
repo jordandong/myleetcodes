@@ -48,3 +48,24 @@ public:
         return intervals.size() - res;   
     }
 };
+
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<Interval>& intervals) {
+        sort(intervals.begin(), intervals.end(),
+             [](const Interval& a, const Interval& b) { return a.start < b.start; });
+
+        int result = 0, prev = 0;
+        for (int i = 1; i < intervals.size(); ++i) {
+            if (intervals[i].start < intervals[prev].end) {
+                if (intervals[i].end < intervals[prev].end) {
+                    prev = i;
+                }
+                ++result;
+            } else {
+                prev = i;
+            }
+        }
+        return result;
+    }
+};
