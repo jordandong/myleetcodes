@@ -39,6 +39,21 @@ All arithmetic subsequence slices are:
 class Solution {
 public:
     int numberOfArithmeticSlices(vector<int>& A) {
-        
+        int ans = 0;
+        int N = A.size();
+        if (N < 3)
+            return 0;
+        vector<unordered_map<long long, int>> dp(N);
+        for (int i = 1; i < N; i++) {
+            for (int j = 0; j < i; j++) {
+                long long dist = (long long)A[i] - A[j];
+                auto it = dp[j].find(dist);
+                int s = (it == dp[j].end() ? 0 : it->second) + 1;
+                dp[i][dist] += s;
+                ans += s;
+            }
+            ans -= i;
+        }
+        return ans;
     }
 };
