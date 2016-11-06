@@ -19,6 +19,13 @@ Discuss
 class Solution {
 public:
     int minMoves(vector<int>& nums) {
-        
+        //same to dec one element by 1
+        int sum = 0;
+        int mini = INT_MAX;
+        for (auto &e : nums) {
+            sum += e;
+            mini = min(mini, e);
+        }
+        return sum - mini * nums.size();
     }
 };
