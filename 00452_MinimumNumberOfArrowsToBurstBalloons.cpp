@@ -18,6 +18,21 @@ One way is to shoot one arrow for example at x = 6 (bursting the balloons [2,8] 
 class Solution {
 public:
     int findMinArrowShots(vector<pair<int, int>>& points) {
-        
+        //greedy
+        int N = points.size();
+        if (N == 0)
+            return 0;
+
+        int res = 1; //count the first one
+        int emin = INT_MAX;
+        sort(points.begin(), points.end()); //sorted by start
+        for (int i = 0; i < N; ++i) {
+            if (emin < points[i].first) {
+                res++;
+                emin = INT_MAX;
+            }
+            emin = min(points[i].second, emin);
+        }
+        return res;
     }
 };
