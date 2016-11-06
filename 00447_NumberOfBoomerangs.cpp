@@ -17,6 +17,21 @@ The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]]
 class Solution {
 public:
     int numberOfBoomerangs(vector<pair<int, int>>& points) {
-        
+        int result = 0;
+        for (int i = 0; i < points.size(); ++i) {
+            unordered_map<int, int> group;
+            for (int j = 0; j < points.size(); ++j) {
+                if (j == i)
+                    continue;
+                const auto dx = points[i].first - points[j].first;
+                const auto dy = points[i].second - points[j].second;
+                ++group[dx * dx + dy * dy];
+            }
+            //A(n, 2) = n * (n-1)
+            for (const auto& p : group) {
+                result += p.second * (p.second - 1);
+            }
+        }
+        return result;
     }
 };
