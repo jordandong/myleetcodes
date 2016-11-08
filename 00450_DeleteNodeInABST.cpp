@@ -1,4 +1,39 @@
 /*
+Given a root node reference of a BST and a key, delete the node with the given key in the BST.
+Return the root node reference (possibly updated) of the BST.
+
+Basically, the deletion can be divided into two stages:
+1. Search for a node to remove.
+2. If the node is found, delete the node.
+
+Note: Time complexity should be O(height of tree).
+
+Example:
+root = [5,3,6,2,4,null,7]
+key = 3
+    5
+   / \
+  3   6
+ / \   \
+2   4   7
+
+Given key to delete is 3. So we find the node with value 3 and delete it.
+
+One valid answer is [5,4,6,2,null,null,7], shown in the following BST.
+    5
+   / \
+  4   6
+ /     \
+2       7
+
+Another valid answer is [5,2,6,null,4,null,7].
+    5
+   / \
+  2   6
+   \   \
+    4   7
+
+Hide Tags Tree
 */
 
 /**
@@ -13,13 +48,17 @@
 class Solution {
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
+        deleteNodeHelper(root, key);
+        return root;
+    }
+private:
+    void deleteNodeHelper(TreeNode* &root, int key) {
         if (!root)
-            return NULL;
-        return NULL;
+            return;
         if (root->val > key) {
-		    return deleteNode(root->left, key); //go left
+		    deleteNodeHelper(root->left, key); //go left
         } else if (root->val < key) {
-		    return deleteNode(root->right, key); //go right
+		    deleteNodeHelper(root->right, key); //go right
     	} else { //found
 		    if (!root->left) { //no left child
 			    TreeNode* tmp = root->right;
@@ -38,11 +77,10 @@ public:
 			    }
 			    root->val = tmp->val;
 			    if (parent)
-				    return deleteNode(parent->left, parent->left->val);
+				    deleteNodeHelper(parent->left, parent->left->val);
 			    else
-				    return deleteNode(root->right, root->right->val);
+				    deleteNodeHelper(root->right, root->right->val);
 		    }
-		    return NULL;
 	    }
     }
 };
