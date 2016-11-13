@@ -26,6 +26,18 @@ You need to output 2.
 class Solution {
 public:
     int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
         
+        int j = s.size() - 1, i = g.size() - 1;
+        int res = 0;
+        while(j >= 0 && i >= 0) {
+            if (s[j] >= g[i]) { //assign the biggest cookie size to the biggest greed factors
+                res++;
+                j--;
+            }
+            i--;
+        }
+        return res;
     }
 };
