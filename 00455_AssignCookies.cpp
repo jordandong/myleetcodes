@@ -29,6 +29,20 @@ public:
         sort(g.begin(), g.end());
         sort(s.begin(), s.end());
         
+        int content = 0;
+        for (int & size : s)
+            if (content < g.size() && size >= g[content]) //assign smallest first
+                content++;
+        return content;
+    }
+};
+
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        
         int j = s.size() - 1, i = g.size() - 1;
         int res = 0;
         while(j >= 0 && i >= 0) {
