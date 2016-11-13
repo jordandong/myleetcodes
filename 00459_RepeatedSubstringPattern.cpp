@@ -64,3 +64,26 @@ public:
         return true;
     }
 };
+
+/*
+1. Roughly speaking, dp[i+1] stores the maximum number of characters that the string is repeating itself up to position i.
+2. Therefore, if a string repeats a length 5 substring 4 times, then the last entry would be of value 15.
+3. To check if the string is repeating itself, we just need the last entry to be non-zero and str.size() to divide (str.size()-last entry).
+*/
+
+class Solution {
+public:
+    bool repeatedSubstringPattern(string str) {
+        int i = 1, j = 0, N = str.size();
+        vector<int> dp(N + 1, 0);
+        while( i < N ){
+            if( str[i] == str[j] )
+                dp[++i]=++j;
+            else if( j == 0 )
+                i++;
+            else
+                j = dp[j];
+        }
+        return dp[N] && (dp[N] % (N - dp[N]) == 0);
+    }
+};
