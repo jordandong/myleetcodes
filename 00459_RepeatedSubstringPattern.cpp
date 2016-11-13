@@ -38,3 +38,29 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool repeatedSubstringPattern(string str) {
+        int N = str.length();
+        if ( N < 2)
+            return false;
+        for (int repeat = 2; repeat <= N; repeat++) {
+            if (N % repeat)
+                continue;
+            if (checkRepeat(str, repeat))
+                return true;
+        }
+        return false;
+    }
+    
+    bool checkRepeat(string &str, int repeat) {
+        int N = str.length();
+        string sub = str.substr(0, N / repeat);
+        for (int i = 0; i < N; i++){
+            if (str[i] != sub[i % (N / repeat)])
+                return false;
+        }
+        return true;
+    }
+};
