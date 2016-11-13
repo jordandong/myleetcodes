@@ -22,6 +22,19 @@ Explanation: It's the substring "abc" four times. (And the substring "abcabc" tw
 class Solution {
 public:
     bool repeatedSubstringPattern(string str) {
-        
+        int N = str.length();
+        for (int i = 1; i < N / 2 + 1; i++) {
+            if (N % i)
+                continue;
+            string sub = str.substr(0, i);
+            int idx = 0;
+            for (idx = 0; idx < N; idx += i) {
+                if (sub != str.substr(idx, i))
+                    break;
+            }
+            if (idx == N)
+                return true;
+        }
+        return false;
     }
 };
