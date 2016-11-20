@@ -39,10 +39,10 @@ public:
             return false;
         int canUse = (1 << (maxChoosableInteger + 1)) - 2;
         unordered_map<int, bool> dp; 
-        return canIWinHepler(canUse, desiredTotal, dp);
+        return canIWinHelper(canUse, desiredTotal, dp);
     }
     
-    bool canIWinHepler(int &canUse, int desiredTotal, unordered_map<int, bool> &dp) {
+    bool canIWinHelper(int &canUse, int desiredTotal, unordered_map<int, bool> &dp) {
         if (dp.find(canUse) != dp.end())
             return dp[canUse];
         for (int i = 20; i > 0; i--) {
@@ -53,7 +53,7 @@ public:
                     return true;
                 }
                 canUse ^= to_use;
-                if (false == canIWinHepler(canUse, desiredTotal - i, dp)) {
+                if (false == canIWinHelper(canUse, desiredTotal - i, dp)) {
                     canUse |= to_use;
                     dp[canUse] = true;
                     return true;
