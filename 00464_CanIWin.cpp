@@ -26,9 +26,42 @@ The second player will win by choosing 10 and get a total = 11, which is >= desi
 Same with other integers chosen by the first player, the second player will always win.
 */
 
+/*if it is allowed to use the same value more than once :
+  if desiredTotal % (maxChoosableInteger + 1) == 0 , then P1 1 always lose
+  if not 0, P1 could get desiredTotal % (maxChoosableInteger + 1) first, then no matter P2 gets what, P1 could get maxChoosableInteger + 1 - P2get to reach desiredTotal.
+ */
+
+//T : O(maxChoosableInteger!), S : O(1 << maxChoosableInteger)
 class Solution {
 public:
     bool canIWin(int maxChoosableInteger, int desiredTotal) {
-        
+        if(maxChoosableInteger * (maxChoosableInteger + 1) < 2 * desiredTotal)
+            return false;
+        int canUse = (1 << (maxChoosableInteger + 1)) - 2;
+        unordered_map<int, bool> dp; 
+        return canIWinHepler(canUse, desiredTotal, dp);
+    }
+    
+    bool canIWinHepler(int &canUse, int desiredTotal, unordered_map<int, bool> &dp) {
+        if (dp.find(canUse) != dp.end())
+            return dp[canUse];
+        for (int i = 20; i > 0; i--) {
+            int to_use = (1 << i);
+            if (canUse & to_use) {
+                if (i >= desiredTotal) {
+                    dp[canUse] = true;
+                    return true;
+                }
+                canUse ^= to_use;
+                if (false == canIWinHepler(canUse, desiredTotal - i, dp)) {
+                    canUse |= to_use;
+                    dp[canUse] = true;
+                    return true;
+                }
+                canUse |= to_use;
+            }
+        }
+        dp[canUse] = false;
+        return false;
     }
 };
