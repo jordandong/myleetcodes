@@ -17,9 +17,19 @@ Only two moves are needed (remember each move increments or decrements one eleme
 [1,2,3]  =>  [2,2,3]  =>  [2,2,2]
 */
 
+
+//T : O(NlogN), S : O(1)
 class Solution {
 public:
     int minMoves2(vector<int>& nums) {
-        
+        int N = nums.size();
+        if (N == 0)
+            return 0;
+        sort(nums.begin(), nums.end());
+        int mid = nums[N/2];
+        long long res = 0;
+        for (auto &e : nums)
+            res += abs(e - mid);
+        return (int)res;
     }
 };
