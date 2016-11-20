@@ -17,7 +17,6 @@ Only two moves are needed (remember each move increments or decrements one eleme
 [1,2,3]  =>  [2,2,3]  =>  [2,2,2]
 */
 
-
 //T : O(NlogN), S : O(1)
 class Solution {
 public:
@@ -31,5 +30,52 @@ public:
         for (auto &e : nums)
             res += abs(e - mid);
         return (int)res;
+    }
+};
+
+//T : O(N), S : O(1)
+class Solution {
+public:
+    int minMoves2(vector<int>& nums) {
+        int N = nums.size();
+        if (N == 0)
+            return 0;
+        
+        int mid = findKthLargest(nums, (N + 1)/2);
+        long long res = 0;
+        for (auto &e : nums)
+            res += abs(e - mid);
+        return (int)res;
+    }
+    
+private:
+    int findKthLargest(vector<int>& nums, int k) {
+        int N = nums.size();
+        if (N == 0 || k <= 0)
+            return -1;
+        int lo = 0, hi = N - 1;
+        while (lo <= hi) {
+            int p = partition(nums, lo, hi);
+            if (p + 1 > k) {
+                hi = p - 1;
+            } else if(p + 1 < k) {
+                lo = p + 1;
+            } else {
+                return nums[p];
+            }
+        }
+        return -1;
+    }
+    
+    int partition(vector<int>& nums, int lo, int hi) {
+        int j = hi - 1;
+        while (lo <= j) {
+            if(nums[lo] < nums[hi])
+                swap(nums[lo], nums[j--]);
+            else
+                lo++;
+        }
+        swap(nums[lo], nums[hi]);
+        return lo;
     }
 };
