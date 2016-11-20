@@ -33,6 +33,21 @@ public:
     }
 };
 
+class Solution {
+public:
+    int minMoves2(vector<int>& nums) {
+        int N = nums.size();
+        if (N == 0)
+            return 0;
+        sort(nums.begin(), nums.end());
+        long long res = 0;
+        int i = 0, j = N - 1;
+        while (i < j)
+            res += (nums[j--] - nums[i++]);
+        return (int)res;
+    }
+};
+
 //T : O(N), S : O(1)
 class Solution {
 public:
