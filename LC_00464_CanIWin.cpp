@@ -39,13 +39,13 @@ public:
             return false;
         int canUse = (1 << (maxChoosableInteger + 1)) - 2;
         unordered_map<int, bool> dp; 
-        return canIWinHelper(canUse, desiredTotal, dp);
+        return canIWinHelper(canUse, maxChoosableInteger, desiredTotal, dp);
     }
     
-    bool canIWinHelper(int &canUse, int desiredTotal, unordered_map<int, bool> &dp) {
+    bool canIWinHelper(int &canUse, int maxChoosableInteger, int desiredTotal, unordered_map<int, bool> &dp) {
         if (dp.find(canUse) != dp.end())
             return dp[canUse];
-        for (int i = 20; i > 0; i--) {
+        for (int i = maxChoosableInteger; i > 0; i--) {
             int to_use = (1 << i);
             if (canUse & to_use) {
                 if (i >= desiredTotal) {
@@ -53,7 +53,7 @@ public:
                     return true;
                 }
                 canUse ^= to_use;
-                if (false == canIWinHelper(canUse, desiredTotal - i, dp)) {
+                if (false == canIWinHelper(canUse, maxChoosableInteger, desiredTotal - i, dp)) {
                     canUse |= to_use;
                     dp[canUse] = true;
                     return true;
@@ -65,3 +65,4 @@ public:
         return false;
     }
 };
+
