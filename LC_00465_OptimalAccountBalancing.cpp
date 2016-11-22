@@ -39,6 +39,46 @@ Therefore, person #1 only need to give person #0 $4, and all debt is settled.
 #include <climits>
 #include <unordered_map>
 using namespace std;
+
+class Solution {
+public:
+    int minTransfers(vector<vector<int>>& t) {
+        unordered_map<int, int> m;
+        int r = 0, c = 0;
+        for (auto &x: t) {
+            m[x[0]] += x[2];
+            m[x[1]] -= x[2];
+        }
+        vector<int> a;
+        for (auto &x: m) {
+            if (x.second)
+                a.push_back(x.second);
+        }
+        if (a.empty())
+            return 0;
+
+        vector<int> dp(1 << a.size(), INT_MAX/2), sum_zero; //dp[i] means using balances represented by bits in i
+        for (int i = 1; i < (1 << a.size()); i++) {
+            int sum = 0, cnt = 0;
+            for (int j = 0; j < a.size(); j++) {
+                if ((i >> j) & 1) {//jth bit (jth balance) is used
+                    sum += a[j];
+                    cnt++;
+                }
+            }
+            if (!sum) { //sum == 0
+                dp[i] = cnt - 1; //cnt - 1 transaction could solve the balances, remove one balance one time, at most cnt - 1
+                for (int pre : sum_zero) {
+                    if ((i & pre) == pre) //current bits in i includes previous sum-zero bits
+                        dp[i] = min(dp[i], dp[pre] + dp[i - pre]); //using the solution already found
+                }
+                sum_zero.push_back(i); //add sum zero bits
+            }
+        }
+        return dp.back();
+    }
+};
+
 class Solution {
 public:
     int minTransfers(vector<vector<int>> transactions) {
