@@ -25,7 +25,7 @@ Hide Tags Dynamic Programming
 
 class Solution {
 public:
-int findSubstringInWraproundString(string p) {
+    int findSubstringInWraproundString(string p) {
         vector<int> dp(26, 0); //the max len ending at 'c - 26' 
         int res = 0, len = 0;
         for (int i = 0; i < p.size(); i++) {
