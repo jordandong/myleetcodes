@@ -27,3 +27,15 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    int countSegments(string s) {
+        int res = 0;
+        int N = s.size();
+        s.push_back(' ');
+        for (int i = 0; i < N; i++)
+            res += (s[i] != ' ' && s[i + 1] == ' ');
+        return res;
+    }
+};
