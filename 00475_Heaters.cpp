@@ -23,6 +23,22 @@ Explanation: The two heater was placed in the position 1 and 4. We need to use r
 class Solution {
 public:
     int findRadius(vector<int>& houses, vector<int>& heaters) {
-        
+        int M = houses.size(), N = heaters.size();
+        if (M == 0 || N == 0)
+            return -1;
+        sort(houses.begin(), houses.end());
+        sort(heaters.begin(), heaters.end());
+        int i = 0, j = 0, ans = 0;
+        while (i < M) {
+            while (j < N - 1 && heaters[j] <= houses[i])
+                j++;
+            if (j != 0) {
+                ans = max(ans, min(houses[i] - heaters[j - 1], abs(heaters[j] - houses[i])));
+            } else {
+                ans = max(ans, abs(heaters[j] - houses[i]));
+            }
+            i++;
+        }
+        return ans;
     }
 };
