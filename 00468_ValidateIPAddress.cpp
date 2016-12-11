@@ -36,6 +36,70 @@ Explanation: This is neither a IPv4 address nor a IPv6 address.
 class Solution {
 public:
     string validIPAddress(string IP) {
+        int N = IP.length();
+        if (N < 4 || N > 39)
+            return "Neither";
+        bool is_v4 = true, is_dot = false, is_colon = false, is_hex = false;
+        for (auto c : IP) {
+            if (('0' <= c && c <= '9'))
+                continue;
+            if (c == '.') {
+                is_dot == true;
+                continue;
+            }
+            if (('a' <= c && c <= 'f') || ('A' <= c && c <= 'F')) {
+                is_hex = true;
+                is_v4 = false;
+                continue;
+            }
+            if (c == ':') {
+                is_colon = true;
+                is_v4 = false;
+                continue;
+            }
+            return "Neither";
+        }
+        if (is_dot && (is_colon || is_hex))
+            return "Neither";
+        
+        if (is_v4) {
+            return validIPAddressV4(IP) ? "IPv4" : "Neither";
+        } else {
+            return validIPAddressV6(IP) ? "IPv6" : "Neither";
+        }
+        return "Neither";
         
     }
+
+private:
+    bool validIPAddressV4(string &ip) {
+        stringstream ipv4(ip);
+        string s;
+        int cnt = 0;
+        while (getline(ipv4, s, '.')) {
+            if (s.length() == 0)
+                return "false";
+            int v = atoi(s.c_str());
+            if (v > 255 || (s.length() > 1 && s[0] == '0'))
+                return false;
+            cnt++;
+        }
+        if (cnt != 4 || ip.back() == '.')
+            return false;
+        return true;
+    }
+
+    bool validIPAddressV6(string &ip) {
+        stringstream ipv6(ip);
+        string s;
+        int cnt = 0;
+        while (getline(ipv6, s, ':')) {
+            if (s.length() == 0 || s.length() > 4)
+                return false;
+            cnt++;
+        }
+        if (cnt != 8 || ip.back() == ':')
+            return false;
+        return true;
+    }  
 };
