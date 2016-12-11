@@ -78,7 +78,7 @@ private:
         int cnt = 0;
         while (getline(ipv4, s, '.')) {
             if (s.length() == 0)
-                return "false";
+                return false;
             int v = atoi(s.c_str());
             if (v > 255 || (s.length() > 1 && s[0] == '0'))
                 return false;
