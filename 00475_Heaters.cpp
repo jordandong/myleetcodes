@@ -40,25 +40,32 @@ public:
     }
 };
 
+//T : O(NlogN + MlogN), S : O(1)
 class Solution {
 public:
     int findRadius(vector<int>& houses, vector<int>& heaters) {
-        int M = houses.size(), N = heaters.size();
-        if (M == 0 || N == 0)
-            return -1;
-        sort(houses.begin(), houses.end());
+        heaters.push_back(INT_MAX);
+        heaters.push_back(INT_MIN);
         sort(heaters.begin(), heaters.end());
-        int i = 0, j = 0, ans = 0;
-        while (i < M) {
-            while (j < N - 1 && heaters[j] <= houses[i])
-                j++;
-            if (j != 0) {
-                ans = max(ans, min(houses[i] - heaters[j - 1], abs(heaters[j] - houses[i])));
-            } else {
-                ans = max(ans, abs(heaters[j] - houses[i]));
-            }
-            i++;
+        int ans = 0;
+        for (auto ho : houses) {
+            int idx = findRadiusBinarySearchHeater(heaters, ho);
+            ans = max((long long)ans, min((long long)ho - (long long)heaters[idx - 1], (long long)heaters[idx] - (long long)ho));
+
         }
         return ans;
+    }
+private:
+    int findRadiusBinarySearchHeater(vector<int>& heaters, int house) {
+        int lo = 0, hi = heaters.size() - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo)/2;
+            if (house >= heaters[mid]) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return lo;
     }
 };
