@@ -43,69 +43,67 @@ using namespace std;
 class Solution {
 public:
     string encode(string s) {
-    	unordered_map<string, string> dp;
-    	int N = s.length();
-    	if (N < 5)
-    		return s;
+        unordered_map<string, string> dp;
+        int N = s.length();
+        if (N < 5)
+            return s;
         return encodeHelper(s, dp);
     }
 private:
-	string encodeHelper(string s, unordered_map<string, string> &dp) {
-		int N = s.length();
-		if (N < 5)
-			return s;
-		if (dp.find(s) != dp.end())
-			return dp[s];
-		string ans = s;
-    	for (int l = 1; l <= N; l++) {
-    		string res = encodeHelperCompress(s.substr(0, l), dp) + encodeHelper(s.substr(l), dp);
-    		if (res.length() < ans.length())
-    			ans = res;
-    	}
-    	dp[s] = ans;
+    string encodeHelper(string s, unordered_map<string, string> &dp) {
+        int N = s.length();
+        if (N < 5)
+            return s;
+        if (dp.find(s) != dp.end())
+            return dp[s];
+        string ans = s;
+        for (int l = 1; l <= N; l++) {
+            string res = encodeHelperCompress(s.substr(0, l), dp) + encodeHelper(s.substr(l), dp);
+            if (res.length() < ans.length())
+                ans = res;
+        }
+        dp[s] = ans;
         return ans;
-	}
+    }
 	
-	string encodeHelperCompress(string s, unordered_map<string, string> &dp) {
-		int N = s.length();
-		if (N < 5)
-			return s;
-		if (dp.find(s) != dp.end())
-			return dp[s];
-		
-		string ans = s;
+    string encodeHelperCompress(string s, unordered_map<string, string> &dp) {
+        int N = s.length();
+        if (N < 5)
+            return s;
+        if (dp.find(s) != dp.end())
+            return dp[s];
+        string ans = s;
         for (int x = 1; x < N / 2 + 1; x++) {
             if (N % x || false == isRepeated(x, s))
-            	continue;
+                continue;
             string res = to_string(N / x) + '[' + encodeHelper(s.substr(0, x), dp) + ']';
             if (res.length() < ans.length())
-            	ans = res;
+                ans = res;
         }
         return ans;
-	}
-	
-	bool isRepeated(int x, string s) {
-		int i = 0, j = 0, N = s.length();
-		while (j < N) {
-			if (s[i] != s[j])
-				return false;
-			i = (i + 1) % x;
-			j++;
-		}
-		return true;
-	}
+    }
+
+    bool isRepeated(int x, string s) {
+        int i = 0, j = 0, N = s.length();
+        while (j < N) {
+            if (s[i] != s[j])
+                return false;
+            i = (i + 1) % x;
+            j++;
+        }
+        return true;
+    }
 };
 
 int main() {
-	Solution s;
-	cout<<s.encode("aaa")<<endl;
-	cout<<s.encode("aaaaa")<<endl;
-	cout<<s.encode("aaaaaaaaaa")<<endl;
-	cout<<s.encode("aabcaabcd")<<endl;
-	cout<<s.encode("abbbabbbc")<<endl;
-	cout<<s.encode("abbbabbbcabbbabbbc")<<endl;
-
-	return 0;
+    Solution s;
+    cout<<s.encode("aaa")<<endl;
+    cout<<s.encode("aaaaa")<<endl;
+    cout<<s.encode("aaaaaaaaaa")<<endl;
+    cout<<s.encode("aabcaabcd")<<endl;
+    cout<<s.encode("abbbabbbc")<<endl;
+    cout<<s.encode("abbbabbbcabbbabbbc")<<endl;
+    return 0;
 }
 
 aaa
