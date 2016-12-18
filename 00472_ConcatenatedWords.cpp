@@ -20,6 +20,31 @@ The returned elements order does not matter.
 class Solution {
 public:
     vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
-        
+        unordered_set<string> dict;
+        sort(words.begin(), words.end(), [](string a, string b) { return a.length() < b.length(); });
+        vector<string> res;
+        for (auto &w : words) {
+            if (w.length() == 0)
+                continue;
+            if (wordBreak(w, dict))
+                res.push_back(w);
+            dict.insert(w);
+        }
+        return res;
+    }
+private:
+    bool wordBreak(string &w, unordered_set<string> &dict) {
+        int N = w.length();
+        vector<bool> dp(N + 1, false);//at length i, word break is true/false
+        dp[0] = true;
+        for (int i = 0; i < N; i++){
+            for (int j = i; j >= 0; j--){
+                if (dict.find(w.substr(j, i - j + 1)) != dict.end() && dp[j]) {
+                    dp[i + 1] = true;
+                    break;
+                }
+            }
+        }
+        return dp[N];
     }
 };
