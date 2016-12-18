@@ -21,6 +21,33 @@ The length of the given matchstick array will not exceed 15.
 class Solution {
 public:
     bool makesquare(vector<int>& nums) {
-        
+        int SUM = 0, SIDE = 0, N = nums.size();
+        for (auto &e : nums)
+            SUM += e;
+        SIDE = SUM / 4;
+        sort(nums.begin(), nums.end());
+        if (N < 4 || SUM == 0 || SUM % 4 || SIDE < nums[N - 1])
+            return false;
+        vector<int> sides(4, SIDE);
+        return makesquareHelper(nums, sides, N - 1);
+    }
+
+private:
+    bool makesquareHelper(vector<int>& nums, vector<int>& sides, int i) {
+        if (i < 0) {
+            for (auto &e : sides)
+                if (e)
+                    return false;
+            return true;
+        }
+        for (auto & e : sides) {
+            if (nums[i] > e)
+                continue;
+            e -= nums[i];
+            if (makesquareHelper(nums, sides, i - 1))
+                return true;
+            e += nums[i];
+        }
+        return false;
     }
 };
