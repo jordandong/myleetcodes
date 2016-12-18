@@ -19,24 +19,27 @@ Length of the array will not exceed 10^4.
 class Solution {
 public:
     int totalHammingDistance(vector<int>& nums) {
-        int N = nums.size();
-        if (N == 0)
-            return 0;
         int res = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = i + 1; j < N; j++) {
-                res += hammingDistance(nums[i], nums[j]);
+        vector<vector<int>> dp(32, vector<int>(2, 0)); //dp[i][j] means ith bit has how many j's
+        for (auto &e : nums) {
+            for (int i = 0; i < 32; i++) {
+                dp[i][(e >> i) & 0x1]++;
+                res += dp[i][(e >> i) & 0x1 ^ 0x1];
             }
         }
         return res;
     }
-    
-    int hammingDistance(int x, int y) {
-        int hamming = x ^ y;
-        int res = 0;
-        while (hamming) {
-            res++;
-            hamming &= (hamming - 1);
+};
+
+class Solution {
+public:
+    int totalHammingDistance(vector<int>& nums) {
+        int res = 0, N = nums.size();
+        for (int i = 0; i < 32; i++) {
+            int ones = 0;
+            for (auto &e : nums)
+                ones += (e >> i) & 0x1;
+            res += ones * (N - ones);
         }
         return res;
     }
