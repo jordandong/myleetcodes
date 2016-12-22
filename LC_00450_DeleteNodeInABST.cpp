@@ -56,31 +56,31 @@ private:
         if (!root)
             return;
         if (root->val > key) {
-		    deleteNodeHelper(root->left, key); //go left
+            deleteNodeHelper(root->left, key); //go left
         } else if (root->val < key) {
-		    deleteNodeHelper(root->right, key); //go right
+            deleteNodeHelper(root->right, key); //go right
     	} else { //found
-		    if (!root->left) { //no left child
-			    TreeNode* tmp = root->right;
-			    delete root;
-			    root = tmp;
-		    } else if (!root->right) { //no right child
-			    TreeNode* tmp = root->left;
-			    delete root;
-			    root = tmp;
-		    }else{//two children
-			    TreeNode *tmp = root->right;
-			    TreeNode *parent = NULL;
-			    while (tmp->left){ //get the smallest one among those are bigger than key
-				    parent = tmp;
-				    tmp = tmp->left;
-			    }
-			    root->val = tmp->val;
-			    if (parent)
-				    deleteNodeHelper(parent->left, parent->left->val);
-			    else
-				    deleteNodeHelper(root->right, root->right->val);
-		    }
-	    }
+            if (!root->left) { //no left child
+                TreeNode* tmp = root->right;
+                delete root;
+                root = tmp;
+            } else if (!root->right) { //no right child
+                TreeNode* tmp = root->left;
+                delete root;
+                root = tmp;
+            }else{//two children
+                TreeNode *tmp = root->right;
+                TreeNode *parent = NULL;
+                while (tmp->left){ //get the smallest one among those are bigger than key
+                    parent = tmp;
+                    tmp = tmp->left;
+                }
+                root->val = tmp->val;
+                if (parent)
+                    deleteNodeHelper(parent->left, parent->left->val);
+                else
+                    deleteNodeHelper(root->right, root->right->val);
+           }
+       }
     }
 };
