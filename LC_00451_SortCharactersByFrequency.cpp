@@ -1,5 +1,6 @@
 /*
 Given a string, sort it in decreasing order based on the frequency of characters.
+
 Example 1:
 Input:
 "tree"
@@ -26,13 +27,9 @@ Output:
 Explanation:
 "bbaA" is also a valid answer, but "Aabb" is incorrect.
 Note that 'A' and 'a' are treated as two different characters.
-*/
 
-bool comp(pair<char, int> &a, pair<char, int> &b) {
-    if (a.second == b.second)
-        return a.first < b.first;
-    return a.second > b.second;
-}
+Hide Tags Hash Table Heap
+*/
 
 class Solution {
 public:
@@ -47,7 +44,11 @@ public:
                 arr.push_back({i, mp[i]});
             }
         }
-        sort(arr.begin(), arr.end(), comp);
+        sort(arr.begin(), arr.end(), 
+             [](pair<char, int> &a, pair<char, int> &b) {
+                if (a.second == b.second)
+                    return a.first < b.first;
+                return a.second > b.second;});
         for (auto &e : arr) {
             res.append(e.second, e.first); 
         }
@@ -64,7 +65,11 @@ public:
             arr[c].first = c;
             arr[c].second++;
         }
-        sort(arr.begin(), arr.end(), comp);
+        sort(arr.begin(), arr.end(), 
+             [](pair<char, int> &a, pair<char, int> &b) {
+                if (a.second == b.second)
+                    return a.first < b.first;
+                return a.second > b.second;});
         for (auto &e : arr) {
             if (e.second != 0)
                 res.append(e.second, e.first); 
