@@ -28,7 +28,7 @@ public:
             } else {
                 res2 += 1;
             }
-            ans = max(res1 + res2, ans);
+            ans = max(res1 + res2 + 1, ans);
         }
         return ans;
     }
