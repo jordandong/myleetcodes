@@ -36,8 +36,50 @@ Hide Tags Depth-first Search
 */
 
 class Solution {
+private:
+    unordered_map<char, int> m;
+    int findMinStepHelper(string board) {
+        if (board.empty())
+            return 0;
+        int minStep = INT_MAX;
+        int i = 0;
+        while (i < board.size()) {
+            do {
+                ++i;
+            } while (i < board.size() && board[i] == board[i - 1]);
+            char c = board[i - 1];
+            if (m[c]) {
+                --m[c];
+                string nextBoard = board;
+                nextBoard.insert(i, 1, c);
+                findMinStepUpdate(nextBoard);
+                int ans = findMinStepHelper(nextBoard);
+                if (ans != INT_MAX)
+                    minStep = min(minStep, 1 + ans);
+                ++m[c];
+            }
+        }
+        return minStep;
+    }
+    
+    void findMinStepUpdate(string &board) {
+        int i = 0;
+        while (i < board.size()) {
+            int start = i;
+            do {
+                ++i;
+            } while (i < board.size() && board[i] == board[i - 1]);
+            if (i - start >= 3) {
+                board.erase(start, i - start);
+                i = 0;
+            }
+        }
+    }
 public:
     int findMinStep(string board, string hand) {
-        
+        for (char c : hand)
+            m[c]++;
+        int ans = findMinStepHelper(board);
+        return ans == INT_MAX ? -1 : ans;
     }
 };
