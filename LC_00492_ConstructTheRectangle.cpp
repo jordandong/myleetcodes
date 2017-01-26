@@ -22,12 +22,8 @@ class Solution {
 public:
     vector<int> constructRectangle(int area) {
         int l = sqrt(area);
-        do {
-            if (area % l == 0) {
-                return {area/l, l};
-            }
+        while (area % l)
             l--;
-        } while (l);
-        return {};
+        return {area / l, l};
     }
 };
