@@ -30,6 +30,7 @@ Note:
 Hide Tags Dynamic Programming Minimax
 */
 
+//[0,0,7,6,5,6,1] is an example of a test case that could fail. The first player cannot force the second player to choose even or odd position always.
 class Solution {
 public:
     bool PredictTheWinner(vector<int>& nums) {
