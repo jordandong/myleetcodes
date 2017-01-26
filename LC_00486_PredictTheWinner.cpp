@@ -30,6 +30,47 @@ Note:
 Hide Tags Dynamic Programming Minimax
 */
 
+class Solution {
+public:
+    bool PredictTheWinner(vector<int>& nums) {
+        int N = nums.size();
+        vector<vector<int>> dp(N, vector<int> (N, INT_MIN));
+        if (N & 1)
+            return PredictTheWinnerHelper(nums, 0, N - 1, dp) >= 0;
+        return true;
+    }
+private:
+    int PredictTheWinnerHelper(vector<int> &nums, int begin, int end, vector<vector<int>> &dp) {
+        if (begin == end)
+            return nums[begin];
+        if (dp[begin][end] == INT_MIN) {
+            dp[begin][end] = max(nums[begin] - PredictTheWinnerHelper(nums, begin + 1, end, dp),
+                nums[end] - PredictTheWinnerHelper(nums, begin, end -1, dp));
+        }
+        return dp[begin][end];
+    }
+};
+
+class Solution {
+public:
+    bool PredictTheWinner(vector<int>& nums) {
+        if (nums.size() & 1)
+            return PredictTheWinnerHelper(nums, 0, nums.size() - 1, 0, 0, true);
+        return true;
+    }
+private:
+    bool PredictTheWinnerHelper(vector<int> &nums, int begin, int end, int score1, int score2, bool p1) {
+        if (begin > end)
+            return score1 >= score2;
+        if (p1)
+            return (PredictTheWinnerHelper(nums, begin + 1, end, score1 + nums[begin], score2, !p1) || 
+                    PredictTheWinnerHelper(nums, begin, end - 1, score1 + nums[end], score2, !p1));
+        else
+            return (PredictTheWinnerHelper(nums, begin + 1, end, score1, score2 + nums[begin], !p1) &&
+                    PredictTheWinnerHelper(nums, begin, end - 1, score1, score2 + nums[end], !p1));
+    }
+};
+
 //[0,0,7,6,5,6,1] is an example of a test case that could fail. The first player cannot force the second player to choose even or odd position always.
 class Solution {
 public:
