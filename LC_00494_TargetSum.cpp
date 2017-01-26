@@ -24,6 +24,31 @@ Note:
 Hide Tags Depth-first Search Dynamic Programming
 */
 
+/*
+                  sum(P) - sum(N) = target
+sum(P) + sum(N) + sum(P) - sum(N) = target + sum(P) + sum(N)
+                       2 * sum(P) = target + sum(nums)
+*/
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int S) {
+        int sum = 0;
+        for (auto n : nums)
+            sum += n;
+        if ((sum + S) & 1 || S > sum || S < -sum)
+            return 0;
+        int newS = (sum + S) >> 1;
+        vector<int> dp(newS + 1, 0);
+        dp[0] = 1;
+        for (int i = 0; i < nums.size(); ++i) {
+            for (int j = newS; j >= nums[i]; --j) {
+                dp[j] += dp[j - nums[i]];
+            }
+        }
+        return dp[newS];
+    }
+};
+
 class Solution {
 public:
     int findTargetSumWays(vector<int>& nums, int S) {
