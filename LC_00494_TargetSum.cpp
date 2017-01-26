@@ -52,6 +52,35 @@ public:
 class Solution {
 public:
     int findTargetSumWays(vector<int>& nums, int S) {
+        int res = 0, sum = 0;
+        findTargetSumWaysHelper(nums, sum, S, 0, res);
+        return res;
+    }
+
+    bool findTargetSumWaysHelper(vector<int>& nums, int &sum, int target, int pos, int &res){
+        if (pos == nums.size()){
+            if (sum == target)
+                return true;
+            return false;
+        }
+        
+        sum += nums[pos];
+        if (findTargetSumWaysHelper(nums, sum, target, pos + 1, res))
+            res++;
+        sum -= nums[pos];
+    
+        sum -=nums[pos];
+        if (findTargetSumWaysHelper(nums, sum, target, pos + 1, res))
+            res++;
+        sum += nums[pos];
+    
+        return false;
+    }
+};
+
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int S) {
         int res = 0;
         findTargetSumWaysHelper(nums, S, true, 0, res);
         findTargetSumWaysHelper(nums, S, false, 0, res);
