@@ -29,6 +29,43 @@ Note:
 
 Hide Tags Dynamic Programming Minimax
 */
+class Solution {
+public:
+    bool PredictTheWinner(vector<int>& nums) {
+        int N = nums.size();
+        if (N & 1 == 0)
+            return true;
+        vector<int> dp(N, INT_MIN);
+        for(int i = N - 1; i >= 0; i--) {
+            for(int j = i; j < N; j++) {
+                if(j == i)
+                    dp[j] = nums[i];
+                else
+                    dp[j] = max(nums[i] - dp[j], nums[j] - dp[j - 1]);
+            }
+        }
+        return dp[N - 1] >= 0;
+    }
+};
+
+class Solution {
+public:
+    bool PredictTheWinner(vector<int>& nums) {
+        int N = nums.size();
+        if (N & 1 == 0)
+            return true;
+        vector<vector<int>> dp(N, vector<int> (N, INT_MIN));
+        for (int i = 0; i < N; i++)
+            dp[i][i] = nums[i];
+        for (int len = 1; len < N; len++) {
+            for (int i = 0; i < N - len; i++) {
+                int j = i + len;
+                dp[i][j] = max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);
+            }
+        }
+        return dp[0][N - 1] >= 0;
+    }
+};
 
 class Solution {
 public:
