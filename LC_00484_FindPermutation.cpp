@@ -22,31 +22,33 @@ Note:
 2. The length of input string is a positive integer and will not exceed 10,000
 */
 
-class Solution {
-vector<int> findPermutation(string s) {
-  vector<int> ret;
-  for (int i = 0; i <= s.size(); ++i)
-    if (i == s.size() || s[i] == 'I')
-      for (int j = i + 1, lenTmp = ret.size(); j > lenTmp; --j)
-        ret.push_back(j);
-  return ret;
-}
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
 
 class Solution {
 public:
     vector<int> findPermutation(string s) {
-        vector<int> res(1, 1);
-        auto b = res.begin();
-        int i = 2;
-        for (auto c : s) {
-            if (c == 'D') {
-                b = res.insert(b, i++);
-            }
-            else {
-                res.push_back(i++);
-                b = prev(res.end());
+        vector<int> res;
+        for (int i = 0; i <= s.length(); ++i) {
+            if (i == s.length() || s[i] == 'I') {
+                for (int use = i + 1, last_used = res.size(); use > last_used; --use) {
+                    res.push_back(use);
+                }
             }
         }
         return res;
     }
 };
+
+int main() {
+    Solution sol;
+    string s = "DDDDD";
+    vector<int> res;
+    res = sol.findPermutation(s);
+    for (auto e : res)
+        cout<<e<<",";
+    cout<<endl;
+    return 0;
+}
