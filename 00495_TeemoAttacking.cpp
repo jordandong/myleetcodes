@@ -25,7 +25,19 @@ You may assume the numbers in the Teemo's attacking time series and his poisonin
 
 class Solution {
 public:
-    int findPosisonedDuration(vector<int>& timeSeries, int duration) {
-        
+    int findPoisonedDuration(vector<int>& timeSeries, int duration) {
+        int N = timeSeries.size();
+        if (N == 0)
+            return 0;
+        int res = 0;
+        for (int i = 1; i < timeSeries.size(); i++) {
+            if (timeSeries[i] - timeSeries[i - 1] >= duration) {
+                res += duration;
+            } else {
+                res += (timeSeries[i] - timeSeries[i - 1]);
+            }
+        }
+        res += duration;
+        return res;
     }
 };
