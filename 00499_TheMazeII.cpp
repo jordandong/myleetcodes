@@ -47,8 +47,55 @@ The maze contains at least 2 empty spaces, and the length and width of the maze 
 */
 
 class Solution {
+private:
+    int dx[4] = {1, -1, 0, 0};
+    int dy[4] = {0, 0, -1, 1};
+    string directions[4] = {"d", "u", "l", "r"};
+    struct cmp{
+        bool operator() (const pair<int,int> &p1, const pair<int,int> &p2){
+            return p1.second > p2.second;
+        }
+    };
 public:
     string findShortestWay(vector<vector<int>>& maze, vector<int>& ball, vector<int>& hole) {
-        
+        int m = maze.size(), n = maze[0].size();
+        vector<vector<int>> Dis(m, vector<int>(n, INT_MAX));
+        vector<vector<string>> Way(m, vector<string>(n, ""));
+        Dis[ball[0]][ball[1]] = 0;
+        priority_queue<pair<int, int>, vector<pair<int,int>>, cmp> PQu;    //first: pos, second dist
+        PQu.push({ball[0]*n + ball[1], 0});
+        while (!PQu.empty()){
+            auto start = PQu.top();
+            PQu.pop();
+            int x0 = start.first / n, y0 = start.first % n;
+            if (start.second > Dis[x0][y0])
+                continue;
+            if (x0 == hole[0] && y0 == hole[1])
+                return Way[x0][y0];
+            for (int t = 0; t < 4; t++) {
+                int xnew =x0, ynew = y0, move=0;
+                string trys = Way[x0][y0] + directions[t];
+                while (xnew + dx[t] >= 0 && xnew + dx[t] < m &&
+                       ynew + dy[t] >= 0 && ynew + dy[t] < n &&
+                       maze[xnew + dx[t]][ynew + dy[t]] == 0) {
+                    xnew += dx[t];
+                    ynew += dy[t];
+                    move++;
+                    if (xnew == hole[0] && ynew == hole[1])
+                        break;
+                }
+                if (move == 0)
+                    continue;
+                if (Dis[x0][y0] + move < Dis[xnew][ynew]) {
+                    Dis[xnew][ynew] = Dis[x0][y0] + move;
+                    Way[xnew][ynew] = trys;
+                    PQu.push({xnew * n + ynew, Dis[xnew][ynew]});
+                } else if (Dis[x0][y0] + move == Dis[xnew][ynew]){
+                    if (trys < Way[xnew][ynew])
+                        Way[xnew][ynew] = trys;
+                }
+            }
+        }
+        return "impossible";
     }
 };
