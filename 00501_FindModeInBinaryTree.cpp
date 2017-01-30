@@ -25,6 +25,22 @@ Note: If a tree has more than one mode, you can return them in any order.
 class Solution {
 public:
     vector<int> findMode(TreeNode* root) {
-        
+        vector<int> res;
+        unordered_map<int, int> cnt;
+        int mx = 0;
+        findModeHelper(root, mx, cnt);
+        for (auto &e : cnt) {
+            if (e.second == mx)
+                res.push_back(e.first);
+        }
+        return res;
+    }
+    
+    void findModeHelper(TreeNode* root, int& mx, unordered_map<int, int>& cnt) {
+        if (!root)
+            return;
+        mx = max(mx, ++cnt[root->val]);
+        findModeHelper(root->left, mx, cnt);
+        findModeHelper(root->right, mx, cnt);
     }
 };
