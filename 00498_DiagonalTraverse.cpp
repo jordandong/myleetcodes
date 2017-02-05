@@ -18,6 +18,41 @@ The total number of elements of the given matrix will not exceed 10,000.
 class Solution {
 public:
     vector<int> findDiagonalOrder(vector<vector<int>>& matrix) {
-        
+        int M = matrix.size();
+        if (M == 0)
+            return {};
+        int N = matrix[0].size();
+        if (N == 0)
+            return {};
+        bool up = true; 
+        int r = 0, c = 0;
+        vector<int> res;
+        while (r < M && c < N) {
+            res.push_back(matrix[r][c]);
+            if (up) {
+                if (c == N - 1) {
+                    r++;
+                    up = false;
+                } else if (r == 0) {
+                    c++;
+                    up = false;
+                } else {
+                    r--;
+                    c++;
+                }
+            } else {
+                if (r == M - 1) {
+                    c++;
+                    up = true;
+                } else if (c == 0) {
+                    r++;
+                    up = true;
+                } else {
+                    r++;
+                    c--;
+                }
+            }
+        }
+        return res;
     }
 };
