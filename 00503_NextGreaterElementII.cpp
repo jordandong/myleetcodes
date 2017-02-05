@@ -13,6 +13,18 @@ Note: The length of given array won't exceed 10000.
 class Solution {
 public:
     vector<int> nextGreaterElements(vector<int>& nums) {
-        
+        int N = nums.size();
+        vector<int> next(N, -1);
+        stack<int> s; // index stack
+        for (int i = 0; i < N * 2; i++) {
+            int num = nums[i % N]; 
+            while (!s.empty() && nums[s.top()] < num) {
+                next[s.top()] = num;
+                s.pop();
+            }
+            if (i < N)
+                s.push(i);
+        }   
+        return next;
     }
 };
