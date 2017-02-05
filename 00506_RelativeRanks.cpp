@@ -33,3 +33,30 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<string> findRelativeRanks(vector<int>& nums) {
+        priority_queue<pair<int, int>> q;
+        for (int i = 0; i < nums.size(); i++)
+            q.push({nums[i], i});
+        
+        int rank = 1;
+        vector<string> res(nums.size());
+        while (!q.empty()) {
+            int i = q.top().second;
+            q.pop();
+            if (rank == 1) {
+                res[i] = "Gold Medal";
+            } else if (rank == 2) {
+                res[i] = "Silver Medal";
+            } else if (rank == 3) {
+                res[i] = "Bronze Medal";
+            } else {
+                res[i] = to_string(rank);
+            }
+            rank++;
+        }
+        return res;
+    }
+};
