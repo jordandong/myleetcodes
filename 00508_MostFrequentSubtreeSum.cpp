@@ -30,6 +30,24 @@ Note: You may assume the sum of values in any subtree is in the range of 32-bit 
 class Solution {
 public:
     vector<int> findFrequentTreeSum(TreeNode* root) {
-        
+        int max_cnt = 0;
+        unordered_map<int, int> dict;
+        vector<int> res;
+        findFrequentTreeSumHelper(root, max_cnt, dict);
+        for (auto & e : dict) {
+            if (e.second == max_cnt)
+                res.push_back(e.first);
+        }
+        return res;   
+    }
+private:
+    int findFrequentTreeSumHelper(TreeNode* root, int &max_cnt, unordered_map<int, int>& dict) {
+        if (!root)
+            return 0;
+        int l_sum = findFrequentTreeSumHelper(root->left, max_cnt, dict);
+        int r_sum = findFrequentTreeSumHelper(root->right, max_cnt, dict);
+        int sum = l_sum + r_sum + root->val;
+        max_cnt = max(max_cnt, ++dict[sum]);
+        return sum;
     }
 };
