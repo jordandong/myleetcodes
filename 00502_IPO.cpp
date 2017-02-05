@@ -24,6 +24,34 @@ The answer is guaranteed to fit in a 32-bit signed integer.
 class Solution {
 public:
     int findMaximizedCapital(int k, int W, vector<int>& Profits, vector<int>& Capital) {
+        int N = Profits.size();
+        vector<pair<int, int>> PC;
+        for (int i = 0; i < N; ++i)
+            PC.push_back({Capital[i], Profits[i]});
+        sort(begin(PC), end(PC));
+
+        priority_queue<int> heap;
+        int i = 0;
+        while (i < N) {
+            if (PC[i].first <= W)
+                heap.push(PC[i++].second); //found all possible projects within W
+            else
+                break;
+        }
         
+        while (!heap.empty() && k > 0) {
+            auto p = heap.top(); // finish the project with highest profit within W
+            heap.pop();
+            W += p; //update W
+            --k;
+            
+            while (i < N) {
+                if (PC[i].first <= W)
+                    heap.push(PC[i++].second);
+                else
+                    break;
+            }
+        }
+        return W;
     }
 };
