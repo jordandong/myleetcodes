@@ -24,6 +24,22 @@ The length of both nums1 and nums2 would not exceed 1000.
 class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& findNums, vector<int>& nums) {
-        
+        unordered_map<int , int> mp; // map from x to the next greater element of x
+        stack<int> stk;
+        vector<int> res;
+        for (int num : nums) {
+            while (!stk.empty() && stk.top() < num) {
+                mp[stk.top()] = num;
+                stk.pop();
+            }
+            stk.push(num);
+        }
+        for (auto num : findNums) {
+            if (mp.find(num) == mp.end())
+                res.push_back(-1);
+            else
+                res.push_back(mp[num]);
+        }
+        return res;
     }
 };
