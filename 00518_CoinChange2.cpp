@@ -43,3 +43,28 @@ public:
         return dp[amount][coins.size()];        
     }
 };
+
+//TLE
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        int res = 0;
+        changeHelper(amount, coins, 0, res);
+        return res;
+    }
+private:
+    void changeHelper(int amount, vector<int>& coins, int k, int &res) {
+        if (amount == 0) {
+            res++;
+            return;
+        }
+        if (k == coins.size())
+            return;
+
+        changeHelper(amount, coins, k + 1, res); //not use
+        while (amount - coins[k] >= 0) { //use
+            amount -= coins[k];
+            changeHelper(amount, coins, k + 1, res);
+        }
+    }
+};
