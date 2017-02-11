@@ -31,6 +31,15 @@ Subscribe to see which companies asked this question.
 class Solution {
 public:
     int change(int amount, vector<int>& coins) {
-        
+        vector<vector<int>> dp(amount + 1, vector<int>(coins.size() + 1, 0));
+        dp[0][0] = 1;
+        for (int i = 0; i <= amount; ++i) {
+            for (int k = 1; k <= coins.size(); k++) {
+                dp[i][k] = dp[i][k - 1]; 
+                if (i - coins[k - 1] >= 0 && i > 0) //avoid 0 [0] case
+                    dp[i][k] += dp[i - coins[k - 1]][k];//ways of fisrt k coins making i
+            }
+        }
+        return dp[amount][coins.size()];        
     }
 };
