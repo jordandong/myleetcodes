@@ -61,3 +61,32 @@ private:
         findBottomLeftValueHelper(root->right, cur_row + 1, row, res);
     }
 };
+
+//BFS
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        if (!root)
+            return -1;
+        int res = root->val;
+        queue<TreeNode*> q;
+        q.push(root);
+        q.push(NULL);
+        while (!q.empty()) {
+            TreeNode* cur = q.front();
+            q.pop();
+            if (!cur) {
+                if (!q.empty()) {
+                    q.push(NULL);
+                    res = q.front()->val;
+                }
+                continue;
+            }
+            if (cur->left)
+                q.push(cur->left);
+            if (cur->right)
+                q.push(cur->right);
+        }
+        return res;
+    }
+};
