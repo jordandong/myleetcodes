@@ -40,6 +40,16 @@ The range of dresses number in a super washing machine is [0, 1e5].
 class Solution {
 public:
     int findMinMoves(vector<int>& machines) {
-        
+        int total = 0; 
+        for (int m : machines)
+            total += m;
+        if (total % machines.size())
+            return -1;
+        int avg = total / machines.size(), gain_loss = 0, res = 0;
+        for(int i = 0; i < machines.size(); i++) {
+            gain_loss += (machines[i] - avg);
+            res = max(max(res, abs(gain_loss)), machines[i] - avg);
+        }
+        return res;
     }
 };
