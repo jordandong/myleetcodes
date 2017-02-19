@@ -28,6 +28,24 @@ N is a positive integer and will not exceed 15.
 class Solution {
 public:
     int countArrangement(int N) {
-        
+        vector<int> arr;
+        int res = 0;
+        for (int i = 0; i <= N; ++i)
+            arr.push_back(i);
+        countArrangementHelper(1, arr, res);
+        return res;
+    }
+    void countArrangementHelper(int i, vector<int> &arr, int &res) {
+        if (i >= arr.size()) {
+            res++;
+            return;
+        }
+        for (int k = i; k < arr.size(); ++k) {
+            if (((arr[k] % i) == 0) || ((i % arr[k]) == 0)) {
+                swap(arr[i], arr[k]);
+                countArrangementHelper(i + 1, arr, res);
+                swap(arr[k], arr[i]);
+            }
+        }
     }
 };
