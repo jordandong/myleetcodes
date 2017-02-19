@@ -15,6 +15,17 @@ Note: The length of the given binary array will not exceed 50,000.
 class Solution {
 public:
     int findMaxLength(vector<int>& nums) {
-        
+        unordered_map<int, int> mp;
+        int sum = 0, res = 0;
+        mp[0] = -1;
+        for (int i = 0; i < nums.size(); i++) {
+            sum += nums[i] ? 1 : -1;
+            if (mp.find(sum) == mp.end()) {
+                mp[sum] = i;
+            } else {
+                res = max(res, i - mp[sum]);
+            }
+        }
+        return res;
     }
 };
