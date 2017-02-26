@@ -56,6 +56,7 @@ The input board won't be a stage when game is over (some mines have been reveale
 For simplicity, not mentioned rules should be ignored in this problem. For example, you don't need to reveal all the unrevealed mines when the game is over, consider any cases that you will win the game or flag any squares.
 */
 
+//DFS
 class Solution {
 public:
     vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
@@ -71,7 +72,6 @@ private:
     void updateBoardHepler(vector<vector<char>>& board, int m, int n) {
         if (board[m][n] == 'E') {
             int mines = 0, x = -1, y = -1;
-            board[m][n] = 'B';
             for (int i = -1; i <= 1; ++i) {
                 for (int j = -1; j <= 1; ++j) {
                     x = m + i, y = n + j;
@@ -80,14 +80,14 @@ private:
                 }
             }
             
-            if (mines > 0)
+            if (mines > 0) {
                 board[m][n] = '0' + mines;
-            else {
+            } else {
+                board[m][n] = 'B';
                 for (int i = -1; i <= 1; ++i) {
                     for (int j = -1; j <= 1; ++j) {
                         x = m + i, y = n + j;
-                        if (x >= 0 && y >= 0 &&
-                            x < board.size() && y < board[0].size() && board[x][y] == 'E')
+                        if (x >= 0 && y >= 0 && x < board.size() && y < board[0].size() && board[x][y] == 'E')
                             updateBoardHepler(board, x, y);
                     }
                 }
