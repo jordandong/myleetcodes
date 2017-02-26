@@ -22,6 +22,23 @@ The length of all the strings in the input won't exceed 1,000.
 class Solution {
 public:
     string findLongestWord(string s, vector<string>& d) {
-        
+        string ans = "";
+        for (string &w : d) {
+            if (w.length() >= ans.length() && canFind(s, w)) {
+                if (w.length() > ans.length() || w < ans)
+                    ans = w;
+            }
+        }
+        return ans;
+    }
+private:
+    bool canFind(string &s, string &w) {
+        for (int j = 0, i = 0; j < w.length(); j++,i++) {
+            while (i < s.length() && s[i] != w[j])
+                i++;
+            if (i == s.length())
+                return false;
+        }
+        return true;
     }
 };
