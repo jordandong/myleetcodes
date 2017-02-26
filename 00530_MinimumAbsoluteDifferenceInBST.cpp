@@ -31,6 +31,21 @@ Note: There are at least two nodes in this BST.
 class Solution {
 public:
     int getMinimumDifference(TreeNode* root) {
+        int res = INT_MAX;
+        TreeNode *prev_node = NULL;
+        getMinimumDifferenceHelper(root, prev_node, res);
+        return res;
         
     }
+private:
+    void getMinimumDifferenceHelper(TreeNode* root, TreeNode* &prev_node, int &res) {
+        if (!root)
+            return;
+        getMinimumDifferenceHelper(root->left, prev_node, res);
+        if (prev_node)
+            res = min(res, root->val - prev_node->val);
+        prev_node = root;
+        getMinimumDifferenceHelper(root->right, prev_node, res);
+    }
+    
 };
