@@ -59,7 +59,40 @@ For simplicity, not mentioned rules should be ignored in this problem. For examp
 class Solution {
 public:
     vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
-        
+        int m = click[0], n = click[1];
+        if (board[m][n] == 'M') {
+            board[m][n] = 'X';
+            return board;
+        }
+        updateBoardHepler(board, m, n);
+        return board;
+    }
+private:
+    void updateBoardHepler(vector<vector<char>>& board, int m, int n) {
+        if (board[m][n] == 'E') {
+            int mines = 0, x = -1, y = -1;
+            board[m][n] = 'B';
+            for (int i = -1; i <= 1; ++i) {
+                for (int j = -1; j <= 1; ++j) {
+                    x = m + i, y = n + j;
+                    if (x >= 0 && y >= 0 && x < board.size() && y < board[0].size() && board[x][y] == 'M')
+                        ++mines;
+                }
+            }
+            
+            if (mines > 0)
+                board[m][n] = '0' + mines;
+            else {
+                for (int i = -1; i <= 1; ++i) {
+                    for (int j = -1; j <= 1; ++j) {
+                        x = m + i, y = n + j;
+                        if (x >= 0 && y >= 0 &&
+                            x < board.size() && y < board[0].size() && board[x][y] == 'E')
+                            updateBoardHepler(board, x, y);
+                    }
+                }
+            }
+        }
     }
 };
 
