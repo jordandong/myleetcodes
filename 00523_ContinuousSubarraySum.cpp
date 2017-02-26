@@ -17,6 +17,20 @@ You may assume the sum of all the numbers is in the range of a signed 32-bit int
 class Solution {
 public:
     bool checkSubarraySum(vector<int>& nums, int k) {
-        
+        unordered_map<int, int> mp;
+        int sum = 0;
+        mp[0] = -1;
+        for (int j = 0; j < nums.size(); j++) {
+            sum += nums[j];
+            if (k)
+                sum %= k;
+            if (mp.find(sum) != mp.end()) {
+                if (j - mp[sum] >= 2)
+                    return true;
+            } else {
+                mp[sum] = j;
+            }
+        }
+        return false;
     }
 };
