@@ -96,3 +96,45 @@ private:
     }
 };
 
+//BFS
+class Solution {
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        int m = click[0], n = click[1];
+        if (board[m][n] == 'M') {
+            board[m][n] = 'X';
+            return board;
+        }
+        queue<int> q;
+        q.push((m << 8) + n);
+        while (!q.empty()) {
+            m = q.front() >> 8;
+            n = q.front() & 0xFF;
+            q.pop();
+            int mines = 0, x = -1, y = -1;
+            for (int i = -1; i <= 1; ++i) {
+                for (int j = -1; j <= 1; ++j) {
+                    x = m + i, y = n + j;
+                    if (x >= 0 && y >= 0 && x < board.size() && y < board[0].size() && board[x][y] == 'M')
+                        ++mines;
+                }
+            }
+            
+            if (mines > 0) {
+                board[m][n] = '0' + mines;
+            } else {
+                board[m][n] = 'B';
+                for (int i = -1; i <= 1; ++i) {
+                    for (int j = -1; j <= 1; ++j) {
+                        x = m + i, y = n + j;
+                        if (x >= 0 && y >= 0 && x < board.size() && y < board[0].size() && board[x][y] == 'E') {
+                            board[x][y] = 'B';
+                            q.push((x << 8) + y);
+                        }
+                    }
+                }
+            }
+        }
+        return board;
+    }
+};
