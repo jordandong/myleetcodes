@@ -24,6 +24,29 @@ Hide Tags Array Depth-first Search
 class Solution {
 public:
     int findLonelyPixel(vector<vector<char>>& picture) {
-        
+        int M = picture.size();
+        if (M == 0)
+            return 0;
+        int N = picture[0].size();
+        if (N == 0)
+            return 0;
+        int res = 0;
+        vector<int> row(M, 0), col(N, 0);
+        for (int i = 0; i < M; ++i) {
+            for (int j = 0; j < N; ++j) {
+                if (picture[i][j] == 'B') {
+                    ++row[i];
+                    ++col[j];
+                }
+            }
+        }
+        for (int i = 0; i < M; ++i) {
+            if (row[i] == 1) {
+                for (int j = 0; j < N; ++j)
+                    if (picture[i][j] == 'B' && col[j] == 1)
+                        res++;
+            }
+        }
+        return res;
     }
 };
