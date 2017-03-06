@@ -30,6 +30,53 @@ Discuss
 class Solution {
 public:
     int findRotateSteps(string ring, string key) {
-        
+        int ans = INT_MAX, K = key.size(), R = ring.size();
+        vector<vector<int>> dp(2, vector<int>(R, INT_MAX));
+        for (int i = 0; i < K; i++) { // each char in key
+            for (int j = 0; j < R; j++) { // each char in ring
+                dp[i % 2][j] = INT_MAX;
+                if (ring[j] == key[i]) { // ring char matches key char
+                    if (i == 0) { //base dp case
+                        dp[i % 2][j] = min(dp[i % 2][j], min(j, R - j));
+                        continue;
+                    }
+                    for (int k = 0; k < R; k++) { // look up previous result
+                        if (dp[(i - 1) % 2][k] != INT_MAX) { // find previous result
+                            // update current result
+                            dp[i % 2][j] = min(dp[i % 2][j], dp[(i - 1) % 2][k] + min((k + R - j)%R, (j + R - k)%R));
+                            if (i == K - 1)
+                                ans = min(ans, dp[i % 2][j]); // if last row, update answer
+                        }
+                    }
+                }
+            }
+        }
+        return ans + K;
+    }
+};
+
+class Solution {
+public:
+    int findRotateSteps(string ring, string key) {
+        int ans = INT_MAX, K = key.size(), R = ring.size();
+        vector<vector<int>> dp(K, vector<int>(R, INT_MAX));
+        for (int i = 0; i < K; i++) { // Go through every char in key
+            for (int j = 0; j < R; j++) { // Go through every char in ring
+                if (ring[j] == key[i]) { // ring char matches key char
+                    if (i == 0) {
+                        dp[i][j] = min(dp[i][j], min(j, R - j));
+                        continue;
+                    }
+                    for (int k = 0; k < R; k++) { // look up previous result
+                        if (dp[i - 1][k] != INT_MAX) { // find previous result
+                            dp[i][j] = min(dp[i][j], dp[i - 1][k] + min((k + R - j)%R, (j + R - k)%R)); // update current state
+                            if (i == K - 1)
+                                ans = min(ans, dp[i][j]); // if last row, update answer
+                        }
+                    }
+                }
+            }
+        }
+        return ans + K;
     }
 };
