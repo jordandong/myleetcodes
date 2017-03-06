@@ -18,6 +18,7 @@ public:
         string shortUrl;
         hash<string> str_hash;
         size_t id = str_hash(longUrl);
+        id %= (size_t)pow(62, 6);
         mp[id] = longUrl;
         while (id) {
             shortUrl.push_back(db[id % 62]);
@@ -43,7 +44,6 @@ public:
 private:
     unordered_map<int, string> mp;
 };
-
 // Your Solution object will be instantiated and called as such:
 // Solution solution;
 // solution.decode(solution.encode(url));
