@@ -30,6 +30,27 @@ There will only be '(', ')', '-' and '0' ~ '9' in the input string.
 class Solution {
 public:
     TreeNode* str2tree(string s) {
-        
+        int i = 0;
+        return s.size() == 0 ? NULL : str2treeHelper(s, i);
+    }
+
+private:
+    TreeNode* str2treeHelper(string& s, int& i) {
+        int start = i;
+        if (s[i] == '-')
+            i++;
+        while (isdigit(s[i]))
+            i++;
+        int num = stoi(s.substr(start, i - start));
+        TreeNode* node = new TreeNode(num);
+        if (s[i] == '(') {
+            node->left = str2treeHelper(s, ++i);
+            i++;    // )
+        }
+        if (s[i] == '(') {
+            node->right = str2treeHelper(s, ++i);
+            i++;    // )
+        }
+        return node;
     }
 };
