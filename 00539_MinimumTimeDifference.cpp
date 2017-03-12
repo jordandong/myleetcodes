@@ -12,6 +12,27 @@ Note:
 class Solution {
 public:
     int findMinDifference(vector<string>& timePoints) {
-        
+        sort(timePoints.begin(), timePoints.end());
+        int N = timePoints.size();
+        int v1 = getTime(timePoints[0]), v2 = 0, ans = 1440;
+        for (int i = 0; i < timePoints.size(); i++) {
+            v2 = getTime(timePoints[(i + 1) % N]);
+            ans = min(ans, min(abs(v2 - v1), v2 - v1 + 1440));
+            v1 = v2;
+        }
+        return ans;
+    }
+private:
+    int getTime(string &t) {
+        int v1 = 0, v2 = 0;
+        for (auto &e : t) {
+            if (e == ':') {
+                v2 = v1 * 60;
+                v1 = 0;
+            } else {
+                v1 = 10 * v1 + e - '0';
+            }
+        }
+        return v2 + v1;
     }
 };
