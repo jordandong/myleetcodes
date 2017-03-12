@@ -4,9 +4,12 @@ Given a list of 24-hour clock time points in "Hour:Minutes" format, find the min
 Example 1:
 Input: ["23:59","00:00"]
 Output: 1
+
 Note:
 1. The number of time points in the given list is at least 2 and won't exceed 20000.
 2. The input time is legal and ranges from 00:00 to 23:59.
+
+Hide Tags String
 */
 
 class Solution {
@@ -17,7 +20,9 @@ public:
         int v1 = getTime(timePoints[0]), v2 = 0, ans = 1440;
         for (int i = 0; i < timePoints.size(); i++) {
             v2 = getTime(timePoints[(i + 1) % N]);
-            ans = min(ans, min(abs(v2 - v1), v2 - v1 + 1440));
+            if (((i + 1) % N) == 0)
+                v2 += 1440;
+            ans = min(ans, v2 - v1);
             v1 = v2;
         }
         return ans;
