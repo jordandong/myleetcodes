@@ -11,6 +11,16 @@ Restrictions:
 class Solution {
 public:
     string reverseStr(string s, int k) {
-        
+        int i = 0, j = k - 1;
+        while (i < s.length()) {
+            int start = i;
+            if (j >= s.length())
+                j = s.length() - 1;
+            while (i <= j)
+                swap(s[i++], s[j--]);
+            i = start + k + k;
+            j = i + k - 1;
+        }
+        return  s;   
     }
 };
