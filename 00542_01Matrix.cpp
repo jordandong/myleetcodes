@@ -31,36 +31,44 @@ The cells are adjacent in only four directions: up, down, left and right.
 class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
-        int M = matrix.size();
-        if (M == 0)
-            return {{}};
-        int N = matrix[0].size();
-        if (N == 0)
-            return {{}};
-        vector<vector<int>> res(M, vector<int>(N, INT_MAX));
-        for (int i = 0; i < M; i++) {
-            for (int j = 0; j < N; j++) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        vector<vector<int>> res(m, vector<int>(n, INT_MAX));
+        queue<int> q;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == 0) {
+                    q.push(10000 *i + j);
                     res[i][j] = 0;
-                    updateMatrixHelper(matrix, i + 1, j, 0, res);
-                    updateMatrixHelper(matrix, i - 1, j, 0, res);
-                    updateMatrixHelper(matrix, i, j + 1, 0, res);
-                    updateMatrixHelper(matrix, i, j - 1, 0, res);
                 }
             }
         }
+
+        while (!q.empty()) {
+            int i = q.front() / 10000;
+            int j = q.front() % 10000;
+            q.pop();
+            if (i > 0) {
+                if (res[i - 1][j] == INT_MAX)
+                    q.push(10000 * (i - 1) + j);
+                res[i - 1][j] = min(res[i - 1][j], res[i][j] + 1);
+            }
+            if (i < m - 1) {
+                if (res[i + 1][j] == INT_MAX)
+                    q.push(10000 * (i + 1) + j);
+                res[i + 1][j] = min(res[i + 1][j], res[i][j] + 1);
+            }
+            if (j > 0) {
+                if (res[i][j - 1] == INT_MAX)
+                    q.push(10000 * i + j - 1);
+                res[i][j - 1] = min(res[i][j - 1], res[i][j] + 1);
+            }
+            if (j < n - 1) {
+                if (res[i][j + 1] == INT_MAX)
+                    q.push(10000 * i + j + 1);
+                res[i][j + 1] = min(res[i][j + 1], res[i][j] + 1);
+            }
+        }
         return res;
-    }
-private:
-    void updateMatrixHelper(vector<vector<int>>& matrix, int x, int y, int dis, vector<vector<int>>& res) {
-        if (x < 0 || x >= matrix.size() || y < 0 || y >= matrix[0].size() || matrix[x][y] == 0)
-            return;
-        if (res[x][y] <= dis + 1)
-            return;
-        res[x][y] = dis + 1;
-        updateMatrixHelper(matrix, x - 1, y, dis + 1, res);
-        updateMatrixHelper(matrix, x + 1, y, dis + 1, res);
-        updateMatrixHelper(matrix, x, y - 1, dis + 1, res);
-        updateMatrixHelper(matrix, x, y + 1, dis + 1, res);
     }
 };
