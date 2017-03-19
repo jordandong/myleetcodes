@@ -28,3 +28,39 @@ There are at least one 0 in the given matrix.
 The cells are adjacent in only four directions: up, down, left and right.
 */
 
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        int M = matrix.size();
+        if (M == 0)
+            return {{}};
+        int N = matrix[0].size();
+        if (N == 0)
+            return {{}};
+        vector<vector<int>> res(M, vector<int>(N, INT_MAX));
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < N; j++) {
+                if (matrix[i][j] == 0) {
+                    res[i][j] = 0;
+                    updateMatrixHelper(matrix, i + 1, j, 0, res);
+                    updateMatrixHelper(matrix, i - 1, j, 0, res);
+                    updateMatrixHelper(matrix, i, j + 1, 0, res);
+                    updateMatrixHelper(matrix, i, j - 1, 0, res);
+                }
+            }
+        }
+        return res;
+    }
+private:
+    void updateMatrixHelper(vector<vector<int>>& matrix, int x, int y, int dis, vector<vector<int>>& res) {
+        if (x < 0 || x >= matrix.size() || y < 0 || y >= matrix[0].size() || matrix[x][y] == 0)
+            return;
+        if (res[x][y] <= dis + 1)
+            return;
+        res[x][y] = dis + 1;
+        updateMatrixHelper(matrix, x - 1, y, dis + 1, res);
+        updateMatrixHelper(matrix, x + 1, y, dis + 1, res);
+        updateMatrixHelper(matrix, x, y - 1, dis + 1, res);
+        updateMatrixHelper(matrix, x, y + 1, dis + 1, res);
+    }
+};
