@@ -26,14 +26,18 @@ Output: The root of a Greater Tree like this:
 class Solution {
 public:
     TreeNode* convertBST(TreeNode* root) {
-        if (!root)
-            return root;
-        convertBST(root->right);
-        if (root->right)
-            root->val += root->right->val;
-        if (root->left)
-            root->left->val += root->val;
-        convertBST(root->left);
+        int val = 0;
+        convertBSTHepler(root, val);
         return root;
+    }
+    
+private:
+    void convertBSTHepler(TreeNode* root, int &val) {
+        if (!root)
+            return;
+        convertBSTHepler(root->right, val);
+        root->val += val;
+        val = root->val;
+        convertBSTHepler(root->left, val);
     }
 };
