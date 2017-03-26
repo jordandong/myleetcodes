@@ -15,14 +15,24 @@ Note:
 
 The input strings will not have extra blank.
 The input strings will be given in the form of a+bi, where the integer a and b will both belong to the range of [-100, 100]. And the output should be also in this form.
-Discuss
-
-
 */
 
 class Solution {
 public:
     string complexNumberMultiply(string a, string b) {
-        
+        int a1 = 0, a2 = 0, b1 = 0, b2 = 0;
+        parseFactor(a, a1, a2);
+        parseFactor(b, b1, b2);
+        return to_string(a1*b1-a2*b2) + "+" + to_string(a1*b2 + a2*b1) + "i";
+    }
+private:
+    void parseFactor(string &num, int &f1, int &f2) {
+        int plus = -1, n = num.length();
+        for (int i = 0; i < n; i++) {
+            if (num[i] == '+')
+                plus = i; 
+        }
+        f1 = stoi(num.substr(0, plus));
+        f2 = stoi(num.substr(plus + 1, n - plus - 1));
     }
 };
