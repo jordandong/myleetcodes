@@ -52,9 +52,58 @@ So order them in anti-clockwise without duplicate nodes we have [1,2,4,7,8,9,10,
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
 public:
     vector<int> boundaryOfBinaryTree(TreeNode* root) {
-        
+        vector<int> res;
+        if (!root)
+            return res;
+        res.push_back(root->val);
+        get_lBoundary(root->left, res);
+        get_leaves(root->left, res);
+        get_leaves(root->right, res);
+        get_rBoundary(root->right, res);
+        return res;
+    }
+private:
+    void get_lBoundary(TreeNode* root, vector<int> &res) {
+        if (!root || (!root->left && !root->right))
+            return;
+        res.push_back(root->val);
+        if (root->left)
+            get_lBoundary(root->left, res);
+        else
+            get_lBoundary(root->right, res);
+    }
+
+    void get_rBoundary(TreeNode* root, vector<int> &res) {
+        if (!root || (!root->left && !root->right))
+            return;
+        if (root->right)
+            get_rBoundary(root->right, res);
+        else
+            get_rBoundary(root->left, res);
+        res.push_back(root->val);
+    }
+    
+    void get_leaves(TreeNode* root, vector<int> &res) {
+        if (!root)
+            return;
+        if (!root->left && !root->right) {
+            res.push_back(root->val);
+            return;
+        }
+        get_leaves(root->left, res);
+        get_leaves(root->right, res);
     }
 };
