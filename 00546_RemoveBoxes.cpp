@@ -21,6 +21,25 @@ Note: The number of boxes n would not exceed 100.
 class Solution {
 public:
     int removeBoxes(vector<int>& boxes) {
+        int n = boxes.size();
+        int memo[100][100][100] = {0};
+        //vector<vector<vector<int>>> memo(n,vector<vector<int>>(n, vector<int>(n,0))); //MLE
+        return removeBoxesHelper(boxes, memo, 0, n - 1, 0);
+    }
+    
+    int removeBoxesHelper(vector<int>& boxes, int memo[100][100][100], int l, int r, int k) {
+        if (l > r)
+            return 0;
+        if (memo[l][r][k])
+            return memo[l][r][k];
         
+        memo[l][r][k] = removeBoxesHelper(boxes, memo, l, r - 1, 0) + (k + 1)*(k + 1);
+        for (int i = l; i < r; i++){
+            if (boxes[i]==boxes[r]){
+                memo[l][r][k] = max(memo[l][r][k],
+                    removeBoxesHelper(boxes, memo, l, i, k + 1) + removeBoxesHelper(boxes, memo, i + 1, r - 1, 0));
+            }
+        }
+        return memo[l][r][k];
     }
 };
