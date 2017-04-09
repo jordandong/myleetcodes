@@ -10,6 +10,23 @@ Note: In the string, each word is separated by single space and there will not b
 class Solution {
 public:
     string reverseWords(string s) {
-        
+        string res = "";
+        stack<char> stk;
+        for (auto &c : s) {
+            if (c == ' ') {
+                while (!stk.empty()) {
+                    res.push_back(stk.top());
+                    stk.pop();
+                }
+                res.push_back(c);
+            } else {
+                stk.push(c);
+            }
+        }
+        while (!stk.empty()) {
+            res.push_back(stk.top());
+            stk.pop();
+        }
+        return res; 
     }
 };
