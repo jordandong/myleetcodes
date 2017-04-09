@@ -8,10 +8,29 @@ Example 2:
 Input: 21
 Output: -1
 */
-
 class Solution {
 public:
     int nextGreaterElement(int n) {
+        string num = to_string(n);
+        int N = num.length();
+        if (N < 2)
+        	return -1;
         
+        int i = N - 2;
+        while (i >= 0 && num[i] >= num[i + 1])
+        	i--;
+        
+        if (i == -1)
+            return -1;
+               
+        int j = N - 1;
+        while (j > i && num[j] <= num[i])
+        	j--;
+        	
+        swap(num[i], num[j]);
+        reverse(num.begin() + i + 1, num.end());
+
+        long res = stol(num);
+        return (res > INT_MAX) ? -1 : res;
     }
 };
