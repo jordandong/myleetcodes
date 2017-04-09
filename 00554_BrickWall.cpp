@@ -17,7 +17,12 @@ Input:
  [1,3,1,1]]
 Output: 2
 Explanation: 
-
+100110
+111011
+100011
+110000
+111011
+100010
 Note:
 The width sum of bricks in different rows are the same and won't exceed INT_MAX.
 The number of bricks in each row is in range [1,10,000]. The height of wall is in range [1,10,000]. Total number of bricks of the wall won't exceed 20,000.
@@ -26,6 +31,16 @@ The number of bricks in each row is in range [1,10,000]. The height of wall is i
 class Solution {
 public:
     int leastBricks(vector<vector<int>>& wall) {
-        
+        unordered_map<int, int> ends;
+        int maxend = 0;
+        for (int i = 0; i < wall.size(); i++) {
+            int sum = 0;
+            for (int j = 0; j + 1 < wall[i].size(); j++) {
+                sum += wall[i][j];
+                ends[sum]++;
+                maxend = max(maxend, ends[sum]);
+            }
+        }
+        return wall.size() - maxend;
     }
 };
