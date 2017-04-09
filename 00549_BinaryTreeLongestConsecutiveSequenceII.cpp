@@ -31,6 +31,46 @@ Explanation: The longest consecutive path is [1, 2, 3] or [3, 2, 1].
 class Solution {
 public:
     int longestConsecutive(TreeNode* root) {
-        
+        int maxlen = 0;
+        dfs(root, maxlen);
+        return maxlen;
+    }
+
+private:
+    vector<int> dfs(TreeNode* node, int& maxlen) {
+        if (!node)
+            return {0,0};
+
+        vector<int> p(2, 1);
+        int l2r = 1;
+        int r2l = 1;
+
+        if (node->left) {
+            vector<int> l = dfs(node->left, maxlen);
+            int lv = node->left->val;
+            if (node->val + 1 == lv) {
+                p[0] = max(p[0], 1 + l[0]);
+                r2l += l[0];
+            }
+            if (node->val - 1 == lv) {
+                p[1] = max(p[1], 1 + l[1]);
+                l2r += l[1];
+            }
+        }
+
+        if (node->right) {
+            vector<int> r = dfs(node->right, maxlen);
+            int rv = node->right->val;
+            if (node->val + 1 == rv) {
+                p[0] = max(p[0], 1 + r[0]);
+                l2r += r[0];
+            }
+            if (node->val - 1 == rv) {
+                p[1] = max(p[1], 1 + r[1]);
+                r2l += r[1];
+            }
+        }
+        maxlen = max(maxlen, max(max(l2r, r2l), max(p[0], p[1])));
+        return p;
     }
 };
