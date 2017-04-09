@@ -74,3 +74,13 @@ private:
         return p;
     }
 };
+
+int main() {
+	// your code goes here
+	TreeNode *root = new TreeNode(2);
+	root->left = new TreeNode(1);
+	root->right = new TreeNode(3);
+	Solution s;
+	cout<<s.longestConsecutive(root)<<endl;
+	return 0;
+}
