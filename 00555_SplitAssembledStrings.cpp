@@ -22,6 +22,32 @@ The total length of all the strings will not over 1000.
 class Solution {
 public:
     string splitLoopedString(vector<string>& strs) {
+        int N = strs.size();
+        string res = "";
+        for (int i = 0; i < N; i++) {
+            string rev = strs[i];
+            reverse(rev.begin(), rev.end());
+            if (rev > strs[i])
+                strs[i] = rev;
+            res += strs[i];
+        }
         
+        for (int i = 0; i < N; i++) {
+            string rev = strs[i];
+            reverse(rev.begin(), rev.end());
+            vector<string> tmp = {strs[i], rev};
+            for (auto s : tmp) {
+                for (int k = 0; k < s.length(); k++) {
+                    string t = s.substr(k);
+                    for (int j = i + 1; j % N != i; j++) {
+                        t += strs[j % N];
+                    }
+                    t += s.substr(0, k);
+                    if (t > res)
+                        res = t;
+                }
+            }
+        }
+        return res;
     }
 };
