@@ -19,6 +19,19 @@ Output: False
 class Solution {
 public:
     bool checkRecord(string s) {
-        
+        int late_cnt = 0, absent_cnt = 0;
+        for (auto c : s) {
+            if (c == 'A') {
+                if (++absent_cnt > 1)
+                    return false;
+                late_cnt = 0;
+            } else if (c == 'L') {
+                if (++late_cnt > 2)
+                    return false;
+            } else {
+                late_cnt = 0;
+            }
+        }
+        return true;
     }
 };
