@@ -26,6 +26,20 @@ There is only one optimal division for each test case.
 class Solution {
 public:
     string optimalDivision(vector<int>& nums) {
-        
+        //a b c d e f g h = a/b * max(c d e f g h) = a/b * c/d * max(e f g) = a/(b/c/d) * max(e f g)
+        string ans;
+        int N = nums.size();
+        if (N == 0)
+            return ans;
+        ans = to_string(nums[0]);
+        if (N == 1)
+            return ans;
+        if (N == 2)
+            return ans + "/" + to_string(nums[1]);
+        ans += "/(" + to_string(nums[1]);
+        for (int i = 2; i < N; ++i)
+            ans += "/" + to_string(nums[i]);
+        ans += ")";
+        return ans;
     }
 };
