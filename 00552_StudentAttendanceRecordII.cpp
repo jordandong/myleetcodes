@@ -21,6 +21,18 @@ Note: The value of n won't exceed 100,000.
 class Solution {
 public:
     int checkRecord(int n) {
-        
+        long M = 1000000007;
+        long a0l0 = 1, a0l1 = 0, a0l2 = 0, a1l0 = 0, a1l1 = 0, a1l2 = 0;
+        for (int i = 0; i <= n; i++) {
+            long a0l0_ = (a0l0 + a0l1 + a0l2) % M; //..P/L/LL + P
+            a0l2 = a0l1; // ..L + L
+            a0l1 = a0l0; // ..P + L
+            a0l0 = a0l0_; // ..L/P + P
+            long a1l0_ = (a0l0 + a1l0 + a1l1 + a1l2) % M; //...L/P + A plus A...P/L/LL + P
+            a1l2 = a1l1; //A...L + L
+            a1l1 = a1l0; //A...P + L
+            a1l0 = a1l0_;//...L/P + A plus  A...P/L/LL + P
+        }
+        return (int) a1l0;
     }
 };
