@@ -6,9 +6,12 @@ The 'closest' is defined as absolute difference minimized between two integers.
 Example 1:
 Input: "123"
 Output: "121"
+
 Note:
-The input n is a positive integer represented by string, whose length will not exceed 18.
-If there is a tie, return the smaller one as answer.
+1. The input n is a positive integer represented by string, whose length will not exceed 18.
+2. If there is a tie, return the smaller one as answer.
+
+Hide Tags String
 */
 
 class Solution {
