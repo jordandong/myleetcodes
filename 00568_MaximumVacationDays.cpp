@@ -51,6 +51,33 @@ class Solution {
 public:
     int maxVacationDays(vector<vector<int>>& flights, vector<vector<int>>& days) {
         int n = days.size(), k = days[0].size(); // n city , k weeks
+        vector<vector<int>> dp(n, vector<int>(k, -1)); // dp[i][j] - max days play if you spent week j in city i;
+        
+        for (int i = 0; i < n; i++) {
+            if (i == 0 || flights[0][i])
+                dp[i][0] = days[i][0];
+        }
+        
+        for (int w = 1; w < k; w++) {
+            for (int c2 = 0; c2 < n; c2++) {
+                for (int c1 = 0; c1 < n ; c1++) {
+                    if ((flights[c1][c2] || c1 == c2) && (dp[c1][w - 1] != -1))
+                        dp[c2][w] = max(dp[c2][w], days[c2][w] + dp[c1][w - 1]);
+                }
+            }
+        }
+        int mx = 0;;
+        for (int i = 0; i < n; i++) {
+            mx = max(mx, dp[i][k - 1]);
+        }
+        return mx;
+    }
+};
+
+class Solution {
+public:
+    int maxVacationDays(vector<vector<int>>& flights, vector<vector<int>>& days) {
+        int n = days.size(), k = days[0].size(); // n city , k weeks
         vector<vector<int>> dp(n, vector<int>(k, 0)); // dp[i][j] - max days play if you spent week j in city i;
         for (int j = k - 1; j >= 0; j--) {
             for (int i = 0; i < n; i++) {
