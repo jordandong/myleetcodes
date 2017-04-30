@@ -16,6 +16,32 @@ The length of both given strings is in range [1, 10,000].
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
+        vector<int> m(256, 0);
+        int N = s1.size();
+        if (N > s2.size())
+            return false;
+
+        for(int i = 0; i < N; ++i)
+            m[s1[i]]++;
+        int cnt = 0;
+        for (int i = 0, j = 0; j < s2.size(); j++) {
+            if (m[s2[j]]-- > 0)
+                cnt++;
+
+            while (cnt == N) {
+                if (j + 1 - i == N)
+                    return true;
+                if (++m[s2[i++]] > 0)
+                    cnt--;
+            }
+        }
+        return false;
+    }
+};
+
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
         vector<int> m1(256, 0), m2(256, 0);
         int N = s1.size();
         if (N > s2.size())
