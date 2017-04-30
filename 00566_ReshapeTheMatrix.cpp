@@ -36,6 +36,27 @@ The given r and c are all positive.
 class Solution {
 public:
     vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+        int m = nums.size();
+        if (m == 0)
+            return nums;
+        int n = nums[0].size();
+        if (n == 0)
+            return nums;
         
+        if ((m * n) != (r * c))
+            return nums;
+            
+        vector<vector<int> > res(r, vector<int>(c, 0));
+        int rr = 0, cc = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (cc == c) {
+                    cc = 0;
+                    rr++;
+                }
+                res[rr][cc++] = nums[i][j];
+            }
+        }
+        return res;
     }
 };
