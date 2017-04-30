@@ -12,6 +12,14 @@ The range of numbers in the array is [-1000, 1000] and the range of the integer 
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
-        
+        int res = 0;
+        int s = 0;
+        unordered_map<int, int> s_cnt;
+        for (auto e : nums) {
+            s_cnt[s]++;
+            s += e;
+            res += s_cnt[s - k];
+        }
+        return res;
     }
 };
