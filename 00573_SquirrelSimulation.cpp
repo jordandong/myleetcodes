@@ -23,6 +23,21 @@ Discuss
 class Solution {
 public:
     int minDistance(int height, int width, vector<int>& tree, vector<int>& squirrel, vector<vector<int>>& nuts) {
-        
+        if (nuts.size() == 0)
+            return -1;
+        int mi = 0;
+        int mi_dist = abs(nuts[0][0] - squirrel[0]) +
+                      abs(nuts[0][1] - squirrel[1]) - 
+                      abs(nuts[0][0] - tree[0]) - 
+                      abs(nuts[0][1] - tree[1]);
+        for (auto e : nuts) {
+            int s2n = abs(e[0] - squirrel[0]) + abs(e[1] - squirrel[1]);
+            int t2n = abs(e[0] - tree[0]) + abs(e[1] - tree[1]);
+            if  (s2n - t2n <= mi_dist)
+                mi_dist = s2n - t2n;
+            mi += (t2n * 2);
+        }
+        mi += mi_dist;
+        return mi;
     }
 };
