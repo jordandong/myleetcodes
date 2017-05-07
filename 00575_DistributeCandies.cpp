@@ -22,6 +22,9 @@ The number in given array is in range [-100,000, 100,000].
 class Solution {
 public:
     int distributeCandies(vector<int>& candies) {
-        
+        unordered_set<int> s;
+        for (auto e : candies)
+            s.insert(e);
+        return min(s.size(), candies.size() / 2);
     }
 };
