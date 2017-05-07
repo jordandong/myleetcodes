@@ -41,9 +41,26 @@ Discuss
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
 class Solution {
 public:
     bool isSubtree(TreeNode* s, TreeNode* t) {
+        if (!t)
+            return true;
+        if (!s)
+            return false;
+        return isSameTree(s, t) || isSubtree(s->left, t) || isSubtree(s->right, t);
+    }
+    
+private:
+    bool isSameTree(TreeNode *s, TreeNode *t) {
+        if (!s && !t)
+            return true;
         
+        if (s && t)
+            return (s->val == t->val) &&
+                   isSameTree(s->left, t->left) &&
+                   isSameTree(s->right, t->right);
+        return false;
     }
 };
