@@ -29,6 +29,24 @@ public:
 class Solution {
 public:
     int firstUniqChar(string s) {
+        vector<int> map(256, 0);
+        queue<int> q;
+        for (int i = 0; i < s.length(); i++) {
+            if (++map[s[i]] == 1) {
+                q.push(i);
+            } else {
+                while (!q.empty() && map[s[q.front()]] > 1)
+                    q.pop();
+            }
+        }
+        return q.empty() ? -1 : q.front();
+        
+    }
+};
+
+class Solution {
+public:
+    int firstUniqChar(string s) {
         using IT = list<int>::iterator;
         list<int> candidates;
         unordered_map<char, IT> lookup;
