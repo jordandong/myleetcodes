@@ -40,3 +40,24 @@ public:
         return u_end - u_start + 1;
     }
 };
+
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        int N = nums.size();
+        if (N == 0)
+            return 0;
+        vector<int> copy = nums;
+        int u_start = -1, u_end = -2;
+
+        sort(copy.begin(), copy.end());
+        for (int i = 0; i < N; i++) {
+            if (nums[i] != copy[i]) {
+                if (u_start == -1)
+                    u_start = i;
+                u_end = i;
+            }
+        }
+        return u_end - u_start + 1;
+    }
+};
