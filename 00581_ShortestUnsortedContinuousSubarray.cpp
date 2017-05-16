@@ -18,6 +18,25 @@ Hide Tags Array
 class Solution {
 public:
     int findUnsortedSubarray(vector<int>& nums) {
-        
+        int N = nums.size();
+        if (N == 0)
+            return 0;
+        int u_start = -1, u_end = -2;
+        int mx = nums[0], mi = nums[N - 1];
+        for (int i = 0; i < N; i++) {
+            if (nums[i] < mx) {
+                u_end = i;
+            } else {
+                mx = nums[i];
+            }
+        }
+        for (int i = N - 1; i >= 0; i--) {
+            if (nums[i] > mi) {
+                u_start = i;
+            } else {
+                mi = nums[i];
+            }
+        }
+        return u_end - u_start + 1;
     }
 };
