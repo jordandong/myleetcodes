@@ -8,12 +8,25 @@ Example 1:
 Input: [[1,1],[2,2],[2,0],[2,4],[3,3],[4,2]]
 Output: [[1,1],[2,0],[4,2],[3,3],[2,4]]
 Explanation:
+5
+4     T
+3       T
+2     t   T
+1   T
+0     T
+  0 1 2 3 4 5
 
 Example 2:
 Input: [[1,2],[2,2],[4,2]]
 Output: [[1,2],[2,2],[4,2]]
 Explanation:
-
+5
+4
+3
+2   T T   T
+1
+0
+  0 1 2 3 4 5
 Even you only have trees in a line, you need to use rope to enclose them. 
 
 Note:
