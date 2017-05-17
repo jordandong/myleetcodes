@@ -176,8 +176,12 @@ public:
             }
             upper.push_back(points[i]);
         }
+        //linear
+        if (upper.size() == points.size())
+            return upper;
+      
         //Find lower hull, in the increasing order of x-coordinate 
-        for (int i=0; i<points.size(); i++) {
+        for (int i = 0; i < points.size(); i++) {
             //Pop the top point if next_to_top, top, points[i] forms a right turn (in clockwise turn)
             while ((lower.size() > 1) 
                 && (crossProduct(lower[lower.size() - 2], lower[lower.size() - 1], points[i]) < 0)) {
