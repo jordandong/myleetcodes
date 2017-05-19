@@ -22,6 +22,31 @@ Explanation: There are three 132 patterns in the sequence: [-1, 3, 2], [-1, 3, 0
 Hide Tags Stack
 */
 
+//T : O(N), S : O(N)
+class Solution {
+public:
+    /**
+     * @param nums a list of n integers
+     * @return true if there is a 132 pattern or false
+     */
+    bool find132pattern(vector<int>& nums) {
+        // Write your code here
+        stack<int> aj;
+        int ak = INT_MIN;
+        for (int i = nums.size() - 1; i >= 0; --i) {
+            if (nums[i] < ak)
+                return true;
+            
+            while (!aj.empty() && aj.top() < nums[i]) {
+                ak = aj.top();
+                aj.pop();
+            }
+            aj.push(nums[i]);
+        }
+        return false;
+    }
+};
+
 //T : O(N ^ 2), S : O(1)
 class Solution {
 public:
