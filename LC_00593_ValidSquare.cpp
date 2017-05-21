@@ -52,3 +52,24 @@ private:
                (p[1] - q[1]) * (p[1] - q[1]);
     }
 };
+
+//failed at (0,0),(0,2),(-1,√3),(1,√3), but interger is fine
+class Solution {
+public:
+    bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
+        int d12 = distSq(p1, p2);
+        int d13 = distSq(p1, p3);
+        int d14 = distSq(p1, p4);
+        int d23 = distSq(p2, p3);
+        int d24 = distSq(p2, p4);
+        int d34 = distSq(p3, p4);
+        unordered_set<int> m({d12, d13, d14, d23, d24, d34});
+        
+        return !m.count(0) && m.size() == 2;
+    }
+private:
+    int distSq(vector<int>& p, vector<int>& q) {
+        return (p[0] - q[0]) * (p[0] - q[0]) +
+               (p[1] - q[1]) * (p[1] - q[1]);
+    }
+};
