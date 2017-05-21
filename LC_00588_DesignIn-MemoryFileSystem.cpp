@@ -80,7 +80,7 @@ public:
             if (!dirs[i].count(dir)) {
                 int n = dirs.size();
                 dirs.push_back({});
-                dirs[i].insert({dir, {n, 0}});
+                dirs[i].insert({dir, {n, DR}});
             }
             i = dirs[i][dir].i;
         }
