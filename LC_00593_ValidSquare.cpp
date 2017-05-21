@@ -57,6 +57,34 @@ private:
 class Solution {
 public:
     bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
+        unordered_map<int, int> mp;
+        mp[distSq(p1, p2)]++;
+        mp[distSq(p1, p3)]++;
+        mp[distSq(p1, p4)]++;
+        mp[distSq(p2, p3)]++;
+        mp[distSq(p2, p4)]++;
+        mp[distSq(p3, p4)]++;
+        int v4 = -1, v2 = -1;
+        for (auto e : mp) {
+            if (e.second == 4)
+                v4 = e.first;
+            else if (e.second == 2)
+                v2 = e.first;
+        }
+        
+        return v2 > 0 && v4 > 0 && v4 < v2;
+    }
+private:
+    int distSq(vector<int>& p, vector<int>& q) {
+        return (p[0] - q[0]) * (p[0] - q[0]) +
+               (p[1] - q[1]) * (p[1] - q[1]);
+    }
+};
+
+//failed at (0,0),(0,2),(-1,√3),(1,√3), but interger is fine
+class Solution {
+public:
+    bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
         int d12 = distSq(p1, p2);
         int d13 = distSq(p1, p3);
         int d14 = distSq(p1, p4);
