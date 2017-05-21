@@ -28,3 +28,22 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    int findLHS(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int res = 0, i = 0, j = 0;
+        while (j < nums.size()) {
+            if (nums[i] == nums[j]) {
+                j++;
+            } else if (nums[i] + 1 == nums[j]) {
+                j++;
+                res = max(res, j - i);
+            } else {
+                i++;
+            }
+        }
+        return res;
+    }
+};
