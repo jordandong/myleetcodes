@@ -31,12 +31,12 @@ Time complexity required: O(n) where n is the size of the input string.
 
 Notice that a/aa/aaa/file1.txt is not the longest file path, if there is another path aaaaaaaaaaaaaaaaaaaaa/sth.png.
 */
-
 class Solution {
 public:
     int lengthLongestPath(string input) {
+        if (input.length() == 0)
+            return 0;
         input.push_back('\n');
-
         size_t max_len = 0;
         unordered_map<int, int> path_len;
         path_len[0] = 0;
