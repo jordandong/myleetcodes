@@ -26,6 +26,25 @@ Each element of array A is an integer within the range [0, N-1].
 class Solution {
 public:
     int arrayNesting(vector<int>& nums) {
+        int res = 0, l = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            l = 0;
+            int j = i, next;
+            while (nums[j] >= 0) {
+                l++;
+                next = nums[j];
+                nums[j] = -1;
+                j = next;
+            }
+            res = max(res, l);
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int arrayNesting(vector<int>& nums) {
         unordered_set<int> s;
         int res = 0, l = 0;
         for (int i = 0; i < nums.size(); i++) {
