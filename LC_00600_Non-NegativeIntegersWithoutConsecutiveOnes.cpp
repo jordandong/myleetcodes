@@ -13,13 +13,10 @@ Here are the non-negative integers <= 5 with their corresponding binary represen
 4 : 100
 5 : 101
 Among them, only integer 3 disobeys the rule (two consecutive ones) and the other 5 satisfy the rule. 
+
 Note: 1 <= n <= 109
 
-Subscribe to see which companies asked this question.
-
 Hide Tags Dynamic Programming
-Hide Similar Problems (E) House Robber (M) House Robber II (M) Ones and Zeroes
-Have you met this question in a real interview? Yes  
 */
 
 class Solution {
