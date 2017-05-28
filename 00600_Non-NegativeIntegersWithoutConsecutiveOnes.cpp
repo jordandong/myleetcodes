@@ -57,3 +57,39 @@ private:
         return (num & (1 << pos)) ? 1 : 0;
     }
 };
+
+class Solution {
+public:
+    int findIntegers(int num) {
+        int N = getLen(num);
+        vector<int> dp_0(N, 0), dp_1(N, 0); //the total amout at starting pos i with 0 or 1, 1 based
+        dp_0[0] = 1;
+        dp_1[0] = 0;
+        for (int i = 1; i < N; i++) {
+            dp_0[i] = dp_0[i - 1] + dp_1[i - 1]; //0 , 00 01...
+            dp_1[i] = dp_0[i - 1]; //1 , 10 ...
+        }
+        int res = dp_0[N - 1] + dp_1[N - 1]; //including 10XXXXXX case and case 01XXXXXXX 
+        for (int i = N - 1; i >= 1; i--) {
+            if (getPos(num, i) == 1) {
+                res += (dp_0[i - 1] + dp_1[i - 1]); //plus YYYYY10XXXXX case and YYYYY01XXXXX case 
+                if (getPos(num, i + 1) == 1) //both are ones, must be contains max amount
+                    return res;
+            }
+        }
+        return res + 1; //plus itself
+    }
+private:
+    int getLen(int num) {
+        int n = 0;
+        while (num) {
+            n++;
+            num >>= 1;
+        }
+        return n;
+    }
+    
+    int getPos(int num, int pos) {
+        return (num & (1 << (pos - 1))) ? 1 : 0;
+    }
+};
