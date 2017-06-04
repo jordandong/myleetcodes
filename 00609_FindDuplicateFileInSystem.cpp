@@ -35,6 +35,55 @@ How to make sure the duplicated files you find are not false positive?
 class Solution {
 public:
     vector<vector<string>> findDuplicate(vector<string>& paths) {
-        
+        vector<vector<string>> res;
+        map<string, vector<string>> files;
+        for (string s : paths) {
+            istringstream ss(s);
+            vector<string> toks{ istream_iterator<string>{ss}, istream_iterator<string>{} };
+            string path = toks[0];
+            for (int i = 1; i < toks.size(); i++) {
+                int pos = toks[i].find('(');
+                string file = toks[i].substr(0, pos);
+                string content = toks[i].substr(pos + 1, toks[i].size() - 2 - pos);
+                files[content].push_back(path + "/" + file);
+            }
+        }
+
+        for (auto p : files) {
+            if (p.second.size() > 1) {
+                res.push_back(p.second);
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<vector<string>> findDuplicate(vector<string>& paths) {
+        vector<vector<string>> res;
+        map<string, vector<string>> files;
+        for (string s : paths) {
+            istringstream ss(s);
+            vector<string> toks;
+            string item;
+            while (getline(ss, item, ' '))
+                toks.push_back(item);
+            
+            string path = toks[0];
+            for (int i = 1; i < toks.size(); i++) {
+                int pos = toks[i].find('(');
+                string file = toks[i].substr(0, pos);
+                string content = toks[i].substr(pos + 1, toks[i].size() - 2 - pos);
+                files[content].push_back(path + "/" + file);
+            }
+        }
+
+        for (auto p : files) {
+            if (p.second.size() > 1) {
+                res.push_back(p.second);
+            }
+        }
+        return res;
     }
 };
