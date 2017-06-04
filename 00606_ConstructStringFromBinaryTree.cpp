@@ -44,13 +44,10 @@ public:
     string tree2str(TreeNode* t) {
         if (!t)
             return "";
-        string l = tree2str(t->left);
-        string r = tree2str(t->right);
-        if (l == "" && r == "")
+        if (!t->left && !t->right)
             return to_string(t->val);
-        if (r == "")
-            return to_string(t->val) + "(" + l + ")";
-
-        return to_string(t->val) + "(" + l + ")" + "(" + r + ")";
+        if (!t->right)
+            return to_string(t->val) + "(" + tree2str(t->left) + ")";
+        return to_string(t->val) + "(" + tree2str(t->left) + ")" + "(" + tree2str(t->right) + ")";
     }
 };
