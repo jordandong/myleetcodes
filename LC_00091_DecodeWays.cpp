@@ -38,3 +38,24 @@ public:
         return dp[N];
     }
 };
+
+class Solution {
+public:
+    int numDecodings(string s) {
+        int res = 1, a = 1, b = 1;
+        if (s.length() == 0 || s[0] == '0')
+            return 0;
+        for (int i = 1; i < s.length(); i++) {
+            if (s[i] != '0') {
+                res = b;
+            } else {
+                res = 0;
+            }
+            if (s[i - 1] == '1' || (s[i - 1] == '2' && s[i] < '7'))
+                res += a;
+            a = b;
+            b = res;
+        }
+        return res;
+    }
+};
