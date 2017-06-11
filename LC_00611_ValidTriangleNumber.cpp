@@ -11,8 +11,10 @@ Valid combinations are:
 2,2,3
 
 Note:
-The length of the given array won't exceed 1000.
-The integers in the given array are in the range of [0, 1000].
+1. The length of the given array won't exceed 1000.
+2. The integers in the given array are in the range of [0, 1000].
+
+Hide Tags Array
 */
 
 class Solution {
