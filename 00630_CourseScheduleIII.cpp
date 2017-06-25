@@ -27,9 +27,6 @@ public:
 
 class Solution {
 public:
-    int func (int a , int b) {
-        return a < b;
-    }
     int scheduleCourse(vector<vector<int>>& courses) {
         int N = courses.size();
         if (N < 1)
@@ -60,18 +57,8 @@ public:
     }
 };
 
-class comp {
-public:
-    bool operator() (int &a, int &b) {
-        return a < b;
-    }
-};
-
 class Solution {
 public:
-    int func (int a , int b) {
-        return a < b;
-    }
     int scheduleCourse(vector<vector<int>>& courses) {
         int N = courses.size();
         if (N < 1)
@@ -88,7 +75,6 @@ public:
             q.push(courses[i][0]);
             //while (cur_date_end > courses[i][1]) {
             if (cur_date_end > courses[i][1]) {
-
                 cur_date_end -= q.top(); //remove longest course
                 q.pop();
             }
