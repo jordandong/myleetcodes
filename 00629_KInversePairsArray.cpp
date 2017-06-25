@@ -35,3 +35,23 @@ public:
         return (int)dp[n - 1][k];
     }
 };
+
+class Solution {
+public:
+    int kInversePairs(int n, int k) {
+        vector<long>  dp(k + 1, 0);
+        dp[0] = 1;
+        for (int i = 2; i <= n; i++) {
+            //dp[n][k] = sum{x = 0...n} dp[n - 1][k - x]
+            for (int j = 1; j <= k; j++) {
+                dp[j] += dp[j - 1]; //dp[n][k] = sum{x = 0...k} dp[n - 1][x]
+                dp[j] = dp[j] % 1000000007;
+            }
+            for(int j = k; j >= i; j--) { // if k > n, sum{x = 0 ... k-n} dp[n - 1][x] won't count
+                dp[j] = dp[j] - dp[j - i] + 1000000007;
+                dp[j] = dp[j] % 1000000007;
+            }
+        }
+        return dp[k];
+    }
+};
