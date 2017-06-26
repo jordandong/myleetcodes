@@ -133,6 +133,80 @@ public:
     }
 };
 
+class Excel {
+public:
+    Excel(int H, char W) {}
+    
+    void set(int r, char c, int v) {
+        auto i = key(r, c);
+        remove_refs(i);
+        update_deps(i, v - cells[i].value);
+    }
+    
+    int get(int r, char c) {
+        return cells[key(r, c)].value;
+    }
+    
+    int sum (int r, char c, vector<string> strs) {
+        auto i = key(r, c);
+        remove_refs(i);
+        int v = add_refs(i, strs);
+        update_deps(i, v - cells[i].value);
+        return v;
+    }
+
+private:
+    struct Cell {
+        // dependents and references
+        unordered_map<int, int> deps; //{j, count} the value is used by cell j count times
+        std::set<int> refs; //{i} the value is part from cell i
+        int value;
+        Cell() : value(0) {}
+    };
+
+    unordered_map<int, Cell> cells;
+
+    int key(int r, char c) {
+        return (r - 1) * 26 + (c - 'A');
+    }
+
+    // update dependents with dfs following the dependent-chain
+    void update_deps(int i, int diff) {
+        cells[i].value += diff;
+        for (auto &j : cells[i].deps)
+            update_deps(j.first, diff * j.second);
+    }
+    
+    void remove_refs(int i) {
+        for (auto &j : cells[i].refs)
+            cells[j].deps.erase(i);
+        cells[i].refs.clear();
+    }
+
+    int add_refs(int i, vector<string> &strs) {
+        int v = 0;
+        for (auto &s : strs) {
+            istringstream iss(s);
+
+            int r0, r1;
+            char c0, c1;
+
+            if (!(iss >> c0 >> r0 >> c1 >> c1 >> r1))
+                r1 = r0, c1 = c0;
+
+            for (int rx = r0; rx <= r1; rx++) {
+                for (char cx = c0; cx <= c1; cx++) {
+                    int j = key(rx, cx);
+                    cells[i].refs.insert(j);
+                    cells[j].deps[i]++;
+                    v += cells[j].value;
+                }
+            }
+        }
+        return v;
+    }
+};
+
 /**
  * Your Excel object will be instantiated and called as such:
  * Excel obj = new Excel(H, W);
