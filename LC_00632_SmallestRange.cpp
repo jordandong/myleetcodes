@@ -57,3 +57,40 @@ public:
         return ans;
     }
 };
+
+
+class Solution {
+public:     
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        vector<pair<int, int>> m; //{value, idx}
+        unordered_map<int, int> c; //{idx, ref_cnt}
+        vector<int> ans;
+        
+        for (int i = 0; i < nums.size(); i++) {
+            for (int j = 0; j < nums[i].size(); j++)
+                m.push_back({nums[i][j], i});
+        }
+            
+        sort(m.begin(), m.end(), 
+             [](pair<int, int> &a, pair<int, int> &b){
+                 if (a.first == b.first)
+                     return a.second < b.second;
+                 return a.first < b.first;
+             });
+
+        int dist = INT_MAX;
+        for (int i = 0, j = 0; j < m.size(); j++) {
+            c[m[j].second]++;
+            if (c.size() == nums.size()) {
+                while (c[m[i].second] > 1)
+                    c[m[i++].second]--;
+                
+                if (m[j].first - m[i].first < dist) {
+                    dist = m[j].first - m[i].first;
+                    ans = {m[i].first, m[j].first};
+                }
+            }
+        }
+        return ans;
+    }
+};
