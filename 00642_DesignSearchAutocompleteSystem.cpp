@@ -93,6 +93,84 @@ private:
     map<string, int> mp;
 };
 
+class TrieNode {
+public:
+    TrieNode *node[27];
+    int freq;
+    string s;
+    TrieNode() {
+        memset(node, 0, sizeof(node));
+        freq = 0;
+        s = "";
+    }
+};
+
+class AutocompleteSystem {
+public:
+    AutocompleteSystem(vector<string> sentences, vector<int> times) {
+        root = new TrieNode();
+        for (int i = 0; i < sentences.size(); i++)
+            insert(sentences[i], times[i]);
+        buf = "";
+    }
+    
+    vector<string> input(char c) {
+        if (c == '#') {
+            insert(buf, 1);
+            buf = "";
+            return {};
+        }
+
+        buf += c;
+        vector<pair<int, string>> res;
+        vector<string> ans;
+        search(buf, res);
+        sort(res.begin(), res.end());
+        for (auto e : res) {
+            ans.push_back(e.second);
+            if (ans.size() == 3)
+                return ans;
+        }
+        return ans;
+    }
+    
+private:
+    TrieNode* root;
+    string buf;
+
+    void insert(string &s ,int freq) {
+        TrieNode *t = root;
+        for (int i = 0; i < s.length(); i++) { 
+            int idx = (s[i] == ' ' ? 26 : (s[i] - 'a'));
+            if (t->node[idx] == NULL) 
+                t->node[idx] = new TrieNode();
+            t = t->node[idx];
+        }
+        t->freq += freq;
+        t->s = s;
+    }
+    
+    void search(string &key, vector<pair<int, string>> &res) {
+        TrieNode *t = root;
+        for (int i = 0; i < key.length(); i++) { 
+            int idx = (key[i] == ' ' ? 26 : (key[i] - 'a'));
+            if (NULL == t->node[idx])
+                return;
+            t = t->node[idx];
+        }
+        get(t, res);
+    }
+    
+    void get(TrieNode* t, vector<pair<int, string>> &res) {
+        if (t->freq)
+            res.push_back({-t->freq, t->s});
+        for (int i = 0; i <= 26; i++) {
+            if (t->node[i])
+                get(t->node[i], res);
+        }
+    }
+};
+
 /**
  * Your AutocompleteSystem object will be instantiated and called as such:
  * AutocompleteSystem obj = new AutocompleteSystem(sentences, times);
