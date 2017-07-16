@@ -93,18 +93,6 @@ private:
     map<string, int> mp;
 };
 
-class TrieNode {
-public:
-    TrieNode *node[27];
-    int freq;
-    string s;
-    TrieNode() {
-        memset(node, 0, sizeof(node));
-        freq = 0;
-        s = "";
-    }
-};
-
 class AutocompleteSystem {
 public:
     AutocompleteSystem(vector<string> sentences, vector<int> times) {
@@ -135,6 +123,16 @@ public:
     }
     
 private:
+    struct TrieNode {
+        TrieNode *node[27];
+        int freq;
+        string s;
+        TrieNode() {
+            memset(node, 0, sizeof(node));
+            freq = 0;
+            s = "";
+        }
+    };
     TrieNode* root;
     string buf;
 
