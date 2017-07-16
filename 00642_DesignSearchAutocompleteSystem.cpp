@@ -171,6 +171,91 @@ private:
     }
 };
 
+class AutocompleteSystem {
+public:
+    AutocompleteSystem(vector<string> sentences, vector<int> times) {
+        root = new TrieNode();
+        for (int i = 0; i < sentences.size(); i++)
+            insert(sentences[i], times[i]);
+        buf = "";
+    }
+    
+    vector<string> input(char c) {
+        if (c == '#') {
+            insert(buf, 1);
+            buf = "";
+            return {};
+        }
+
+        buf += c;
+        priority_queue<pair<int, string>, vector<pair<int, string>>, cmp> res;
+        vector<string> ans;
+        search(buf, res);
+        while (!res.empty()) {
+            ans.insert(ans.begin(), res.top().second);
+            res.pop();
+        }
+        return ans;
+    }
+    
+private:
+    struct cmp {
+        bool operator() (pair<int, string> &a, pair<int, string> &b) {
+            if (a.first == b.first)
+                return a.second < b.second;
+            return a.first > b.first;
+        }
+    };
+
+    struct TrieNode {
+        TrieNode *node[27];
+        int freq;
+        string s;
+        TrieNode() {
+            memset(node, 0, sizeof(node));
+            freq = 0;
+            s = "";
+        }
+    };
+    
+    TrieNode* root;
+    string buf;
+
+    void insert(string &s ,int freq) {
+        TrieNode *t = root;
+        for (int i = 0; i < s.length(); i++) { 
+            int idx = (s[i] == ' ' ? 26 : (s[i] - 'a'));
+            if (t->node[idx] == NULL) 
+                t->node[idx] = new TrieNode();
+            t = t->node[idx];
+        }
+        t->freq += freq;
+        t->s = s;
+    }
+    
+    void search(string &key, priority_queue<pair<int, string>, vector<pair<int, string>>, cmp> &res) {
+        TrieNode *t = root;
+        for (int i = 0; i < key.length(); i++) { 
+            int idx = (key[i] == ' ' ? 26 : (key[i] - 'a'));
+            if (NULL == t->node[idx])
+                return;
+            t = t->node[idx];
+        }
+        get(t, res);
+    }
+    
+    void get(TrieNode* t, priority_queue<pair<int, string>, vector<pair<int, string>>, cmp> &res) {
+        if (t->freq)
+            res.push({t->freq, t->s});
+        if (res.size() > 3)
+            res.pop();
+        for (int i = 0; i <= 26; i++) {
+            if (t->node[i])
+                get(t->node[i], res);
+        }
+    }
+};
+
 /**
  * Your AutocompleteSystem object will be instantiated and called as such:
  * AutocompleteSystem obj = new AutocompleteSystem(sentences, times);
