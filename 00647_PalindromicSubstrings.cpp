@@ -18,6 +18,30 @@ The input string length won't exceed 1000.
 class Solution {
 public:
     int countSubstrings(string s) {
+        int N = s.length();
+        int res = N;
+        for (int i = 0; i < N; i++) {
+            int l = i - 1, r = i + 1;
+            while (l >= 0 && r < N && s[l--] == s[r++])
+                res++;
+        }
+        
+        for (int i = 0, j = 1; j < N; i++, j++) {
+            if (s[i] != s[j])
+                continue;
+            res += 1;
+            int l = i - 1, r = j + 1;
+            while (l >= 0 && r < N && s[l--] == s[r++])
+                res++;
+        }
+     
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int countSubstrings(string s) {
         int res = s.length();
         for (int l = 2; l <= s.length(); l++) {
             for (int i = 0; i <= s.length() - l; i++) {
