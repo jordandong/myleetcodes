@@ -7,10 +7,12 @@ Example 1:
 Input: "abc"
 Output: 3
 Explanation: Three palindromic strings: "a", "b", "c".
+
 Example 2:
 Input: "aaa"
 Output: 6
 Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+
 Note:
 The input string length won't exceed 1000.
 */
@@ -36,6 +38,25 @@ public:
         }
      
         return res;
+    }
+};
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int N = s.length(), res = 0;
+        vector<vector<bool>> dp(N, vector<bool>(N, false));
+        for (int j = 0; j < N; j++) {
+            for (int i = j; i >= 0 ; i--) {
+                if (i == j || ((i + 1) == j && s[i] == s[j])) {
+                    dp[i][j] = true;
+                } else{
+                    dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j]);
+                }
+                res += dp[i][j];
+            }
+        }
+        return res;            
     }
 };
 
