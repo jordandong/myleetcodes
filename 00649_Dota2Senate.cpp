@@ -44,6 +44,25 @@ Note:
 class Solution {
 public:
     string predictPartyVictory(string senate) {
-        
+        int R = 0;
+        string s = "";
+        while (true) {
+            for (auto c : senate) {
+                if (c == 'R') {
+                    if (R >= 0)
+                        s += "R";
+                    R++;
+                } else {
+                    if (R <= 0)
+                        s += "D";
+                    R--;
+                }
+            }
+            if (R == s.length() || -R == s.length())
+                return R > 0 ? "Radiant" : "Dire";
+            senate = s;
+            s = "";
+            R = 0;
+        }
     }
 };
