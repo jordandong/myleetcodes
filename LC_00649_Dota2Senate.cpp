@@ -44,6 +44,33 @@ Note:
 class Solution {
 public:
     string predictPartyVictory(string senate) {
+        int delta = 0;
+        queue<char> q;
+        for (auto p : senate)
+            q.push(p);
+        
+        while (!q.empty()) {
+            char c = q.front();
+            q.pop();
+            if (c == 'R') {
+                if (delta >= 0)
+                    q.push(c);
+                delta++;
+            } else {
+                if (delta <= 0)
+                    q.push(c);
+                delta--;
+            }
+            if (delta == q.size() || -delta == q.size())
+                break;
+        }
+        return delta >= 0 ? "Radiant":"Dire";
+    }
+};
+
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
         int R = 0;
         string s = "";
         int m[2] = {0, 0};
