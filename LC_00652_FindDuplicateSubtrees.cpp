@@ -54,6 +54,7 @@ public:
         string key = findDuplicateSubtreesHelper(root->left, mp, res)
                     + findDuplicateSubtreesHelper(root->right, mp, res)
                     + to_string(root->val);
+        //whole tree string as key
 
         if (mp.find(key) == mp.end())
             mp[key] = 1;
@@ -81,6 +82,7 @@ public:
         string key = to_string(findDuplicateSubtreesHelper(root->left, mp, idx, res))
                     + to_string(findDuplicateSubtreesHelper(root->right, mp, idx, res))
                     + to_string(root->val);
+        //encode each subtree as a global number, form a short string key
 
         if (mp.find(key) == mp.end())
             mp[key] = {++idx, 1};
