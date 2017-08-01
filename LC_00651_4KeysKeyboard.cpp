@@ -44,3 +44,44 @@ public:
         return dp[(N - 1) % MOD];
     }
 };
+
+class Solution {
+public:
+    int maxA(int N) {
+        if (N < 4)
+            return N;
+        vector<int> dp(N + 1, 0);
+        dp[1] = 1;
+        dp[2] = 2;
+        dp[3] = 3;
+        
+        for(int i = 4; i <= N; i++) {
+            dp[i] = dp[i - 1] + 1;
+            dp[i] = max(dp[i], dp[i - 2] + 2);
+            for(int x = 3; x < i; x++)
+                dp[i] = max(dp[i], dp[i - x] * (x - 1));
+        }
+        return dp[N];
+    }
+};
+
+class Solution {
+public:
+    int maxA(int N) {
+        if (N < 4)
+            return N;
+        int MOD = 7;
+        vector<int> dp(MOD, 0);
+        dp[0] = 1;
+        dp[1] = 2;
+        dp[2] = 3;
+        
+        for(int i = 3; i < N; i++) {
+            dp[i % MOD] = dp[(i - 1) % MOD] + 1;
+            dp[i % MOD] = max(dp[i % MOD], dp[(i - 2) % MOD] + 2);
+            for(int x = 3; x < min(i, 7); x++) //max 6 is enough
+                dp[i % MOD] = max(dp[i % MOD], dp[(i - x) % MOD] * (x - 1));
+        }
+        return dp[(N - 1) % MOD];
+    }
+};
