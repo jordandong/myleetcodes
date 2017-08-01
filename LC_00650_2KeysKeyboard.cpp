@@ -33,3 +33,41 @@ public:
         return dp[n];
     }
 };
+
+class Solution {
+public:
+    int minSteps(int n) {
+        int ans = 0;
+        vector<int> primes = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31 };
+        while (n > 1) {
+            int i = 0;
+            for (i = 0; i < primes.size(); i++) {
+                if (n % primes[i] == 0) {
+                    ans += primes[i]; //adding fac
+                    n /= primes[i]; //finding next fac
+                    break;
+                }
+            }
+            if (i == primes.size()) { //primes
+                ans += n;
+                n /= n;
+            }
+        }
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    int minSteps(int n) {
+        int ans = 0;
+        while (n > 1) {
+            int d = 2;
+            while (d <= n && n % d)
+                ++d;
+            ans += d;
+            n /= d;
+        }
+        return ans;
+    }
+};
