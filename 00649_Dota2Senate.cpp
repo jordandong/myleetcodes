@@ -46,23 +46,27 @@ public:
     string predictPartyVictory(string senate) {
         int R = 0;
         string s = "";
-        while (true) {
+        int m[2] = {0, 0};
+        do {
+            m[0] = 0, m[1] = 0;
             for (auto c : senate) {
                 if (c == 'R') {
-                    if (R >= 0)
+                    if (R >= 0) {
                         s += "R";
+                        m[0]++;
+                    }
                     R++;
                 } else {
-                    if (R <= 0)
+                    if (R <= 0) {
                         s += "D";
+                        m[1]++;
+                    }
                     R--;
                 }
             }
-            if (R == s.length() || -R == s.length())
-                return R > 0 ? "Radiant" : "Dire";
             senate = s;
             s = "";
-            R = 0;
-        }
+        } while (m[0] && m[1]);
+        return m[0] ? "Radiant":"Dire";
     }
 };
