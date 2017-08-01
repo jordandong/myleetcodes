@@ -29,9 +29,37 @@ Therefore, you need to return above trees' root in the form of a list.
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
 public:
     vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
+        unordered_map<string, int> mp;
+        vector<TreeNode*> res;
+        findDuplicateSubtreesHelper(root, mp, res);
+        return res;
+    }
+    
+    string findDuplicateSubtreesHelper(TreeNode* root, unordered_map<string, int> &mp, vector<TreeNode*> &res) {
+        if (!root)
+            return "#";
         
+        string key = findDuplicateSubtreesHelper(root->left, mp, res)
+                    + findDuplicateSubtreesHelper(root->right, mp, res)
+                    + to_string(root->val);
+
+        if (mp.find(key) == mp.end())
+            mp[key] = 1;
+        else if (mp[key]++ == 1)
+            res.push_back(root);
+        
+        return key;
     }
 };
