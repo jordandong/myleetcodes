@@ -63,3 +63,30 @@ public:
         return key;
     }
 };
+
+class Solution {
+public:
+    vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
+        unordered_map<string, pair<int, int>> mp;
+        vector<TreeNode*> res;
+        int idx = 0;
+        findDuplicateSubtreesHelper(root, mp, idx, res);
+        return res;
+    }
+    
+    int findDuplicateSubtreesHelper(TreeNode* root, unordered_map<string, pair<int, int>> &mp, int &idx, vector<TreeNode*> &res) {
+        if (!root)
+            return 0;
+        
+        string key = to_string(findDuplicateSubtreesHelper(root->left, mp, idx, res))
+                    + to_string(findDuplicateSubtreesHelper(root->right, mp, idx, res))
+                    + to_string(root->val);
+
+        if (mp.find(key) == mp.end())
+            mp[key] = {++idx, 1};
+        else if (mp[key].second++ == 1)
+            res.push_back(root);
+        
+        return mp[key].first;
+    }
+};
