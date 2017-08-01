@@ -28,6 +28,19 @@ Note:
 class Solution {
 public:
     int maxA(int N) {
-
+        vector<int> dp(7, 0);
+        dp[0] = 1;
+        int MOD = 7;
+        for (int i = 0; i < N; i++) {
+            //dp[i] = dp[i - x] * (x - 1), c+a, c+c, c+v and repeat c+v, x >= 3
+            //dp[i] = dp[i - x] * 2 * (x - 1 - 3), c+a, c+c, c+v , c+a, c+c, c+v, and repeat, x >= 6
+            //2 * (x - 1 - 3) >= x - 1 , when x >= 7, so only consider x < 7
+            dp[(i + 1) % MOD] = max(dp[(i + 1) % MOD], dp[i % MOD] + 1);
+            dp[(i + 3) % MOD] = max(dp[(i + 3) % MOD], dp[i % MOD] * 2);
+            dp[(i + 4) % MOD] = max(dp[(i + 4) % MOD], dp[i % MOD] * 3);
+            dp[(i + 5) % MOD] = max(dp[(i + 5) % MOD], dp[i % MOD] * 4);
+            dp[(i + 6) % MOD] = max(dp[(i + 6) % MOD], dp[i % MOD] * 5);
+        }
+        return dp[(N - 1) % MOD];
     }
 };
