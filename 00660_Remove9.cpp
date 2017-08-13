@@ -14,6 +14,12 @@ Hint: n will not exceed 9 x 10^8.
 class Solution {
 public:
     int newInteger(int n) {
-        
+        int res = 0, s = 1;
+        while (n > 0) {
+            res += n % 9 * s;
+            n /= 9;
+            s *= 10;
+        }
+        return res;
     }
 };
