@@ -25,6 +25,27 @@ The length of the input is in range of [1, 10000]
 class Solution {
 public:
     bool isPossible(vector<int>& nums) {
+        vector<pair<int, int>> tbl;
+        for (int i = 0; i < nums.size(); i++) {
+            int l = i + 1, idx = -1;
+            for (int j = 0; j < tbl.size(); j++) {
+                if (nums[i] == tbl[j].first + 1 && tbl[j].second < l) {
+                    l = tbl[j].second;
+                    idx = j;
+                }
+            }
+            if (idx == -1) {
+                tbl.push_back({nums[i], 1});
+            } else {
+                tbl[idx].first = nums[i];
+                tbl[idx].second++;
+            }
+        }
         
+        for (int j = 0; j < tbl.size(); j++) {
+            if (tbl[j].second < 3)
+                return false;
+        }
+        return true;
     }
 };
