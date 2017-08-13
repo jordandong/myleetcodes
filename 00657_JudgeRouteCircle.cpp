@@ -14,6 +14,17 @@ Output: false
 class Solution {
 public:
     bool judgeCircle(string moves) {
-        
+        int UD = 0, LR = 0;
+        for (auto &m : moves) {
+            if (m == 'U')
+                UD++;
+            else if (m == 'D')
+                UD--;
+            else if (m == 'L')
+                LR++;
+            else if (m == 'R')
+                LR--;
+        }
+        return UD == 0 && LR == 0;
     }
 };
