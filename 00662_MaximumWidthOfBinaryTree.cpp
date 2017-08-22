@@ -121,3 +121,27 @@ public:
         return res;
     }    
 };
+
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        int res = 0, idx = 0;
+        queue<pair<TreeNode*, int>> q[2];
+        
+        q[idx % 2].push({root, 1});
+        while (!q[idx % 2].empty()) {
+            res = max(res, q[idx % 2].back().second - q[idx % 2].front().second + 1);
+            while (!q[idx % 2].empty()) {
+                TreeNode* t = q[idx % 2].front().first;
+                int seq = q[idx % 2].front().second;
+                q[idx % 2].pop();
+                if (t->left)
+                    q[(idx + 1) % 2].push({t->left, 2 * seq });
+                if (t->right)
+                    q[(idx + 1) % 2].push({t->right, 2 * seq + 1});
+            }
+            idx++;
+        }
+        return res;
+    }    
+};
