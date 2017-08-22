@@ -19,6 +19,20 @@ Hint: Length of the given string will not exceed 100.
 class Solution {
 public:
     int strangePrinter(string s) {
-        
+        int N = s.length();
+        if (N == 0)
+            return 0;
+        vector<vector<int>> dp(N, vector<int>(N, 0));
+        for (int j = 0; j < N; j++) {
+            dp[j][j] = 1;
+            for (int i = 0; i < j; i++) {
+                dp[i][j] = j - i + 1;
+                for (int k = i; k < j; k++) {
+                    //if s[j] == s[k], k could be printed when printing j
+                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j - 1] + (s[j] != s[k]));
+                }
+            }
+        }
+        return dp[0][N - 1];
     }
 };
