@@ -95,3 +95,29 @@ public:
         widthOfBinaryTreeHelper(root->right, lv + 1, idx * 2 + 1, l, r);
     }  
 };
+
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        int res = 0, idx = 0, lo = INT_MAX;
+        queue<pair<TreeNode*, int>> q[2];
+        
+        q[idx % 2].push({root, 1});
+        while (!q[idx % 2].empty()) {
+            TreeNode* t = q[idx % 2].front().first;
+            int seq = q[idx % 2].front().second;
+            q[idx % 2].pop();
+            if (t->left)
+                q[(idx + 1) % 2].push({t->left, 2 * seq });
+            if (t->right)
+                q[(idx + 1) % 2].push({t->right, 2 * seq + 1});
+            lo = min(lo, seq);
+            res = max(res, seq - lo + 1);
+            if (q[idx % 2].empty()) {
+                idx++;
+                lo = INT_MAX;
+            }
+        }
+        return res;
+    }    
+};
