@@ -14,6 +14,7 @@ public:
     int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
         int pigs = 0;
         int rounds =  minutesToTest / minutesToDie + 1;
+        //each pig decides one digit, carry at rounds
         while (pow(rounds, pigs) < buckets)
             pigs++;
         return pigs;
