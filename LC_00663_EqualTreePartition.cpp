@@ -1,5 +1,6 @@
 /*
-Given a binary tree with n nodes, your task is to check if it's possible to partition the tree to two trees which have the equal sum of values after removing exactly one edge on the original tree.
+Given a binary tree with n nodes, 
+your task is to check if it's possible to partition the tree to two trees which have the equal sum of values after removing exactly one edge on the original tree.
 
 Example 1:
 Input:     
@@ -10,18 +11,18 @@ Input:
    2   3
 
 Output: True
+
 Explanation: 
     5
    / 
   10
-      
 Sum: 15
 
    10
   /  \
  2    3
-
 Sum: 15
+
 Example 2:
 Input:     
     1
@@ -31,10 +32,12 @@ Input:
    2   20
 
 Output: False
+
 Explanation: You can't split the tree into two trees with equal sum after removing exactly one edge on the tree.
+
 Note:
-The range of tree node value is in the range of [-100000, 100000].
-1 <= n <= 10000
+1. The range of tree node value is in the range of [-100000, 100000].
+2. 1 <= n <= 10000
 */
 
 /**
@@ -79,6 +82,27 @@ public:
 class Solution {
 public:
     bool checkEqualTree(TreeNode* root) {
+        set<int> sums;
+        int sum = subTreeSums(root, root, sums);
+        return abs(sum) % 2 == 1 ? false : (sums.find(sum / 2) != sums.end());
+    }
+
+private:
+    int subTreeSums(TreeNode* node, TreeNode* root, set<int> &sums) {
+        if (!node)
+            return 0;
+        int l = subTreeSums(node->left, root, sums);
+        int r = subTreeSums(node->right, root, sums);
+        int sum = node->val + l + r;
+        if (node != root)
+            sums.insert(sum);
+        return sum;
+    }
+};
+
+class Solution {
+public:
+    bool checkEqualTree(TreeNode* root) {
         map<int, int> sums;
         int sum = subTreeSums(root, sums);
         return abs(sum) % 2 == 1 ? false : sum == 0 ? sums[0] > 1 : sums.count(sum / 2) > 0;
@@ -86,7 +110,8 @@ public:
 
 private:
     int subTreeSums(TreeNode* node, map<int, int>& sums) {
-        if (!node) return 0;
+        if (!node)
+            return 0;
         int l = subTreeSums(node->left, sums);
         int r = subTreeSums(node->right, sums);
         int sum = node->val + l + r;
