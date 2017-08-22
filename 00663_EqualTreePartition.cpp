@@ -75,3 +75,22 @@ public:
         return checkEqualTreeSum(root->left) + checkEqualTreeSum(root->right) + root->val;
     }
 };
+
+class Solution {
+public:
+    bool checkEqualTree(TreeNode* root) {
+        map<int, int> sums;
+        int sum = subTreeSums(root, sums);
+        return abs(sum) % 2 == 1 ? false : sum == 0 ? sums[0] > 1 : sums.count(sum / 2) > 0;
+    }
+
+private:
+    int subTreeSums(TreeNode* node, map<int, int>& sums) {
+        if (!node) return 0;
+        int l = subTreeSums(node->left, sums);
+        int r = subTreeSums(node->right, sums);
+        int sum = node->val + l + r;
+        sums[sum]++;
+        return sum;
+    }
+};
