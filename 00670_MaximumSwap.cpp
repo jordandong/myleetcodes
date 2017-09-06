@@ -17,6 +17,32 @@ class Solution {
 public:
     int maximumSwap(int num) {
         string s = to_string(num);
+        string r = s;
+        sort(r.begin(), r.end());
+        reverse(r.begin(), r.end());
+        
+        for ( int i = 0; i < s.size(); ++i) {
+            if (s[i] != r[i]) {
+                char mx = s[i];
+                int idx = i;
+                for (int j = i; j < s.size(); j++) {
+                    if (s[j] >= mx) { //the last biggest one
+                        mx = s[j];
+                        idx = j;
+                    }
+                }
+                swap(s[i], s[idx]);
+                return stoi(s);
+            }
+        }
+        return num;
+    }
+};
+
+class Solution {
+public:
+    int maximumSwap(int num) {
+        string s = to_string(num);
         for ( int i = 0; i < s.size(); ++i) {
             for ( int j = i + 1; j < s.size(); ++j ) {
                 swap(s[i], s[j]);
