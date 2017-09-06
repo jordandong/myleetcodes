@@ -25,6 +25,18 @@ Note: n and m both fit in range [0, 1000].
 class Solution {
 public:
     int flipLights(int n, int m) {
-        
+        if (n <= 0 || m <= 0)
+            return 1;
+        if (n == 1) // o -> o, f
+            return 2;
+        if (n == 2) //oo -> ff, of, fo -> oo, fo, of, ff -> ...
+            return 4 - (m == 1);
+        //ooo -> fff, ofo, fof, foo -> ooo, ofo, fof, off, fff, ffo, oof -> fff, fof, ofo, foo, ooo, ffo, oof, off
+        //n ==4, the 4th bulk is the same as 1th bulk since 3k + 1 = 1, 4, 7 ...
+        if (m == 1)
+            return 4;
+        if (m == 2)
+            return 7;
+        return 8;
     }
 };
