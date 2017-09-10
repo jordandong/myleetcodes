@@ -41,5 +41,63 @@ Hint: size of the given matrix will not exceed 50x50.
 class Solution {
 public:
     int cutOffTree(vector<vector<int>>& forest) {
+        priority_queue<vector<int>, vector<vector<int>>, TreeComparator> trees;
+        int m = forest.size(), n = forest[0].size();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (forest[i][j] > 1)
+                    trees.push({ i, j, forest[i][j] });
+            }
+        }
+
+        int total = 0;
+        int i = 0, j = 0, i1 = 0, j1 = 0;
+        while (!trees.empty()) {
+            vector<int> tree = trees.top();
+            trees.pop();
+            i1 = tree[0];
+            j1 = tree[1];
+            int dist2next = bfsDist(forest, i, j, i1, j1);
+            if (dist2next == -1)
+                return -1;
+            total += dist2next;
+            i = i1, j = j1;
+        }
+        return total;
+    }
+
+private:
+    struct TreeComparator {
+        bool operator()(vector<int> a, vector<int> b) {
+            return a[2] > b[2];
+        }
+    };
+
+    int bfsDist(vector<vector<int>> forest, int i0, int j0, int i1, int j1) {
+        if (i0 == i1 && j0 == j1)
+            return 0;
+        int m = forest.size(), n = forest[0].size();
+        vector<pair<int, int>> delta = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        queue<pair<int, int>> q;
+        q.push({i0, j0});
+        forest[i0][j0] = -forest[i0][j0];
+        int dist = 0;
+        while (!q.empty()) {
+            dist++;
+            for (int k = q.size(); k > 0; k--) {
+                pair<int, int> p = q.front();
+                q.pop();
+                for (int d = 0; d < 4; d++) {
+                    int i = p.first + delta[d].first, j = p.second + delta[d].second;
+                    if (i == i1 && j == j1)
+                        return dist;
+                    if (i < 0 || m <= i || j < 0 || n <= j || forest[i][j] <= 0)
+                        continue;
+                    forest[i][j] = -forest[i][j];
+                    q.push({i, j});
+                }
+            }
+        }
+        return -1;
     }
 };
