@@ -19,6 +19,69 @@ Please remember to RESET your class variables declared in class MagicDictionary,
 
 class MagicDictionary {
 private:
+    struct Node {
+        struct Node* next[26];
+        bool end;
+        Node() {
+            memset(next, 0, sizeof(next));
+            end = false;
+        }
+    };
+    
+    struct Node *root;
+
+    void insert (string word) {
+        int N = word.length();
+        struct Node *cur = root; 
+        for (int i = 0; i < N; i++) {
+            char c = word[i];
+            if (!cur->next[c - 'a']) {
+                cur->next[c - 'a'] = new struct Node();
+            }
+            cur = cur->next[c - 'a'];
+        }
+        cur->end = true;
+    }
+    
+    bool find (struct Node *cur, string word, int idx, bool mod) {
+        if (!cur)
+            return false;
+        int N = word.length();
+        if (idx == N)
+            return cur->end && mod;
+        char c = word[idx];
+        for (int i = 0; i < 26; i++) {
+            if (!mod && c != (i + 'a')) {
+                if (find (cur->next[i], word, idx + 1, ~mod))
+                    return true;
+            }
+        }
+        if (!cur->next[c - 'a'])
+            return false;
+        return find (cur->next[c - 'a'], word, idx + 1, mod);
+    }
+    
+    
+public:
+    /** Initialize your data structure here. */
+    MagicDictionary() {
+        root = new struct Node();
+    }
+    
+    /** Build a dictionary through a list of words */
+    void buildDict(vector<string> dict) {
+        for (auto e : dict)
+            insert(e);
+    }
+    
+    /** Returns if there is any word in the trie that equals to the given word after modifying exactly one character */
+    bool search(string word) {
+        return find (root, word, 0, false);
+    }
+};
+
+class MagicDictionary {
+private:
     set<string> st;
 public:
     /** Initialize your data structure here. */
