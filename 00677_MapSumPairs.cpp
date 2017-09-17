@@ -18,6 +18,61 @@ private:
         Node () {
             memset(nodes, 0, sizeof(nodes));
             sum = 0;
+        }
+        int sum;
+        struct Node *nodes[26];
+    };
+    
+    struct Node* root;
+    
+    unordered_map<string, int> mp;
+
+public:
+    /** Initialize your data structure here. */
+    MapSum() {
+        root = new struct Node();
+    }
+    
+    void insert(string key, int val) {
+        int d = 0;
+        int N = key.length();
+        if (mp.find(key) != mp.end()) {
+            d = val - mp[key];
+        } else {
+            d = val;
+        }
+        mp[key] = val;
+
+        struct Node *node = root;
+        for (int i = 0; i < N; i++) {
+            int c = key[i] - 'a';
+            if (!node->nodes[c])
+                node->nodes[c] = new struct Node();
+            node = node->nodes[c];
+            node->sum += d;
+        }
+    }
+    
+    int sum(string prefix) {
+        int N = prefix.length();
+        struct Node *node = root;
+        for (int i = 0; i < N; i++) {
+            int c = prefix[i] - 'a';
+            if (node->nodes[c])
+                node = node->nodes[c];
+            else
+                return 0;
+        }
+        return node->sum;
+    }
+};
+
+class MapSum {
+private:
+    struct Node {
+        Node () {
+            memset(nodes, 0, sizeof(nodes));
+            sum = 0;
             val = 0;
         }
         int sum;
