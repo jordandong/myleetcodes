@@ -22,6 +22,22 @@ The string size will be in the range [1, 100].
 class Solution {
 public:
     bool checkValidString(string s) {
+        int mi = 0, mx = 0; //record min / max left '(' unmatched
+        for (auto c : s) {
+            if (c == '(')
+                mi += 1;
+            else
+                mi -= 1; //* as ')'
+            
+            if (c != ')')
+                mx += 1; //* as '('
+            else
+                mx -= 1;
         
+            if (mx < 0)
+                return false;
+            mi = max(mi, 0);
+        }
+        return mi == 0;
     }
 };
