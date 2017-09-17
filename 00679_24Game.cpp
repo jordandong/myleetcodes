@@ -15,8 +15,58 @@ You cannot concatenate numbers together. For example, if the input is [1, 2, 1, 
 */
 
 class Solution {
+private:
+    double eps;
 public:
     bool judgePoint24(vector<int>& nums) {
-        
+        vector<double> A;
+        eps = 0.0001;
+        for (auto e : nums)
+            A.push_back((double)e);
+        return judgePoint24Helper(A);
+    }
+    
+    bool judgePoint24Helper(vector<double> A) {
+        int N = A.size();
+        if (N == 1)
+            return abs(A[0] - 24.0) < eps;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < i; j++) {
+                vector<double> next;
+                for (int k = 0; k < N; k++) {
+                    if (k != i && k != j)
+                        next.push_back(A[k]);
+                }
+                
+                next.push_back(A[i] + A[j]);
+                if (judgePoint24Helper(next))
+                    return true;
+                
+                next[next.size() - 1] = (A[i] * A[j]);
+                if (judgePoint24Helper(next))
+                    return true;
+                
+                next[next.size() - 1] = (A[i] - A[j]);
+                if (judgePoint24Helper(next))
+                    return true;
+                
+                next[next.size() - 1] = (A[j] - A[i]);
+                if (judgePoint24Helper(next))
+                    return true;
+                
+                if (abs(A[j]) > eps) {
+                    next[next.size() - 1] = (A[i] / A[j]);
+                    if (judgePoint24Helper(next))
+                        return true;
+                }
+                
+                if (abs(A[i]) > eps) {
+                    next[next.size() - 1] = (A[j] / A[i]);
+                    if (judgePoint24Helper(next))
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 };
