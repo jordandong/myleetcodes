@@ -40,6 +40,23 @@ Every integer represented in the list will be between -30000 and 30000.
 class Solution {
 public:
     int calPoints(vector<string>& ops) {
-        
+        int N = ops.size(), idx = 0, sum = 0;
+        vector<int> stk(N, 0);
+        for (auto c : ops) {
+            if (c == "C") {
+                sum -= stk[idx - 1];
+                stk[--idx] = 0;
+            } else {
+                if (c == "+") {
+                    stk[idx] = stk[idx - 1] + stk[idx - 2];
+                } else if (c == "D") {
+                    stk[idx] = stk[idx - 1] * 2;
+                } else {
+                    stk[idx] = stoi(c);
+                }
+                sum += stk[idx++];
+            }
+        }  
+        return sum;
     }
 };
