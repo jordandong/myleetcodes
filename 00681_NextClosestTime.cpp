@@ -19,6 +19,22 @@ Explanation: The next closest time choosing from digits 2, 3, 5, 9, is 22:22. It
 class Solution {
 public:
     string nextClosestTime(string time) {
-        
+        time = time.substr(0, 2) + time.substr(3);
+        string stime = time, ntime;
+        sort(stime.begin(), stime.end());
+        for (int x = 3; x >= 0; x--) {
+            for (auto y : stime) {
+                if (y <= time[x])
+                    continue;
+                ntime = time;
+                ntime[x] = y;
+                for (int i = 3; i > x; i--)
+                    ntime[i] = stime[0];
+                if ((stoi(ntime.substr(0, 2)) < 24) && (stoi(ntime.substr(2)) < 60))
+                    return ntime.substr(0, 2) + ":" + ntime.substr(2);
+            }
+        }
+        ntime = string(2, stime[0]);
+        return ntime + ":" + ntime;
     }
 };
