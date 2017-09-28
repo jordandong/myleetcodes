@@ -31,37 +31,43 @@ Every integer represented in the 2D-array will be between 1 and N, where N is th
 class Solution {
 public:
     vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
-        int n = edges.size();
-        vector<int> parent(n+1, 0), candA, candB;
-        // step 1, check whether there is a node with two parents
-        for (auto &edge:edges) {
-            if (parent[edge[1]] == 0)
-                parent[edge[1]] = edge[0]; 
-            else {
-                candA = {parent[edge[1]], edge[1]};
-                candB = edge;
-                edge[1] = 0;
+        vector<int> parent(2001, 0), candA, candB;
+        for (auto &e : edges) {
+            if (parent[e[1]] == 0) {
+                parent[e[1]] = e[0]; 
+            } else {
+                candA = {parent[e[1]], e[1]};
+                candB = e;
+                e[1] = 0; //remove second dup parent edge
             }
         } 
-        // step 2, union find
-        for (int i = 1; i <= n; i++) parent[i] = i;
-        for (auto &edge:edges) {
-            if (edge[1] == 0) continue;
-            int u = edge[0], v = edge[1], pu = root(parent, u);
-            // Now every node only has 1 parent, so root of v is implicitly v
-            cout<<pu<<"->"<<v<<endl;
-            if (pu == v) {
-                if (candA.empty()) return edge;
-                return candA;
-            }
-            parent[v] = pu;
+
+        for (auto e : edges) {
+            parent[e[0]] = e[0];
+            parent[e[1]] = e[1];
         }
-        return candB;
+        
+        for (auto e : edges) {
+            if (e[1] == 0) //skip the removed edge
+                continue;
+            int f = unionFind(parent, e[0]);
+            int t = unionFind(parent, e[1]);
+            if  (f == t) { //there is a cycle
+                if (candA.empty()) //no dup parent case
+                    return e;
+                return candA; //the first dup parent edge
+            } else {
+                parent[t] = f;
+            }
+        }
+        return candB; //no cycle, the second dup parent edge
     }
+    
 private:
-    int root(vector<int>& parent, int k) {
-        if (parent[k] != k) 
-            parent[k] = root(parent, parent[k]);
-        return parent[k];
+    int unionFind(vector<int> &p, int val) {
+        while (p[val] != val) {
+            val = p[val];
+        }
+        return val;
     }
 };
