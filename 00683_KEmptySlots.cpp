@@ -45,3 +45,23 @@ public:
         
     }
 };
+
+class Solution {
+public:
+    int kEmptySlots(vector<int>& flowers, int k) {
+        vector<int> days(flowers.size());
+        for (int i = 0; i < flowers.size(); i++)
+            days[flowers[i] - 1] = i + 1; //day[x] = y means position x blooming at day y
+        int l_pos = 0, r_pos = k + 1, res = INT_MAX;
+        for (int i = 0; r_pos < days.size(); i++) {
+            if (days[i] < days[l_pos] || days[i] <= days[r_pos]) {   
+                if(i == r_pos)
+                    res = min(res, max(days[l_pos], days[r_pos]));
+                //means between l_pos and i blooming after i, so able to skip 
+                l_pos = i;
+                r_pos = i + k + 1;
+            }
+        }
+        return (res == INT_MAX) ? -1 : res;        
+    }
+};
