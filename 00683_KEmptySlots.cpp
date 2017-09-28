@@ -28,6 +28,20 @@ The given array will be in the range [1, 20000].
 class Solution {
 public:
     int kEmptySlots(vector<int>& flowers, int k) {
+        set<int> bloom; //internally Binary Tree
+        for (int i = 0; i < flowers.size(); i++) {
+            int p = flowers[i];
+            auto it = bloom.insert(p).first;
+            auto it2 = it;
+            //today and previous day
+            if (it2 != bloom.begin() && (p - *(--it2) == k + 1))
+                return i + 1;
+            //today and future day
+            it2 = it;
+            if ((++it2) != bloom.end() && (*it2 - p == k + 1))
+                return i + 1; 
+        }
+        return -1;
         
     }
 };
