@@ -22,6 +22,32 @@ Note: The length of each dimension in the given grid does not exceed 50.
 class Solution {
 public:
     int maxAreaOfIsland(vector<vector<int>>& grid) {
-        
+        int m = grid.size();
+        if (m == 0)
+            return 0;
+        int n = grid[0].size();
+        if (n == 0)
+            return 0;
+        int res = 0, sol = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                sol = 0;
+                if (grid[i][j])
+                    maxAreaOfIslandHelper(grid, i, j, sol, res);
+            }
+        }
+        return res;
+    }
+private:
+    void maxAreaOfIslandHelper(vector<vector<int>>& grid, int x, int y, int &sol, int &res) {
+        int m = grid.size(), n = grid[0].size();
+        if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] == 0)
+            return;
+        grid[x][y] = 0;
+        res = max(res, ++sol);
+        maxAreaOfIslandHelper(grid, x - 1, y, sol, res);
+        maxAreaOfIslandHelper(grid, x + 1, y, sol, res);
+        maxAreaOfIslandHelper(grid, x, y - 1, sol, res);
+        maxAreaOfIslandHelper(grid, x, y + 1, sol, res);
     }
 };
