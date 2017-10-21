@@ -23,6 +23,20 @@ nums[i] will be an integer between 0 and 49,999.
 class Solution {
 public:
     int findShortestSubArray(vector<int>& nums) {
-        
+        int freq = 0, res = nums.size();
+        unordered_map<int, pair<int, int>> mp; //<value, <first index, freq>>
+        for (int i = 0; i < nums.size(); i++) {
+            if (mp.find(nums[i]) == mp.end())
+                mp[nums[i]] = {i, 0};
+            if (++mp[nums[i]].second >= freq) {
+                if (mp[nums[i]].second == freq) {
+                    res = min(res, i - mp[nums[i]].first + 1);
+                } else {
+                    res = i - mp[nums[i]].first + 1;
+                    freq = mp[nums[i]].second;
+                }
+            }
+        }
+        return res;
     }
 };
