@@ -26,8 +26,8 @@ The binary representation of 10 is: 1010.
 class Solution {
 public:
     bool hasAlternatingBits(int n) {
-        int n1 = n >> 1;
-        return n && n >>1
-        
+        int m = n >> 1;
+        int r = n + m; //should be all ones if true
+        return ((r + 1) & r) == 0;
     }
 };
