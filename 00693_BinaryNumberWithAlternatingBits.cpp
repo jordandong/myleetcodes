@@ -31,3 +31,12 @@ public:
         return ((r + 1) & r) == 0;
     }
 };
+
+class Solution {
+public:
+    bool hasAlternatingBits(int n) {
+        int m = n >> 2;
+        int r = n ^ m; //should only one 1 left
+        return ((r - 1) & r) == 0;
+    }
+};
