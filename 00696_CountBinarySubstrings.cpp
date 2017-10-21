@@ -24,6 +24,19 @@ s will only consist of "0" or "1" characters.
 class Solution {
 public:
     int countBinarySubstrings(string s) {
-        
+        int p_cnt = 0, c_cnt = 1, res = 0;
+        for (int i = 1; i < s.length(); i++) {
+            if (s[i] == s[i - 1]) {
+                c_cnt++;
+            } else {
+                if (p_cnt)
+                    res += min(p_cnt, c_cnt);
+                p_cnt = c_cnt;
+                c_cnt = 1;
+            }
+        }
+        if (p_cnt)
+            res += min(p_cnt, c_cnt);
+        return res;        
     }
 };
