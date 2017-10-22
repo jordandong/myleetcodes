@@ -19,3 +19,10 @@ Note:
 0 < s1.length, s2.length <= 1000.
 All elements of each string will have an ASCII value in [97, 122].
 */
+
+class Solution {
+public:
+    int minimumDeleteSum(string s1, string s2) {
+        
+    }
+};
