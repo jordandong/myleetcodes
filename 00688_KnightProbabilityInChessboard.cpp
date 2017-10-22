@@ -47,3 +47,28 @@ public:
         return dp[r][c][K];
     }
 };
+
+class Solution {
+public:
+    double knightProbability(int N, int K, int r, int c) {
+        vector<vector<vector<double>>> dp(N, vector<vector<double>>(N, vector<double>(K + 1, 0)));
+        knightProbabilityHelper(N, K, r, c, dp);
+        return dp[r][c][K];
+    }
+private:
+    double knightProbabilityHelper(int N, int k, int r, int c, vector<vector<vector<double>>> &dp) {
+        vector<vector<int>> dir = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {2, -1}, {2, 1}};
+
+        if (r < 0 || r >= N  || c < 0 || c >= N)
+            return 0;
+        if (k == 0)
+            dp[r][c][k] = 1.0;
+        if (dp[r][c][k] != 0)
+            return dp[r][c][k];
+        double res = 0;
+        for (auto d : dir)
+            res += knightProbabilityHelper(N, k - 1, r + d[0], c + d[1], dp) / 8;
+        dp[r][c][k] = res;
+        return dp[r][c][k];
+    }
+};
