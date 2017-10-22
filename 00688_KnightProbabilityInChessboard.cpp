@@ -24,6 +24,26 @@ The knight always initially starts on the board.
 class Solution {
 public:
     double knightProbability(int N, int K, int r, int c) {
+        vector<vector<vector<double>>> dp(N, vector<vector<double>>(N, vector<double>(K + 1, 0)));
+        vector<vector<int>> dir = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {2, -1}, {2, 1}};
         
+        for (int k = 0; k <= K; ++k) {
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    dp[i][j][k] = 0.0;
+                    if ( k == 0) {
+                        dp[i][j][0] = 1.0;
+                    } else {
+                        for (int d = 0; d < 8; ++d) {
+                            int x = i + dir[d][0], y = j + dir[d][1];
+                            if(x >= 0 && x < N && y >= 0 && y < N) {
+                                dp[i][j][k] += dp[x][y][k - 1]/8;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return dp[r][c][K];
     }
 };
