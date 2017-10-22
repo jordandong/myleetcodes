@@ -19,5 +19,11 @@ Note:
 0 < prices.length <= 50000.
 0 < prices[i] < 50000.
 0 <= fee < 50000.
-
 */
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        
+    }
+};
