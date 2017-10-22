@@ -23,6 +23,23 @@ Try to solve it in O(n log k) time and O(n) extra space.
 class Solution {
 public:
     vector<string> topKFrequent(vector<string>& words, int k) {
-        
+        vector<string> res;
+        unordered_map<string, int> m;
+        vector<set<string>> bucket(words.size() + 1, set<string>{});
+        /*
+        Internally, the elements in a set are always sorted following a specific strict weak ordering criterion indicated by its internal comparison object (of type Compare).
+        */
+        for (string s: words)
+            m[s]++;
+        for (auto it: m)
+            bucket[it.second].insert(it.first);
+        for (int i = words.size(); i > 0; i--) {
+            for (string s: bucket[i]) {
+                res.push_back(s);
+                if (res.size() == k)  
+                    return res;
+            }
+        }
+        return res;
     }
 };
