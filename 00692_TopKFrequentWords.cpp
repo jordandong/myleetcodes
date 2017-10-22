@@ -43,3 +43,34 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    struct comp {
+        bool operator() (pair<string, int> &a, pair<string, int> &b) {
+            if (a.second != b.second)
+                return a.second > b.second;
+            else
+                return a.first < b.first;
+        }
+    };
+    
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        priority_queue<pair<string, int>, vector<pair<string, int>>, comp> pq;
+        unordered_map<string, int> dict;
+        vector<string> res;
+        for(int i = 0; i < words.size(); i++)
+            dict[words[i]]++;
+        for(auto p = dict.begin(); p != dict.end(); p++) {
+            pq.push({p->first, p->second});
+            if(pq.size() > k)
+                pq.pop();
+        }
+        while(!pq.empty()) {
+            res.push_back(pq.top().first);
+            pq.pop();
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
