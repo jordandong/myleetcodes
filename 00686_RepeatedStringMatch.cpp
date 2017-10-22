@@ -12,6 +12,22 @@ The length of A and B will be between 1 and 10000.
 class Solution {
 public:
     int repeatedStringMatch(string A, string B) {
+        int count = 1, a = 0, b = 0;
         
+        for (int i = 0; i < A.length(); i++) {
+            b = 0;
+            if (A[i] != B[b])
+                continue;
+            a = i;
+            while (b < B.length() && a < A.length() && A[a] == B[b]) {
+                if (++b == B.length())
+                    return count;
+                if (++a == A.length()) {
+                    a = 0;
+                    count++;
+                }
+            }
+        }
+        return -1;
     }
 };
