@@ -15,3 +15,10 @@ Note:
 0 <= k < 10^6.
 */
 
+class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        
+    }
+};
+
