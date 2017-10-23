@@ -14,6 +14,29 @@ Note:
 class Solution {
 public:
     bool canPartitionKSubsets(vector<int>& nums, int k) {
-        
+        int sum = 0;
+        for (auto e : nums)
+            sum += e;
+        if (sum % k)
+            return false;
+        vector<int> kset(k, 0);
+        return canPartitionKSubsetsHelper(nums, sum / k, 0, kset);
     }
+private:
+    bool canPartitionKSubsetsHelper(vector<int>& nums, int val, int pos, vector<int> &kset) {
+        if (pos == nums.size())
+            return true;
+        for (int i = 0; i < kset.size(); i++) {
+            if (kset[i] + nums[pos] > val)
+                continue;
+            kset[i] += nums[pos];
+            if(canPartitionKSubsetsHelper(nums, val, pos + 1, kset))
+                return true;
+            kset[i] -= nums[pos];
+            if (kset[i] == 0)
+                break;
+        }
+        return false;
+    }
+    
 };
