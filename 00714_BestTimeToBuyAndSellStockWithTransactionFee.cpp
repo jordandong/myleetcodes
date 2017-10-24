@@ -24,6 +24,12 @@ Note:
 class Solution {
 public:
     int maxProfit(vector<int>& prices, int fee) {
-        
+        int hold = INT_MIN, sold = 0;
+        for (auto p : prices) {
+            int last_sold = sold;
+            sold = max(last_sold, hold + p);
+            hold = max(hold, last_sold - fee - p);
+        }
+        return sold;
     }
 };
