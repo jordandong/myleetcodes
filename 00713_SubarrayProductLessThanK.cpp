@@ -18,7 +18,18 @@ Note:
 class Solution {
 public:
     int numSubarrayProductLessThanK(vector<int>& nums, int k) {
-        
+        int N = nums.size();
+        long p = 1;
+        int i = 0, j = 0, total = 0;
+        while(j < N){
+            p *= nums[j];
+            while(i <= j && p >= k){
+                p /= nums[i];
+                i++;
+            }
+            total += (j - i + 1); //start at i to j, ending at j
+            j++;
+        }
+        return total;
     }
 };
-
