@@ -43,6 +43,26 @@ The time limit may be more challenging than usual. It is expected that a 50 stic
 class Solution {
 public:
     int minStickers(vector<string>& stickers, string target) {
+        int n = target.size(), m = 1 << n; // m combinations
+        vector<uint> dp(m, -1); //bitmaps -> m combinations, uint INT_MAX and int -1
+        dp[0] = 0; //0 sticker for empty
+        for (int i = 0; i < m; i++) {
+            if (dp[i] == -1)
+                continue;
+            for (string &s : stickers) { //one sticker
+                int cur = i; //current bitmaps
+                for (char c : s) { //one letter
+                    for (int r = 0; r < n; r++) { //apply letter to target
+                        if (target[r] == c && !((cur >> r) & 1)) { //set this bit, when setting, it always becomes bigger
+                            cur |= (1 << r);
+                            break;
+                        }
+                    }
+                }
+                dp[cur] = min(dp[cur], dp[i] + 1); 
+            }
+        }
+        return dp[m - 1];//all bits set result
         
     }
 };
