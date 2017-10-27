@@ -66,3 +66,40 @@ public:
         
     }
 };
+
+class Solution {
+public:
+    int minStickers(vector<string>& stickers, string target) {
+        int n = target.size(), m = 1 << n, res = 0;
+        set<int> st;
+        queue<int> q;
+        q.push(m - 1);
+        st.insert(m - 1);
+        while (!q.empty()) {
+            int size = q.size();
+            res++;
+            for (int i = 0; i < size; i++) {
+                int cur = 0;
+                for (auto &s : stickers) { //one sticker
+                    cur = q.front();
+                    for (auto &c : s) { //one letter
+                        for (int r = 0; r < n; r++) { //apply letter to target
+                            if (target[r] == c && ((cur >> r) & 1)) { //could apply
+                                cur ^= (1 << r);
+                                break;
+                            }
+                        }
+                    }
+                    if (st.find(cur) == st.end()) {
+                        if (cur == 0)
+                            return res;
+                        q.push(cur);
+                        st.insert(cur);
+                    }
+                }
+                q.pop();
+            }
+        }
+        return -1;
+    }
+};
