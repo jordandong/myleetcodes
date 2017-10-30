@@ -20,21 +20,47 @@ The total number of calls to removeRange in a single test case is at most 1000.
 */
 
 class RangeModule {
+private:
+    map<int, int> invals;
+
 public:
-    RangeModule() {
-        
-    }
-    
+    RangeModule() {}
+  
     void addRange(int left, int right) {
-        
+        auto l = invals.upper_bound(left), r = invals.upper_bound(right); 
+        if (l != invals.begin()) { //across start
+            if ((--l)->second < left)
+                l++;
+        }
+        if (l != r) {
+            left = min(left, l->first); //new left
+            right = max(right, (--r)->second); //new right
+            invals.erase(l, ++r); //remove old ranges
+        }
+        invals[left] = right; //add new range
     }
     
     bool queryRange(int left, int right) {
-        
+        auto it = invals.upper_bound(left);
+        if (it == invals.begin() || (--it)->second < right)
+            return false;
+        return true;
     }
     
     void removeRange(int left, int right) {
-        
+        auto l = invals.upper_bound(left), r = invals.upper_bound(right); 
+        if (l != invals.begin()) {
+            if ((--l)->second < left)
+                l++;
+        }
+        if (l == r)
+            return;
+        int l1 = min(left, l->first), r1 = max(right, (--r)->second);
+        invals.erase(l, ++r);
+        if (l1 < left)
+            invals[l1] = left;
+        if (r1 > right)
+            invals[right] = r1;
     }
 };
 
