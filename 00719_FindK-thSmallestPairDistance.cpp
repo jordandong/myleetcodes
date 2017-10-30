@@ -12,6 +12,7 @@ Here are all the pairs:
 (1,1) -> 0
 (3,1) -> 2
 Then the 1st smallest distance pair is (1,1), and its distance is 0.
+
 Note:
 2 <= len(nums) <= 10000.
 0 <= nums[i] < 1000000.
