@@ -65,6 +65,18 @@ Note:
 class Solution {
 public:
     vector<int> fallingSquares(vector<pair<int, int>>& positions) {
-        
+        int n = positions.size(), mx = 0;
+        vector<int> height(n, 0), ans;
+        for (int i = 0; i < n; i++) {
+            height[i] += positions[i].second; //base height is updated when previous square was dropped
+            mx = max(mx, height[i]);
+            ans.push_back(mx);
+            int l = positions[i].first, r = positions[i].first + positions[i].second - 1;
+            for(int j = i + 1; j < n; j++) {//check following squares and update their base heights
+                if (positions[j].first <= r && l <= positions[j].first + positions[j].second - 1)
+                    height[j] = max(height[j], height[i]);
+            }
+        }
+        return ans;
     }
 };
