@@ -8,6 +8,7 @@ B: [3,2,1,4,7]
 Output: 3
 Explanation: 
 The repeated subarray with maximum length is [3, 2, 1].
+
 Note:
 1 <= len(A), len(B) <= 1000
 0 <= A[i], B[i] < 100
