@@ -80,3 +80,36 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    vector<int> fallingSquares(vector<pair<int, int>>& p) {
+        map<pair<int,int>, int> mp;
+        mp[{0,100000001}] = 0;
+        vector<int> ans;
+        int mx = 0;
+        for (auto &v:p) {
+            vector<vector<int>> toAdd;
+            int len = v.second, a = v.first, b =v.first + v.second, h = 0;
+            auto it = mp.upper_bound({a,a}); //find first one position larger than a on x-axis
+            if (it != mp.begin() && (--it)->first.second <= a) //check if previous length across current start point
+                ++it;
+            while (it != mp.end() && it->first.first <b) { //cross sections
+                //merger current section
+                if (a > it->first.first)
+                    toAdd.push_back({it->first.first,a,it->second});
+                if (b < it->first.second)
+                    toAdd.push_back({b,it->first.second,it->second});
+                h = max(h, it->second);
+                it = mp.erase(it);
+            }
+            mp[{a,b}] = h + len; //add current section
+            for (auto &t:toAdd)
+                mp[{t[0],t[1]}] = t[2]; //add front and end section left
+            mx = max(mx, h + len);
+            ans.push_back(mx);
+        }
+        
+        return ans;
+    }
+};
