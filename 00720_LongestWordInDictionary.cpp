@@ -38,3 +38,22 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    string longestWord(vector<string>& words) {
+        sort(words.begin(), words.end());
+        set<string> st;
+        string res = "";
+        st.insert(res);
+        for (auto w : words) {
+            int len = w.length();
+            if (st.find(w.substr(0, len - 1)) != st.end()) {
+                if (len > res.length())
+                    res = w;
+                st.insert(w);
+            }
+        }
+        return res;
+    }
+};
