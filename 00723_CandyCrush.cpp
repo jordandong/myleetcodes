@@ -38,6 +38,45 @@ Each board[i][j] will initially start as an integer in the range [1, 2000].
 class Solution {
 public:
     vector<vector<int>> candyCrush(vector<vector<int>>& board) {
-        
+        int row = board.size(), col = board[0].size();
+        bool clean = false;
+        while (true) {
+            for (int i = 0; i < row; ++i) { //check each row
+               for (int j = 0; j + 2 < col; ++j) {
+                    int val = abs(board[i][j]);
+                    if (val != 0 && val == abs(board[i][j + 1]) && val == abs(board[i][j + 2])) {
+                        board[i][j] = -val;
+                        board[i][j + 1] = -val;
+                        board[i][j + 2] = -val;
+                        clean = true;
+                    }
+                }
+            }
+            for (int j = 0; j < col; ++j) { //check each column
+                for (int i = 0; i + 2 < row; ++i) {
+                    int val = abs(board[i][j]);
+                    if (val != 0 && val == abs(board[i + 1][j]) && val == abs(board[i + 2][j])) {
+                        board[i][j] = -val;
+                        board[i+1][j] = -val;
+                        board[i+2][j] = -val;
+                        clean = true;
+                    }
+                }
+            }
+            //clean by column
+            for (int j = 0; j < col; ++j){
+                int bottom = row - 1;
+                for (int i = row - 1; i >= 0; --i) {
+                    if(board[i][j] > 0)
+                        board[bottom--][j] = board[i][j];
+                }
+                while (bottom >= 0)
+                    board[bottom--][j] = 0;
+            }
+            if(!clean)
+                return board;
+            clean = false;
+        };
+        return board;
     }
-};
+ };
