@@ -1,4 +1,4 @@
-/*
+#if 0
 Given a C++ program, remove comments from it. The program source is an array where source[i] is the i-th line of the source code. This represents the result of splitting the original source code string by the newline character \n.
 
 In C++, there are two types of comments, line comments, and block comments.
@@ -59,11 +59,34 @@ The length of source is in the range [1, 100].
 The length of source[i] is in the range [0, 80].
 Every open block comment is eventually closed.
 There are no single-quote, double-quote, or control characters in the source code.
-*/
+#endif
 
 class Solution {
 public:
     vector<string> removeComments(vector<string>& source) {
-        
+        vector<string> res;
+        bool star = false;
+        string line = "";
+        for (auto &s : source) {
+            int n = s.length(), i = 0;
+            while (i < n) {
+                string p = s.substr(i , 2);
+                if (p == "//" && !star) {
+                    break;
+                } else if ((!star && p == "/*") || (star && p == "*/")) {
+                    i += 2;
+                    star = (p == "/*");
+                    continue;
+                }
+                if (!star)
+                    line.push_back(s[i]);
+                i++;
+            }
+            if (line.length() && !star) {
+                res.push_back(line);
+                line.clear();
+            }
+        }
+        return res;
     }
 };
