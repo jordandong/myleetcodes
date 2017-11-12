@@ -100,3 +100,58 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    string countOfAtoms(string formula) {
+        map<string, int> cur_mp;
+        int n = formula.size();
+        stack<map<string, int> > st;
+        for (int i = 0; i < n; i++) {
+            if (formula[i] >= 'A' && formula[i] <= 'Z') {
+                string atom = "";
+                atom += formula[i];
+                i++;
+                while (formula[i] >= 'a' && formula[i] <= 'z') {
+                    atom += formula[i];
+                    i++;
+                }
+                int num = 0;
+                while (i < n && formula[i] >= '0' && formula[i] <= '9') {
+                    num = num * 10 + (formula[i] - '0');
+                    i++;
+                }
+                if (num == 0)
+                    num = 1;
+                cur_mp[atom] += num;
+                i--;
+            } else if (formula[i] == '(') {
+                st.push(cur_mp);
+                cur_mp.clear();
+            } else if (formula[i] == ')') {
+                i++;
+                int num = 0;
+                while (i < n && formula[i] >= '0' && formula[i] <= '9') {
+                    num = num * 10 + (formula[i] - '0');
+                    i++;
+                }
+                if (num == 0)
+                    num == 1;
+                map<string, int> mp = st.top();
+                st.pop();
+                for (auto &p : cur_mp)
+                   p.second *= num;
+                for (auto &p : mp)
+                   cur_mp[p.first] += p.second;
+                i--;
+            }
+        }
+        string res = "";
+        for (auto &p : cur_mp) {
+            res += p.first;
+            if (p.second > 1)
+                res += to_string(p.second);
+        }
+        return res;
+    }
+};
