@@ -20,6 +20,30 @@ The length of T will be in the range [1, 100].
 class Solution {
 public:
     string minWindow(string S, string T) {
-        
+        int n = S.length();
+        int start = 0, mi = n;
+        vector<vector<int>> next(n + 1, vector<int>(26, -1));
+        //at pos i, the next char appear at which pos
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = 0; j < 26; j++)
+                next[i][j] = next[i + 1][j];
+            next[i][S[i] - 'a'] = i;
+        }
+        for (int left = 0; left < n; left++) {
+            int right = left;
+            for (int j = 0; j < T.length(); j++) {
+                right = next[right][T[j] - 'a'];
+                if (right == -1)
+                    break;
+                right++;//update to next pos for next searching
+            }
+            if (right != -1 && right - left < mi) {
+                mi = right - left;
+                start = left;
+            }
+        }
+        if (mi == n)
+            return "";
+      return S.substr(start, mi);  
     }
 };
