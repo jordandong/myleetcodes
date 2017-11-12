@@ -39,6 +39,64 @@ formula will only consist of letters, digits, and round parentheses, and is a va
 class Solution {
 public:
     string countOfAtoms(string formula) {
-        
+        map<string, int> mp;
+        int n = formula.size(), w = 1;
+        stack<int> st;
+        for (int i = 0; i < n; i++) {
+            if (formula[i] >= 'A' && formula[i] <= 'Z') {
+                string atom = "";
+                atom += formula[i];
+                i++;
+                while (formula[i] >= 'a' && formula[i] <= 'z') {
+                    atom += formula[i];
+                    i++;
+                }
+                int num = 0;
+                while (i < n && formula[i] >= '0' && formula[i] <= '9') {
+                    num = num * 10 + (formula[i] - '0');
+                    i++;
+                }
+                if (num == 0)
+                    num = 1;
+                mp[atom] += num * w;
+                i--;
+            } else if (formula[i] == '(') {
+                int cnt = 1;
+                for (int j = i + 1; j < n; j++) {
+                    if (formula[j] == '(') {
+                        cnt++;
+                    } else if (formula[j] == ')') {
+                        cnt--;
+                        if (cnt == 0) {
+                            j++;
+                            int num = 0;
+                            while (j < n && formula[j] >= '0' && formula[j] <= '9') {
+                                num = num * 10 + (formula[j] - '0');
+                                j++;
+                            }
+                            if (num == 0)
+                                num == 1;
+                            st.push(num);
+                            w *= num;
+                            break;
+                        }
+                    }
+                }
+            } else if (formula[i] == ')') {
+                i++;
+                w /= st.top();
+                st.pop();
+                while (i < n && formula[i] >= '0' && formula[i] <= '9')
+                    i++;
+                i--;
+            }
+        }
+        string res = "";
+        for (auto &p : mp) {
+            res += p.first;
+            if (p.second > 1)
+                res += to_string(p.second);
+        }
+        return res;
     }
 };
