@@ -21,7 +21,7 @@ class Solution {
 public:
     string minWindow(string S, string T) {
         int n = S.length();
-        int start = 0, mi = n;
+        int start = 0, mi = n + 1;
         vector<vector<int>> next(n + 1, vector<int>(26, -1));
         //at pos i, the next char appear at which pos
         for (int i = n - 1; i >= 0; i--) {
@@ -42,7 +42,7 @@ public:
                 start = left;
             }
         }
-        if (mi == n)
+        if (mi == n + 1)
             return "";
       return S.substr(start, mi);  
     }
