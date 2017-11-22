@@ -43,6 +43,28 @@ private:
     set<pair<int,int>> st;
 };
 
+class MyCalendar {
+private:
+    map<int, int> events; //ordered
+public:
+    MyCalendar() {}
+    
+    bool book(int start, int end) {
+        events[start]++; //add event
+        events[end]--;
+        int booked = 0;
+        for (auto &d : events) {
+            booked += d.second; //event number
+            if (booked == 2) {
+                events[start]--; //remove event
+                events[end]++;
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
 /**
  * Your MyCalendar object will be instantiated and called as such:
  * MyCalendar obj = new MyCalendar();
