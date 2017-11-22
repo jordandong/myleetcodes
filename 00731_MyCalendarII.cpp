@@ -30,6 +30,26 @@ In calls to MyCalendar.book(start, end), start and end are integers in the range
 
 class MyCalendarTwo {
 private:
+    map<int, int> events; //ordered
+public:
+    bool book(int start, int end) {
+        events[start]++; //add event
+        events[end]--;
+        int booked = 0;
+        for (auto &d : events) {
+            booked += d.second; //event number
+            if (booked == 3) {
+                events[start]--; //remove event
+                events[end]++;
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+class MyCalendarTwo {
+private:
     set<pair<int, int>> one_evt, two_evt; 
 public:
     MyCalendarTwo() {}    
