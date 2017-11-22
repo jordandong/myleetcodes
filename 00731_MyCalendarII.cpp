@@ -29,13 +29,39 @@ In calls to MyCalendar.book(start, end), start and end are integers in the range
 */
 
 class MyCalendarTwo {
+private:
+    unordered_map<double, int> mp;
+    vector<vector<int>> events;
 public:
-    MyCalendarTwo() {
-        
-    }
+    MyCalendarTwo() {}
     
     bool book(int start, int end) {
+        int s_cnt = 1, e_cnt = 1;
+        for (auto e : events) {
+            if (e[0] <= start && start < e[1])
+                s_cnt++;
+            if (e[0] < end && end <= e[1])
+                e_cnt++;
+        }
+        if (s_cnt > 2 || e_cnt > 2)
+            return false;
         
+        vector<double> keys;
+        for (auto e : mp) {
+            if (start <= e.first && e.first <= end - 0.5) {
+                if (e.second == 2)
+                    return false;
+                keys.push_back(e.first);
+            }
+        }
+        for (auto k : keys)
+            mp[k]++;
+        if (mp.find(start) == mp.end())
+            mp[(double)start] = s_cnt;
+        if (mp.find(end) == mp.end())
+            mp[end - 0.5] = e_cnt;
+        events.push_back({start, end});
+        return true;
     }
 };
 
