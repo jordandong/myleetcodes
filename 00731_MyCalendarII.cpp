@@ -30,6 +30,29 @@ In calls to MyCalendar.book(start, end), start and end are integers in the range
 
 class MyCalendarTwo {
 private:
+    set<pair<int, int>> one_evt, two_evt; 
+public:
+    MyCalendarTwo() {}    
+    bool book(int start, int end) {
+        for (auto c : two_evt) {
+            if (start >= c.second || end <= c.first) //no overlap
+                continue;
+            else
+                return false;
+        }
+        for (auto c : one_evt) {
+            if (start >= c.second || end <= c.first) //no overlap
+                continue;
+            else
+                two_evt.insert({max(start, c.first), min(end, c.second)});
+        }
+        one_evt.insert({start, end});
+        return true;
+    }
+};
+
+class MyCalendarTwo {
+private:
     unordered_map<double, int> mp;
     vector<vector<int>> events;
 public:
