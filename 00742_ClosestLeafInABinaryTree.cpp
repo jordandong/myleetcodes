@@ -58,6 +58,41 @@ Note:
 class Solution {
 public:
     int findClosestLeaf(TreeNode* root, int k) {
-        
+        set<int> leaf, visited;
+        vector<int> g[1001];
+        dfs(root, leaf, visited, g);
+        queue<int> Q;
+        Q.push(k);
+        visited.insert(k);
+        while (!Q.empty()) {
+            int val = Q.front();
+            Q.pop();
+            if (leaf.find(val) != leaf.end())
+                return val;
+            for (auto v : g[val]) {
+                if (visited.find(v) == visited.end()) {
+                    visited.insert(v);
+                    Q.push(v);
+                }
+            }
+        }
+        return 0;
+    }
+private:
+    void dfs(TreeNode* root, set<int> &leaf, set<int> &visited, vector<int>* g) {
+        if ((!root -> left) && (!root -> right)) {
+            leaf.insert(root -> val);
+            return;
+        }
+        if (root -> left) {
+            g[root -> val].push_back(root -> left -> val);
+            g[root -> left -> val].push_back(root -> val);
+            dfs(root -> left, leaf, visited, g);
+        }
+        if (root -> right) {
+            g[root -> val].push_back(root -> right -> val);
+            g[root -> right -> val].push_back(root -> val);
+            dfs(root -> right, leaf, visited, g);
+        }
     }
 };
