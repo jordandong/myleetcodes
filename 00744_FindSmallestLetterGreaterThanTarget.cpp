@@ -44,6 +44,16 @@ Note:
 class Solution {
 public:
     char nextGreatestLetter(vector<char>& letters, char target) {
+        int ans = 'z' + 26;
+        for (auto c: letters)
+            ans = min((int)c + (c > target ? 0 : 26), ans);
+        return ans > 'z' ? ans - 26 : ans;
+    }
+};
+
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& letters, char target) {
         char s = 'z' + 1, e = 'z' + 1;
         for (auto c: letters) {
             if (c < s)
