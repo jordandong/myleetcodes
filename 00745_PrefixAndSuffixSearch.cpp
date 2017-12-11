@@ -39,6 +39,41 @@ public:
     }
 };
 
+class WordFilter {
+private:
+    unordered_map<string, vector<int>> prefix_mp, suffix_mp;
+public:
+    WordFilter(vector<string> words) {
+        for (int ii = 0; ii < words.size(); ii++) {
+            for (int i = 0; i <= words[ii].length(); i++)
+                prefix_mp[words[ii].substr(0, i)].push_back(ii);
+            for (int j = 0; j <= words[ii].length(); j++)
+                suffix_mp[words[ii].substr(j)].push_back(ii);
+        }
+    }
+
+    int f(string prefix, string suffix) {
+        auto prefix_it = prefix_mp.find(prefix);
+        if (prefix_it == prefix_mp.end())
+            return -1;
+        auto suffix_it = suffix_mp.find(suffix);
+        if (suffix_it == suffix_mp.end())
+            return -1;
+        
+        int i = prefix_it->second.size() - 1, j = suffix_it->second.size() - 1;
+        while (i >= 0 && j >= 0) {
+            int p = prefix_it->second[i], s = suffix_it->second[j];
+            if (p == s)
+                return p;
+            if (p < s)
+                j--;
+            else
+                i--;
+        }
+        return -1;
+    }
+};
+
 /**
  * Your WordFilter object will be instantiated and called as such:
  * WordFilter obj = new WordFilter(words);
