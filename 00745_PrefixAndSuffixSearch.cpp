@@ -74,6 +74,43 @@ public:
     }
 };
 
+class WordFilter {
+private:
+    vector<string> data;
+    
+    bool beginWith (string w, string s) {
+        int i = 0, j = 0;
+        while (i < w.length() && j < s.length()) {
+            if (w[i++] != s[j++])
+                return false;
+        }
+        return true;
+    }
+    
+    
+    bool endWith (string w, string s) {
+        int i = w.length() - 1, j = s.length() - 1;
+        while (i >= 0 && j >= 0) {
+            if (w[i--] != s[j--])
+                return false;
+        }
+        return true;
+    }
+
+public:
+    WordFilter(vector<string> words) {
+        data = words;
+    }
+
+    int f(string prefix, string suffix) {
+        for (int i = data.size() - 1; i >= 0; i--) {
+            if (beginWith(data[i], prefix) && endWith(data[i], suffix))
+                return i;
+        }
+        return -1;
+    }
+};
+
 /**
  * Your WordFilter object will be instantiated and called as such:
  * WordFilter obj = new WordFilter(words);
