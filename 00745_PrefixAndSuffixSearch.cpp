@@ -18,13 +18,24 @@ Note:
 */
 
 class WordFilter {
+private:
+    unordered_map<string, int> mp;
 public:
     WordFilter(vector<string> words) {
-        
+        for (int ii = 0; ii < words.size(); ii++) {
+            for (int i = 0; i <= words[ii].length(); i++) {
+                for (int j = 0; j <= words[ii].length(); j++) {
+                    mp[words[ii].substr(0, i) + "#" + words[ii].substr(j)] = ii;
+                }
+            }
+        }
     }
-    
+
     int f(string prefix, string suffix) {
-        
+        auto it = mp.find(prefix + "#" + suffix);
+        if (it == mp.end())
+            return -1;
+        return it->second;
     }
 };
 
