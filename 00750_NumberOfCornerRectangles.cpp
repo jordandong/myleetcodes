@@ -32,6 +32,19 @@ The number of 1s in the grid will be at most 6000.
 class Solution {
 public:
     int countCornerRectangles(vector<vector<int>>& grid) {
-        
+        int m = grid.size(), n = grid[0].size();
+        int res = 0;
+        for (int r = 0; r + 1 < m; r++) {
+            for (int rr = r + 1; rr < m; rr++) {
+                int ones = 0;
+                for (int c = 0; c < n; c++) { 
+                    if (grid[r][c] && grid[rr][c])
+                        ones++;
+                }
+                //C(N, 2) = N * (N - 1) / 2 * 1
+                res += ones * (ones - 1) / 2; 
+            }
+        }
+        return res;
     }
 };
