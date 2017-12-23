@@ -18,7 +18,6 @@ Notice that:
 and
  1
 11
-
 are considered same island shapes.
 Because if we make a 180 degrees clockwise rotation on the first island, then two islands will have the same shapes.
 
