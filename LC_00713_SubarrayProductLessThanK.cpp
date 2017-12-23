@@ -8,11 +8,11 @@ Input: nums = [10, 5, 2, 6], k = 100
 Output: 8
 Explanation: The 8 subarrays that have product less than 100 are: [10], [5], [2], [6], [10, 5], [5, 2], [2, 6], [5, 2, 6].
 Note that [10, 5, 2] is not included as the product of 100 is not strictly less than k.
-Note:
 
-0 < nums.length <= 50000.
-0 < nums[i] < 1000.
-0 <= k < 10^6.
+Note:
+1. 0 < nums.length <= 50000.
+2. 0 < nums[i] < 1000.
+3. 0 <= k < 10^6.
 */
 
 class Solution {
@@ -21,9 +21,9 @@ public:
         int N = nums.size();
         long p = 1;
         int i = 0, j = 0, total = 0;
-        while(j < N){
+        while (j < N) {
             p *= nums[j];
-            while(i <= j && p >= k){
+            while (i <= j && p >= k) {
                 p /= nums[i];
                 i++;
             }
