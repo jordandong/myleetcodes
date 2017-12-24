@@ -82,3 +82,32 @@ public:
         return ret;
     }
 };
+
+class Solution {
+public:
+    vector<string> ipToCIDR(string ip, int range) {
+        ip.push_back('.');
+        int bits = 0, lastPos = 0;
+        for(int i = 0; i < 4; i++) {
+            int pos = (int)ip.find('.', lastPos);
+            int num = stoi(ip.substr(lastPos, pos - lastPos));
+            lastPos = pos + 1;
+            bits = (bits << 8) + num;
+        }
+        vector<string> ans;
+        while(range) {
+            int suf = 32, cover = 1;
+            while(2 * cover <= range && ((bits >> (32 - suf)) & 1) == 0) {
+                cover <<= 1;
+                suf--;
+            }
+            range -= cover;
+            ans.push_back(to_string((bits >> 24) & 0xff) + "." +
+                          to_string((bits >> 16) & 0xff) + "." +
+                          to_string((bits >> 8) & 0xff) + "." +
+                          to_string((bits) & 0xff) + "/" + to_string(suf));
+            bits += 1 << (32 - suf);
+        }
+        return ans;
+    }
+};
