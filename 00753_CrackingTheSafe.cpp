@@ -11,17 +11,76 @@ Example 1:
 Input: n = 1, k = 2
 Output: "01"
 Note: "10" will be accepted too.
+
 Example 2:
 Input: n = 2, k = 2
 Output: "00110"
 Note: "01100", "10011", "11001" will be accepted too.
+
 Note:
 n will be in the range [1, 4].
 k will be in the range [1, 10].
 k^n will be at most 4096.
 */
 
+class Solution {
+public:
+    string crackSafe(int n, int k) {
+        int total = pow(k, n);
+        string sol(n, '0');
+        set<string> v;
+        v.insert(sol);
+        crackSafeDFS(sol, total, v, n, k);
+        return sol;
+    }
+    
+private:
+    bool crackSafeDFS(string &sol, int total, set<string> &v, int n, int k) {
+        if (v.size() == total)
+            return true;
+        string prev = sol.substr(sol.length() - n + 1);
+        for (int i = 0; i < k; i++) {
+            string next = prev + to_string(i);
+            if (v.find(next) == v.end()) {
+                v.insert(next);
+                sol.push_back('0' + i);
+                if (crackSafeDFS(sol, total, v, n, k))
+                    return true;
+                v.erase(next);
+                sol.pop_back();
+            }
+        }
+        return false;
+    }
+};
 
+//De Bruijn sequence
+class Solution {
+    int n, k, v;
+    vector<vector<bool> > visited;
+    string sequence;
+public:
+    string crackSafe(int n, int k) {
+        if (k == 1) return string(n, '0');
+        this->n = n;
+        this->k = k;
+        v = 1;
+        for (int i = 0; i < n -1; ++i) v *= k;
+        visited.resize(v, vector<bool>(k, false));
+        dfs(0);
+        return sequence + sequence.substr(0, n - 1);
+    }
+    
+    void dfs(int u) {
+        for (int i = 0; i < k; ++i) {
+            if (!visited[u][i]) {
+                visited[u][i] = true;
+                dfs((u * k + i) % v);
+                sequence.push_back('0' + i);
+            }
+        }
+    }
+};
 
 /*
 class Solution {
