@@ -42,10 +42,9 @@ Every implied address ip + x (for x < n) will be a valid IPv4 address.
 n will be an integer in the range [1, 1000].
 */
 
-typedef long long int64;
 class Solution {
 private:
-    string to_ip(int64 x, int step) {
+    string to_ip(unsigned int x, int step) {
         vector<int> a(4);
         a[3] = x & 255; x >>= 8;
         a[2] = x & 255; x >>= 8;
@@ -63,8 +62,7 @@ private:
 
 public:
     vector<string> ipToCIDR(string ip, int range) {
-        int64 x = 0;
-        int a[4];
+        unsigned int x = 0, a[4];
         sscanf(ip.c_str(), "%d.%d.%d.%d", &a[0], &a[1], &a[2], &a[3]);
         x |= a[0]; x <<= 8;
         x |= a[1]; x <<= 8;
@@ -72,7 +70,7 @@ public:
         x |= a[3];
         vector<string> ret;
         while (range) {
-            int64 step = x & -x;
+            unsigned int step = x & -x;
             while (step > range)
                 step /= 2;
             ret.push_back(to_ip(x, step));
