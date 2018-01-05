@@ -13,7 +13,6 @@ Diagram of binary tree:
           1
          / \
         3   2
-
 Output: 2 (or 3)
 Explanation: Either 2 or 3 is the closest leaf node to 1.
 
@@ -36,7 +35,6 @@ Diagram of binary tree:
        5
       /
      6
-
 Output: 3
 Explanation: The leaf node with value 3 (and not the leaf node with value 6) is closest to the node with value 2.
 
