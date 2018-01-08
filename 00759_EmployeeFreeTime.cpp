@@ -58,3 +58,31 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    vector<Interval> employeeFreeTime(vector<vector<Interval>>& schedule) {
+        vector<Interval> res, times;
+        if (schedule.empty())
+            return res;
+        for (auto &s : schedule) {
+            for (auto &i : s)
+                times.push_back(i);
+        }
+        sort(times.begin(), times.end(), [](auto &i1, auto &i2) {
+            return i1.start == i2.start ? i1.end < i2.end : i1.start < i2.start;
+        });
+        
+        int end = -1;
+        for (auto &i : times) {
+            if (i.start > end) {
+                if (end != -1) 
+                    res.push_back({end, i.start});
+                end = i.end;
+            } else {
+                end = max(end, i.end);
+            }
+        }
+        return res;
+    }
+};
