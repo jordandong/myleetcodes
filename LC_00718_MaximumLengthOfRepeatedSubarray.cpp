@@ -10,8 +10,8 @@ Explanation:
 The repeated subarray with maximum length is [3, 2, 1].
 
 Note:
-1 <= len(A), len(B) <= 1000
-0 <= A[i], B[i] < 100
+1. 1 <= len(A), len(B) <= 1000
+2. 0 <= A[i], B[i] < 100
 */
 
 class Solution {
