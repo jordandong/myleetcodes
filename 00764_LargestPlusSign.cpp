@@ -59,6 +59,27 @@ mines[i] will be length 2 and consist of integers in the range [0, N-1].
 class Solution {
 public:
     int orderOfLargestPlusSign(int N, vector<vector<int>>& mines) {
+        vector<vector<int>> signOrder(N, vector<int>(N, 1));
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                int min1 = min(i + 1, j + 1);
+                int min2 = min(N - i, N - j);
+                signOrder[i][j] = min(min1, min2);
+            }
+        }
         
+        for (int i = 0; i < mines.size(); i++) {
+            int r = mines[i][0], c = mines[i][1];
+            for (int k = 0; k < N; k++) {
+                signOrder[r][k] = min(signOrder[r][k], abs(k - c));
+                signOrder[k][c] = min(signOrder[k][c], abs(k - r));
+            }
+        }
+        
+        int mx = 0;
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                mx = max(signOrder[i][j], mx);
+        return mx;
     }
 };
