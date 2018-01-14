@@ -32,6 +32,55 @@ R - L will be at most 10000.
 class Solution {
 public:
     int countPrimeSetBits(int L, int R) {
-        
+        int count = 0;
+        while (L <= R) {
+            int b = __builtin_popcount(L++); //max b = 20
+            count += b < 4 ? b > 1 : b % 2 && b % 3;
+        }
+        return count;
+    }
+};
+
+class Solution {
+public:
+    int countPrimeSetBits(int l, int r) {
+        set<int> primes = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
+        int cnt = 0;
+        for (int i = l; i <= r; i++) {
+            int bits = 0;
+            for (int n = i; n; n >>= 1)
+                bits += n & 1;
+            cnt += primes.count(bits);
+        }
+        return cnt;
+    }
+};
+
+class Solution {
+public:
+    int countPrimeSetBits(int l, int r) {
+        set<int> primes = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
+        int cnt = 0;
+        for (int i = l; i <= r; i++) {
+            int bits = 0;
+            for (int n = i; n; n &= (n - 1))
+                bits++;
+            cnt += primes.count(bits);
+        }
+        return cnt;
+    }
+};
+
+class Solution {
+public:
+    int countPrimeSetBits(int l, int r) {
+        int cnt = 0;
+        for (int i = l; i <= r; i++) {
+            int bits = 0;
+            for (int n = i; n; n &= (n - 1))
+                bits++;
+            cnt += bits < 4 ? bits > 1 : (bits % 2 && bits % 3);
+        }
+        return cnt;
     }
 };
