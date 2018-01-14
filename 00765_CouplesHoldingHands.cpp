@@ -24,6 +24,21 @@ row is guaranteed to be a permutation of 0...len(row)-1.
 class Solution {
 public:
     int minSwapsCouples(vector<int>& row) {
-        
+        unordered_map<int, int> m;
+        int ans = 0;
+        for (auto i = 0; i < row.size(); i += 2)
+            ans += minSwapsCouplesHelper(m, row[i] / 2, row[i + 1] / 2);
+        return ans;
+    }
+private:
+    int minSwapsCouplesHelper(unordered_map<int, int>& m, int seat1, int seat2) {
+        if (seat1 > seat2)
+            swap(seat1, seat2);
+        if (seat1 != seat2) { //if =, it is correct seats, !=, need swap
+            if (m.count(seat1) > 0) //found another before seating at seat1, swaping
+                return 1 + minSwapsCouplesHelper(m, m[seat1], seat2);
+            m[seat1] = seat2;
+        }
+        return 0;
     }
 };
