@@ -17,6 +17,23 @@ S will consist of lowercase letters ('a' to 'z') only.
 class Solution {
 public:
     vector<int> partitionLabels(string S) {
-        
+        vector<int> mp(26, 0);
+        for (auto c : S)
+            mp[c - 'a']++;
+        vector<int> ans;
+        int sol = 0, cnt = 0;
+        for (auto c : S) {
+            if (mp[c - 'a']) {
+                cnt += mp[c - 'a'];
+                mp[c - 'a'] = 0;
+            }
+            cnt--;
+            sol++;
+            if (cnt == 0) {
+                ans.push_back(sol);
+                sol = 0;
+            }
+        }
+        return ans;
     }
 };
