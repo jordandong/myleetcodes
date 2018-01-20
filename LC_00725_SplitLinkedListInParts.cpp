@@ -1,7 +1,8 @@
 /*
 Given a (singly) linked list with head node root, write a function to split the linked list into k consecutive linked list "parts".
 
-The length of each part should be as equal as possible: no two parts should have a size differing by more than 1. This may lead to some parts being null.
+The length of each part should be as equal as possible: no two parts should have a size differing by more than 1.
+This may lead to some parts being null.
 
 The parts should be in order of occurrence in the input list, and parts occurring earlier should always have a size greater than or equal parts occurring later.
 
@@ -25,11 +26,11 @@ root = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], k = 3
 Output: [[1, 2, 3, 4], [5, 6, 7], [8, 9, 10]]
 Explanation:
 The input has been split into consecutive parts with size difference at most 1, and earlier parts are a larger size than the later parts.
-Note:
 
-The length of root will be in the range [0, 1000].
-Each value of a node in the input will be an integer in the range [0, 999].
-k will be an integer in the range [1, 50].
+Note:
+1. The length of root will be in the range [0, 1000].
+2. Each value of a node in the input will be an integer in the range [0, 999].
+3. k will be an integer in the range [1, 50].
 */
 
 /**
@@ -59,6 +60,30 @@ public:
             int n = (cnt / k) + (i < (cnt % k));
             ans.push_back(cur);
             for (int i = 0; i < n - 1; i++)
+                cur = cur->next;
+            ListNode* tmp = cur->next;
+            cur->next = NULL;
+            cur = tmp;
+        }
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    vector<ListNode*> splitListToParts(ListNode* root, int k) {
+        ListNode* cur = root;
+        vector<ListNode*> ans(k, NULL);
+        int cnt = 0;
+        while (cur) {
+            cnt++;
+            cur = cur->next;
+        }
+        cur = root;
+        for (int i = 0; i < k && cur; i++) {
+            int n = (cnt / k) + (i < (cnt % k));
+            ans[i] = cur;
+            for (int i = 0; i < n - 1 && cur; i++)
                 cur = cur->next;
             ListNode* tmp = cur->next;
             cur->next = NULL;
