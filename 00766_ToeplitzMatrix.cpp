@@ -30,7 +30,31 @@ matrix[i][j] will be integers in range [0, 99].
 class Solution {
 public:
     bool isToeplitzMatrix(vector<vector<int>>& matrix) {
-
+        int m = matrix.size();
+        if (m == 0)
+            return false;
+        int n = matrix[0].size();
+        if (n == 0)
+            return false;
+        for (int i = 0; i < m; i++) {
+            int x = i + 1, y = 1;
+            while (x < m && y < n) {
+                if (matrix[x][y] != matrix[x - 1][y - 1])
+                    return false;
+                x++;
+                y++;
+            }
+        }
         
+        for (int j = 0; j < n; j++) {
+            int x = 1, y = j + 1;
+            while (x < m && y < n) {
+                if (matrix[x][y] != matrix[x - 1][y - 1])
+                    return false;
+                x++;
+                y++;
+            }
+        }
+        return true;
     }
 };
