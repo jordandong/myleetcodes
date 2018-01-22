@@ -58,3 +58,30 @@ public:
         return chunks;
     }
 };
+
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+		int n = arr.size();
+		vector<int> expect = arr;
+		sort(expect.begin(), expect.end());
+		int ans = 0, mx = -1, dup = 0, exp_dup = 0;
+		for (int i = 0; i < n; ++i) {
+			if (i && expect[i] == expect[i - 1])
+				exp_dup++;
+			else
+				exp_dup = 0;
+			
+            if (arr[i] > mx) {
+				mx = arr[i];
+				dup = 0;
+			} else if (arr[i] == mx) {
+				dup++;
+            }
+            
+            if (expect[i] == mx && exp_dup == dup)
+				ans++;
+		}
+		return ans;
+    }
+};
