@@ -28,6 +28,27 @@ arr[i] will be an integer in range [0, 10**8].
 class Solution {
 public:
     int maxChunksToSorted(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> max_l(n, arr[0]), min_r(n, arr[n - 1]);
+
+        for (int i = 1; i < n; i++)
+            max_l[i] = max(max_l[i - 1], arr[i]);
+
+        for (int i = n - 2; i >= 0; i--)
+            min_r[i] = min(min_r[i + 1], arr[i]);
+
+        int res = 0;
+        for (int i = 0; i < n - 1; i++) {
+            if (max_l[i] <= min_r[i + 1])
+                res++;
+        }
+        return res + 1;
+    }
+};
+
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
         vector<pair<int, int>> arr_id;
         for (int i = 0; i < arr.size(); i++)
             arr_id.push_back({arr[i], i});
