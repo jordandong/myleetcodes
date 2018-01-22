@@ -28,6 +28,23 @@ arr[i] will be an integer in range [0, 10**8].
 class Solution {
 public:
     int maxChunksToSorted(vector<int>& arr) {
+        vector<pair<int, int>> arr_id;
+        for (int i = 0; i < arr.size(); i++)
+            arr_id.push_back({arr[i], i});
+        sort(arr_id.begin(), arr_id.end());
+        int mx = 0, ans = 0;
+        for (int i = 0; i < arr_id.size(); i++) {
+            mx = max(mx, arr_id[i].second);
+            if (mx == i)
+                ans++;
+        }
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
         int chunks = 0;
         multiset<int> cur, expect;
         vector<int> sorted = arr;
