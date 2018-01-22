@@ -26,6 +26,12 @@ arr[i] will be a permutation of [0, 1, ..., arr.length - 1].
 class Solution {
 public:
     int maxChunksToSorted(vector<int>& arr) {
-        
+        int mx = 0, ans = 0;
+        for (int i = 0; i < arr.size (); i++) {
+            mx = max (arr[i], mx);
+            if (mx == i) //mx reached, all before elements smaller than this
+                ans++;
+        }
+        return ans;
     }
 };
