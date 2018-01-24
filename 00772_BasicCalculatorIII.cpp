@@ -21,6 +21,53 @@ Note: Do not use the eval built-in library function.
 class Solution {
 public:
     int calculate(string s) {
-        
+        int i = 0;
+        return calculateHelper(s, i);
+    }
+private:
+    int calculateHelper(string &s, int &i) {
+        vector<int> v;
+        char op = '+';
+        while (i < s.length() && op != ')') {
+            if (s[i] == ' ') {
+                i++;
+                continue;
+            }
+            int num = 0;
+            if (s[i] == '(') {
+                num = calculateHelper(s, ++i);
+            } else {
+                if (isdigit(s[i]))
+                    num = parseNum(s, i);
+            }
+            switch(op) {
+                case '+' :
+                    v.push_back(num);
+                    break;
+                case '-' :
+                    v.push_back(-num);
+                    break;
+                case '*' :
+                    v.back() *= num;
+                    break;
+                case '/' :
+                    v.back() /= num;
+                    break;
+            }            
+            if (i < s.length())
+                op = s[i];
+            i++;
+        }
+        int res = 0;
+        for (int num : v)
+            res += num;
+        return res;
+    }
+    
+    int parseNum(string &s, int &i) {
+        int n = 0;
+        while(i < s.length() && isdigit(s[i]))
+            n = s[i++] - '0' + 10 * n;
+        return n;
     }
 };
