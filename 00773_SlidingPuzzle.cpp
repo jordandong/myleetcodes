@@ -36,6 +36,45 @@ board[i][j] will be a permutation of [0, 1, 2, 3, 4, 5].
 class Solution {
 public:
     int slidingPuzzle(vector<vector<int>>& board) {
+        string des = "123450", src = "";
+        for(int i = 0;i < board.size(); ++i) {
+            for(int j = 0; j<board[0].size(); ++j)
+                src += to_string(board[i][j]);
+        }
+        if(src == des)
+            return 0;
+
+        queue<string> q;
+        vector<pair<int,int>> dir{{1, 0},{-1, 0},{0, 1},{0, -1}};
+        set<string> v;
+        int moves = 0;
         
+        v.insert(src);
+        q.push(src);
+        while(!q.empty()) {
+            int sz = q.size();
+            for(int i = 0; i < sz; ++i) {
+                auto s = q.front();
+                q.pop();
+                int p0 = s.find('0');
+                int x0 = p0 / 3, y0 = p0 % 3;
+                for (auto &d: dir) {
+                    int x = x0 + d.first, y = y0 + d.second;
+                    if (x < 0 || x > 1 || y < 0 || y > 2)
+                        continue;
+                    auto p = x * 3 + y;
+                    swap(s[p], s[p0]);
+                    if(s == des)
+                        return ++moves;
+                    if(v.find(s) == v.end()) {
+                        v.insert(s);
+                        q.push(s);
+                    }
+                    swap(s[p], s[p0]);
+                }
+            }
+            moves++;
+        }
+        return -1;
     }
 };
