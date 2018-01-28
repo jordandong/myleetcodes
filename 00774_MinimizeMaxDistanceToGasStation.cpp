@@ -35,3 +35,33 @@ public:
         return r;
     }
 };
+
+class Comp {
+public:
+    bool operator() (pair<double, int> a, pair<double, int> b) {
+        return (a.first/a.second) < (b.first/b.second);
+    }
+};
+
+class Solution {
+public:
+    double minmaxGasDist(vector<int>& stations, int K) {
+        int N = stations.size(), alloc_k_sum = 0;
+        priority_queue<pair<double, int>, vector<pair<double, int>>, Comp> q;
+        for (int i = 0; i < N - 1; i++) {
+            double dis = stations[i + 1] - stations[i];
+            int alloc_k = dis / (stations[N - 1] - stations[0]) * K; //allocate k as many as possible first
+            q.push({dis, 1 + alloc_k});
+            alloc_k_sum += alloc_k;
+        }
+        K -= alloc_k_sum; //remain K
+        while (K > 0) {
+            pair<double, int> cur = q.top(); //sort by distance
+            q.pop();
+            cur.second += 1;
+            K--;
+            q.push(cur);
+        }
+        return q.top().first / q.top().second;
+    }
+};
