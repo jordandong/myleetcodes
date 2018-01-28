@@ -22,6 +22,7 @@ Note:
 A will be a permutation of [0, 1, ..., A.length - 1].
 A will have length in range [1, 5000].
 The time limit for this problem has been reduced.
+
 */
 
 class Solution {
