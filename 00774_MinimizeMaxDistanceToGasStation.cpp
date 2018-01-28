@@ -20,6 +20,18 @@ Answers within 10^-6 of the true value will be accepted as correct.
 class Solution {
 public:
     double minmaxGasDist(vector<int>& stations, int K) {
-        
+        int N = stations.size();
+        float l = 0, r = stations[N - 1] - stations[0];
+        while (l + 0.00001 < r) {
+            float mid = l + (r - l) / 2;
+            int cnt = 0;
+            for (int i = 0; i < N - 1; ++i)
+                cnt += ceil((stations[i + 1] - stations[i]) / mid) - 1;
+            if (cnt > K)
+                l = mid; //increase the dis
+            else
+                r = mid;
+        }
+        return r;
     }
 };
