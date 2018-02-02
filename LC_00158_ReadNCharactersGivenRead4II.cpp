@@ -32,7 +32,7 @@ int read4(char *buf){
 
 class Solution {
 private:
-    int left_size;
+    int left_size, rd_mx;
     char buffer[4];
 public:
     /**
@@ -41,7 +41,8 @@ public:
      * @return    The number of characters read
      */
     Solution(){
-        left_size = 0;   
+        left_size = 0;
+        rd_mx = 0;
     }
     int read(char* buf, int n){
         int readBytes = 0;
@@ -50,17 +51,18 @@ public:
         while((!eof && n > 0 && readBytes < n) || (left_size && readBytes < n)){
             if(left_size){
                 bytes = min(n - readBytes, left_size);
-                memcpy(buf + readBytes, buffer + 4 - left_size, bytes);
+                memcpy(buf + readBytes, buffer + rd_mx - left_size, bytes);
                 left_size -= bytes;
                 readBytes += bytes;
             }else{
                 left_size = read4(buffer);
                 if(left_size < 4)
                     eof = true;
-                bytes = min(n - readBytes, left_size);
-                memcpy(buf + readBytes, buffer, bytes);
-                left_size -= bytes;
-                readBytes += bytes;
+                rd_mx = left_size;
+                //bytes = min(n - readBytes, left_size);
+                //memcpy(buf + readBytes, buffer, bytes);
+                //left_size -= bytes;
+                //readBytes += bytes;
             }
         }
         return readBytes;   
