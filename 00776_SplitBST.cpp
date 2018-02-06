@@ -45,6 +45,20 @@ The BST is always valid and each node's value is different.
 class Solution {
 public:
     vector<TreeNode*> splitBST(TreeNode* root, int V) {
-        
+        vector<TreeNode*> ans = {NULL, NULL};
+        if (!root)
+            return ans;
+        if (root->val > V){
+            ans[1] = root;
+            auto ans_left = splitBST(root->left, V);
+            root->left = ans_left[1];
+            ans[0] = ans_left[0];
+        }else{
+            ans[0] = root;
+            auto ans_right = splitBST(root->right, V);
+            root->right = ans_right[0];
+            ans[1] = ans_right[1];
+        }        
+        return ans;
     }
 };
