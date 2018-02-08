@@ -34,6 +34,39 @@ Note:
 grid[i][j] is a permutation of [0, ..., N*N - 1].
 */
 
+//O(N^2*logN)
+class Solution {
+private:
+    int n, m;
+    vector<vector<bool>> vis;
+
+    void swimInWaterHelper(int i, int j, int v, vector<vector<int>> &grid) {
+        if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] > v || vis[i][j])
+            return;
+        vis[i][j] = true;
+        
+        swimInWaterHelper(i + 1, j, v, grid);
+        swimInWaterHelper(i - 1, j, v, grid);
+        swimInWaterHelper(i, j + 1, v, grid);
+        swimInWaterHelper(i, j - 1, v, grid);
+    }
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        m = grid.size(), n = grid[0].size();
+        int lo = 0, hi = m * n;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            vis = vector<vector<bool>>(m, vector<bool>(n, false));
+            swimInWaterHelper(0, 0, mid, grid);
+            if (vis[m - 1][n - 1])
+                hi = mid;
+            else
+                lo = mid + 1;
+        }
+        return hi;
+    }
+};
+
 //O(N^3)
 class Solution {
 private:
