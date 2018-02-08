@@ -34,7 +34,7 @@ Note:
 grid[i][j] is a permutation of [0, ..., N*N - 1].
 */
 
-//O(N^2*logN)
+//O(N^2*logN), BS + DFS
 class Solution {
 private:
     int n, m;
@@ -67,7 +67,58 @@ public:
     }
 };
 
-//O(N^3)
+//O(N^2*logN), BS + BFS
+class Solution {
+private:
+    int n, m;
+    vector<vector<bool>> vis;
+
+    void swimInWaterHelper(int v, vector<vector<int>> &grid) {
+        if (grid[0][0] > v)
+            return;
+        queue<pair<int, int>> q;
+        q.push({0, 0});
+        vis[0][0] = true;
+        while (!q.empty()) {
+            int i = q.front().first, j = q.front().second;
+            q.pop();
+
+            if (i + 1 < m && grid[i + 1][j] <= v && vis[i + 1][j] == false) {
+                q.push({i + 1, j});
+                vis[i + 1][j] = true;
+            }
+            if (0 <= i - 1 && grid[i - 1][j] <= v && vis[i - 1][j] == false) {
+                q.push({i - 1, j});
+                vis[i - 1][j] = true;
+            }
+            if (j + 1 < n && grid[i][j + 1] <= v && vis[i][j + 1] == false) {
+                q.push({i, j + 1});
+                vis[i][j + 1] = true;
+            }
+            if (0 <= j - 1 && grid[i][j - 1] <= v && vis[i][j - 1] == false) {
+                q.push({i, j - 1});
+                vis[i][j - 1] = true;
+            }
+        }
+    }
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        m = grid.size(), n = grid[0].size();
+        int lo = 0, hi = m * n;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            vis = vector<vector<bool>>(m, vector<bool>(n, false));
+            swimInWaterHelper(mid, grid);
+            if (vis[m - 1][n - 1])
+                hi = mid;
+            else
+                lo = mid + 1;
+        }
+        return hi;
+    }
+};
+
+//O(N^3), DFS only
 class Solution {
 private:
     int n, m;
