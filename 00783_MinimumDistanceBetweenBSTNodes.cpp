@@ -19,3 +19,34 @@ Note:
 1. The size of the BST will be between 2 and 100.
 2. The BST is always valid, each node's value is an integer, and each node's value is different.
 */
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int minDiffInBST(TreeNode* root) {
+        TreeNode* prev = NULL;
+        return minDiffInBSTHelper(root, prev);
+        
+    }
+    
+    int minDiffInBSTHelper(TreeNode* root, TreeNode* &prev) {
+        int ans = INT_MAX;
+        if (!root)
+            return ans;
+        ans = minDiffInBSTHelper(root->left, prev);
+        if (prev)
+            ans = min(ans, root->val - prev->val);
+        prev = root;
+        int r = minDiffInBSTHelper(root->right, prev);
+        ans = min(ans, r);
+        return ans;
+    }
+};
