@@ -40,6 +40,45 @@ board[i][j] will be only 0s or 1s.
 class Solution {
 public:
     int movesToChessboard(vector<vector<int>>& board) {
+        int res = 0;
+        int N = board.size();
+        
+        int sum = 0;
+        for (int i = 0; i < N; ++i) {
+            if (board[0][i] == 0) ++sum;
+        }
+        sum = min(sum, N-sum);
+        if (sum != N/2) return -1;
+        
+        sum = 0;
+        for (int i = 1; i < N; ++i) {
+            int sum00 = 0;
+            for (int j = 0; j < N; ++j) {
+                if (board[i][j] == board[0][j]) ++sum00;
+            }
+            if (sum00 == 0) ++sum;
+            else if (sum00 != N) return -1;
+        }
+        sum = min(sum, N-sum);
+        if (sum != N/2) return -1;
+        
+        int cnt0 = 0;
+        for (int i = 0; i < N; ++i) {
+            if (board[0][i] == i%2) ++cnt0;
+        }
+        cnt0 = min(cnt0, N-cnt0);
+        if (cnt0%2 == 0) res += cnt0/2;
+        else res += (N-cnt0)/2;
+        
+        cnt0 = 0;
+        for (int i = 0; i < N; ++i) {
+            if (board[i][0] == i%2) ++cnt0;
+        }
+        cnt0 = min(cnt0, N-cnt0);
+        if (cnt0%2 == 0) res += cnt0/2;
+        else res += (N-cnt0)/2;
+        
+        return res;
         
     }
 };
