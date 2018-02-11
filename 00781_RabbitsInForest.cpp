@@ -27,6 +27,15 @@ Each answers[i] will be an integer in the range [0, 999].
 class Solution {
 public:
     int numRabbits(vector<int>& answers) {
-        
+        unordered_map<int, int> mp;
+        int ans = 0;
+        for (auto a : answers) {
+            mp[a]++;
+            if (mp[a] == 1)
+                ans += (a + 1);
+            if (mp[a] == a + 1) //first a + 1 could be the same color
+                mp[a] = 0;
+        }
+        return ans;
     }
 };
