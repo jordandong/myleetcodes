@@ -37,6 +37,30 @@ graph[i] will not contain i or duplicate values.
 class Solution {
 public:
     bool isBipartite(vector<vector<int>>& graph) {
+        unordered_map<int, bool> mp;
+        bool v = false;
+        for (int i = 0; i < graph.size(); i++) {
+            v = false;
+            if (mp.find(i) != mp.end())
+                v = mp[i];
+            if (!isBipartiteHelper(graph, i, v, mp))
+                return false;
+        }
+        return true;
+    }
+private:
+    bool isBipartiteHelper(vector<vector<int>>& graph, int x, bool v, unordered_map<int, bool> &mp) {
+        if (mp.find(x) != mp.end()) {
+            if (mp[x] == v)
+                return true;
+            return false;
+        }
         
+        mp[x] = v;
+        for (int j = 0; j < graph[x].size(); j++) {
+            if (!isBipartiteHelper(graph, graph[x][j], !v, mp))
+                return false;
+        }
+        return true;
     }
 };
