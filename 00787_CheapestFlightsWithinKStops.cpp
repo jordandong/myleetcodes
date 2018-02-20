@@ -56,3 +56,58 @@ public:
         return ans[dst][K];
     }
 };
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        const int INF = 1e9;
+        vector<vector<int>> ans(2, vector<int>(n, INF));
+        ans[0][src] = 0;
+        for(int i = 0; i <= K; i++) {
+            ans[(i + 1) % 2] = ans[i % 2];
+            for(const vector<int>& f: flights)
+                ans[(i + 1) % 2][f[1]] = min(ans[(i + 1) % 2][f[1]], ans[i % 2][f[0]] + f[2]);
+        }
+        if(ans[(K + 1) % 2][dst] == INF)
+            return -1;
+        return ans[(K + 1) % 2][dst];
+    }
+};
+
+//Dijkstra
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        vector<int> m (n, INT_MAX);
+        m[src] = 0;
+        
+        unordered_map<int,vector<pair<int,int> > > es;
+        for(int i = 0; i < flights.size(); ++i)
+            es[flights[i][0]].push_back({flights[i][1],flights[i][2]});
+        
+        auto comp = [&](const auto &p1, const auto &p2)->bool{
+            return m[p1.first] > m[p2.first] || (m[p1.first] == m[p2.first] && p1.first > p2.first);
+        };
+        
+        unordered_set<int> visited; 
+        priority_queue<pair<int, int>, vector<pair<int,int> >, decltype(comp)> q(comp);  
+        q.push({src,0}); 
+        visited.insert(src);
+        
+        while(!q.empty()){
+            auto f = q.top();
+            q.pop();
+                    
+            if((f.second) > K)
+                continue;
+            
+            for(auto &e : es[f.first]){
+                if(m[e.first] > m[f.first] + e.second){
+                    m[e.first] = m[(f.first)] + e.second;
+                    q.push({e.first, f.second + 1});
+                }
+            }
+        }
+        return m[dst] == INT_MAX ? -1 : m[dst];
+    }
+};
