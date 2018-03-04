@@ -37,5 +37,27 @@ Each board[i][j] is a character in the set {" ", "X", "O"}.
 class Solution {
 public:
     bool validTicTacToe(vector<string>& board) {
+        int Xs = 0, Os = 0, diag = 0, anti_diag = 0, r[3] = {0, 0, 0}, c[3] = {0, 0, 0};
+        bool Xwin = false, Owin = false;
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board[0].length(); j++) {
+                if (board[i][j] == ' ')
+                    continue;
+                int v = (board[i][j] == 'X') ? 1 : -1;
+                r[i] += v;
+                c[j] += v;
+                if (i == j)
+                    diag += v;
+                if (i + j == board.size() - 1)
+                    anti_diag += v;
+                Xwin |= ((r[i] == 3) || (c[j] == 3) || (diag == 3) || (anti_diag == 3));
+                Owin |= ((r[i] == -3) || (c[j] == -3) || (diag == -3) || (anti_diag == -3));
+                Xs += v > 0 ? 1 : 0;
+                Os += v < 0 ? 1 : 0;
+            }
+        }
+        if ((Os > Xs) || (Xs > Os + 1) || (Xwin && Xs == Os) || (Owin && Xs > Os))
+            return false;
+        return true;
     }
-}
+};
