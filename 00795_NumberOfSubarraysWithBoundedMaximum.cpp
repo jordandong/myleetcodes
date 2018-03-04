@@ -19,6 +19,23 @@ The length of A will be in the range of [1, 50000].
 class Solution {
 public:
     int numSubarrayBoundedMax(vector<int>& A, int L, int R) {
-        
+        int res = 0, routes = 0, starts = 0;
+        for (int val : A) {
+            if (L <= val && val <= R) {
+                // when val is in range, all the before less than L nodes becomes routes
+                routes +=  starts + 1;
+                starts = 0;
+                res += routes;
+            } else if (val < L) {
+                // val < L, all routes could expand and this val becomes new potential start  
+                res += routes;
+                starts++;
+            } else {
+                //reset , invaild node
+                routes = 0;
+                starts = 0;
+            }
+        }
+        return res;
     }
 };
