@@ -20,6 +20,18 @@ K will be an integer in the range [0, 10^9].
 class Solution {
 public:
     int preimageSizeFZF(int K) {
-        
-    }
+        //5000000000L has 1249999998 zeros
+        for (long l = 0, r = 5000000000L; l < r;) {
+            long m = l + (r - l) / 2, c = 0;
+            for (long h = m / 5; h > 0; h /= 5)
+                c += h;
+            if (c < K)
+                l = m + 1;
+            else if (c > K)
+                r = m;
+            else
+                return 5;
+        }
+        return 0;
+	}
 };
