@@ -18,6 +18,9 @@ A and B will have length at most 100.
 class Solution {
 public:
     bool rotateString(string A, string B) {
-        
+        if (A.length() != B.length())
+            return false;
+        string S = A + A;
+        return S.find(B) != -1;
     }
 };
