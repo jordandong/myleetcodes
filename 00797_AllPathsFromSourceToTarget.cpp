@@ -22,6 +22,22 @@ You can print different paths in any order, but you should keep the order of nod
 class Solution {
 public:
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
-        
+        vector<vector<int>> ans;
+        vector<int> sol;
+        sol.push_back(0);
+        allPathsSourceTargetHelper(graph, 0, sol, ans);
+        return ans;
+    }
+    
+    void allPathsSourceTargetHelper(vector<vector<int>>& graph, int node, vector<int> &sol, vector<vector<int>> &ans) {
+        if (node == graph.size() - 1) {
+            ans.push_back(sol);
+            return;
+        }
+        for (int j = 0; j < graph[node].size(); j++) {
+            sol.push_back(graph[node][j]);
+            allPathsSourceTargetHelper(graph, graph[node][j], sol, ans);
+            sol.pop_back();
+        }
     }
 };
