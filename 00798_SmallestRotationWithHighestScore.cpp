@@ -30,9 +30,19 @@ A will have length at most 20000.
 A[i] will be in the range [0, A.length].
 */
 
+//https://leetcode.com/problems/smallest-rotation-with-highest-score/discuss/118725/Easy-and-Concise-5-lines-Solution-C++JavaPython
 class Solution {
 public:
     int bestRotation(vector<int>& A) {
-        
+        int N = A.size();
+        vector<int> change(N, 0);
+        for (int i = 0; i < N; ++i)
+            change[(i - A[i] + 1 + N) % N] -= 1; //start to lose point
+        int max_i = 0;
+        for (int i = 1; i < N; ++i) {
+            change[i] += change[i - 1] + 1; //index 0 to N - 1, always add point
+            max_i = change[i] > change[max_i] ? i : max_i;
+        }
+        return max_i;
     }
 };
