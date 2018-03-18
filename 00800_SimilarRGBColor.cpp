@@ -22,8 +22,36 @@ All inputs and outputs should use lowercase letters, and the output is 7 charact
 */
 
 class Solution {
+private:
+    int cToi(char c) {
+        if ('0' <= c && c <= '9')
+            return c - '0';
+        else
+            return c - 'a' + 10;
+    }
+
 public:
     string similarRGB(string color) {
-        
+        color = color.substr(1);
+        string res = "";
+        for (int i = 0; i < 3; i++) {
+            int val = cToi(color[i * 2]) * 16 + cToi(color[i * 2 + 1]);
+            int mi = INT_MAX, digit = -1;
+            for (int j = 0; j < 16; j++) {
+                int v = abs(val - 17 * j);
+                if (v < mi) {
+                    mi = v;
+                    digit = j;
+                }
+            }
+            if (digit < 10) {
+                res += (char)('0' + digit);
+                res += (char)('0' + digit);
+            } else {
+                res += (char)('a' + digit - 10);
+                res += (char)('a' + digit - 10);
+            }
+        }
+        return "#" + res;
     }
 };
