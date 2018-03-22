@@ -22,7 +22,6 @@ Each graph[i] will be a sorted list of different integers, chosen within the ran
 */
 
 class Solution {
-
 public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         vector<int> res;
@@ -57,7 +56,6 @@ private:
 };
 
 class Solution {
-
 public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         vector<int> res;
