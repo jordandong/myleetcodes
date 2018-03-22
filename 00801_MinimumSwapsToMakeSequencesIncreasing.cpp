@@ -23,6 +23,20 @@ A[i], B[i] are integer values in the range [0, 2000].
 class Solution {
 public:
     int minSwap(vector<int>& A, vector<int>& B) {
-        
+        int swap_last = 1, no_swap_last = 0;
+        for (int i = 1; i < A.size(); i++) {
+            int swap = A.size(), no_swap = A.size();
+            if (A[i - 1] < A[i] && B[i - 1] < B[i]) {
+                swap = min(swap, swap_last + 1); //swap at i means swap at i - 1
+                no_swap = min(no_swap, no_swap_last);
+            }
+            if (A[i - 1] < B[i] && B[i - 1] < A[i]) {
+                swap = min(swap, no_swap_last + 1); //swap at i means no swap at i - 1
+                no_swap = min(no_swap, swap_last);
+            }
+            swap_last = swap;
+            no_swap_last = no_swap;
+        }
+        return min(swap_last, no_swap_last);
     }
 };
