@@ -35,6 +35,26 @@ All buildings in grid[i][j] occupy the entire grid cell: that is, they are a 1 x
 class Solution {
 public:
     int maxIncreaseKeepingSkyline(vector<vector<int>>& grid) {
-        
+        int m = grid.size();
+        if (m == 0)
+            return 0;
+        int n = grid[0].size();
+        if (n == 0)
+            return 0;
+        vector<int> r(m, 0), c(n, 0);
+        int ans = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                r[i] = max(r[i], grid[i][j]);
+                c[j] = max(c[j], grid[i][j]);
+            }
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                ans += min(r[i], c[j]) - grid[i][j];
+            }
+        }
+        return ans;
     }
 };
