@@ -47,8 +47,6 @@ public:
                 w = widths[s - 'a'];
             }
         }
-        
-        
         if (w > 0)
             ans[0]++;
         ans[1] = w;
