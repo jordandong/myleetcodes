@@ -31,6 +31,15 @@ words[i] will only consist of lowercase letters.
 class Solution {
 public:
     int uniqueMorseRepresentations(vector<string>& words) {
-        
+        vector<string> maps = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+        set<string> st;
+        for (int i = 0; i < words.size(); i++) {
+            string m = "";
+            for (int j = 0; j < words[i].length(); j++) {
+                m += maps[words[i][j] - 'a'];
+            }
+            st.insert(m);
+        }
+        return st.size();
     }
 };
