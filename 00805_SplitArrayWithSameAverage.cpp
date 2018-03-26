@@ -44,3 +44,27 @@ public:
         return false;
     }
 };
+
+//TLE
+class Solution {
+public:
+    bool splitArraySameAverage(vector<int>& A) {
+        int n = A.size(), m = n / 2, totalSum = accumulate(A.begin(), A.end(), 0);
+        for (int i = 1; i <= m; ++i) {
+            if (totalSum * i % n == 0 && combinationSum(A, 0, i, totalSum * i / n))
+                return true;
+        }
+        return false;
+    }
+
+private:
+    bool combinationSum(vector<int>& nums, int idx, int k, int tar) {
+        if (k == 0)
+            return tar == 0;
+        for (int i = idx; i <= nums.size()-k; ++i) {
+            if (nums[i] <= tar && combinationSum(nums, i + 1, k - 1, tar - nums[i]))
+                return true;
+        }
+        return false;
+    }
+};
