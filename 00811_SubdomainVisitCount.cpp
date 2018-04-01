@@ -29,3 +29,23 @@ Each address will have either 1 or 2 "." characters.
 The input count in any count-paired domain will not exceed 10000.
 */
 
+class Solution {
+public:
+    vector<string> subdomainVisits(vector<string>& cpdomains) {
+        unordered_map<string, int> mp;
+        for (auto &cpd : cpdomains) {
+            int i = cpd.find (" ");
+            int cnt = stoi(cpd.substr(0, i++));
+            mp[cpd.substr(i)] += cnt;
+            while (i < cpd.length()) {
+                if (cpd[i++] == '.')
+                    mp[cpd.substr(i)] += cnt; 
+            }
+        }
+        
+        vector<string> ans;
+        for (auto &e : mp)
+            ans.push_back(to_string(e.second) + " " + e.first);
+        return ans;
+    }
+};
