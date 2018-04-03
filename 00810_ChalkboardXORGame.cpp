@@ -19,9 +19,16 @@ Notes:
 0 <= nums[i] <= 2^16.
 */
 
+//All numbers won’t be the same. Otherwise xor will be equal to 0
+//If all numbers are not the same, It means there are at least 2 different numbers.
+//Alice can always erase a number different from current xor.
+//So Alice won’t never lose this turn at this situation.
 class Solution {
 public:
     bool xorGame(vector<int>& nums) {
-        
+        int xr = 0;
+        for (int i: nums)
+            xr ^= i;
+        return xr == 0 || nums.size() % 2 == 0;
     }
 };
