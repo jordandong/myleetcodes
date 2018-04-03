@@ -26,35 +26,33 @@ Answers within 10^-6 of the true value will be accepted as correct.
 */
 
 class Solution {
-private:
-    unordered_map<int, unordered_map<int, double>> dp;
 public:
     double soupServings(int N) {
         if (N >= 5000) {
             return 1.0;
         } else {
-            return soupServingsHelper(N, N);
+            unordered_map<int, double> dp;
+            return soupServingsHelper((N + 24) / 25, (N + 24) / 25, dp);
         }
     }
 
-    double soupServingsHelper(int A, int B) {
-        if (A <= 0 && B > 0)
-            return 1;
-        else if (A <= 0 && B <= 0)
+    double soupServingsHelper(int A, int B, unordered_map<int, double> &dp) {
+        if (A <= 0 && B <= 0)
             return 0.5;
-        else if (A > 0 && B <= 0)
-            return 0;
-						
-        if (dp[A][B] != 0)
-            return dp[A][B];
+        else if (A <= 0)
+            return 1.0;
+        else if (B <= 0)
+            return 0.0;
 		
-        double prob = 0;
-        prob += 0.25 * soupServingsHelper(A - 100, B);
-        prob += 0.25 * soupServingsHelper(A - 75, B - 25);
-        prob += 0.25 * soupServingsHelper(A - 50, B - 50);
-        prob += 0.25 * soupServingsHelper(A - 25, B - 75);
-
-        dp[A][B] = prob;
-        return prob;
+        int key = (A << 16) | B;
+        if (dp.find(key) == dp.end()) {
+            double prob = 0;
+            prob += 0.25 * soupServingsHelper(A - 4, B, dp);
+            prob += 0.25 * soupServingsHelper(A - 3, B - 1, dp);
+            prob += 0.25 * soupServingsHelper(A - 2, B - 2, dp);
+            prob += 0.25 * soupServingsHelper(A - 1, B - 3, dp);
+            dp[key] = prob;
+        }
+        return dp[key];
     }
 };
