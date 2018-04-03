@@ -38,21 +38,21 @@ public:
     }
 
     double soupServingsHelper(int A, int B) {
-        if (A == 0 && B != 0)
+        if (A <= 0 && B > 0)
             return 1;
-        else if (A == 0 && B == 0)
+        else if (A <= 0 && B <= 0)
             return 0.5;
-        else if (A != 0 && B == 0)
+        else if (A > 0 && B <= 0)
             return 0;
 						
         if (dp[A][B] != 0)
             return dp[A][B];
 		
         double prob = 0;
-        prob += 0.25 * soupServingsHelper(A - min(A, 100), B);
-        prob += 0.25 * soupServingsHelper(A - min(A, 75), B - min(B, 25));
-        prob += 0.25 * soupServingsHelper(A - min(A, 50), B - min(B, 50));
-        prob += 0.25 * soupServingsHelper(A - min(A, 25), B - min(B, 75));
+        prob += 0.25 * soupServingsHelper(A - 100, B);
+        prob += 0.25 * soupServingsHelper(A - 75, B - 25);
+        prob += 0.25 * soupServingsHelper(A - 50, B - 50);
+        prob += 0.25 * soupServingsHelper(A - 25, B - 75);
 
         dp[A][B] = prob;
         return prob;
