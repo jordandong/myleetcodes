@@ -46,3 +46,28 @@ public:
         return dp[K][N];
     }
 };
+
+class Solution {
+public:
+    double largestSumOfAverages(vector<int>& A, int K) {
+        int N = A.size();
+        vector<int> S = {0};
+        vector<vector<double>> dp(2, vector<double>(N + 1, 0));
+        for (int i = 0; i < N; i++)
+            S.push_back(S.back() + A[i]);
+        for (int k = 1; k <= K; k++) {
+            for (int i = k; i <= N; i++) {
+                if (k == 1) {
+                    dp[k % 2][i] = (double)S[i] / i;
+                } else { 
+                    //ending with j elements, last avg is from i to j elements
+                    //make sure first i - 1 elements is at least k - 1 > 0 group
+                    for (int j = i; j <= N; j++) { 
+                        dp[k % 2][j] = max(dp[k % 2][j], dp[(k - 1) % 2][i - 1] + (double)(S[j] - S[i - 1])/(j - i + 1));
+                    }
+                }
+            }
+        }
+        return dp[K % 2][N];
+    }
+};
