@@ -21,6 +21,36 @@ Note:
 class Solution {
 public:
     int numBusesToDestination(vector<vector<int>>& routes, int S, int T) {
+        if (S == T)
+            return 0;
+        unordered_map<int, set<int>> mp;//<stop, bus#>
+        for (int i = 0; i < routes.size(); ++i) {
+            for (int stop: routes[i])
+                mp[stop].insert(i);
+        }
         
+        int ans = 1, idx = 0;
+        queue<int> q[2];
+        q[idx % 2].push(S);
+        while (!q[idx % 2].empty()) {
+            int cstop = q[idx % 2].front();
+            q[idx % 2].pop();
+            for (int bus : mp[cstop]) { //bus at cstop
+                for (auto nstop : routes[bus]) { //take this bus and get next potential stops
+                    if (T == nstop)
+                        return ans;
+                    if (nstop != cstop) {
+                        q[(idx + 1) % 2].push(nstop);
+                        mp[nstop].erase(bus);//from cstop to nstop on this bus, delete it in mp to avoid take the same bus back 
+                    }
+                }
+            }
+            mp[cstop].clear(); //delete current stop
+            if (q[idx % 2].empty()) {
+                idx++;
+                ++ans;
+            }
+        }
+        return -1;
     }
 };
