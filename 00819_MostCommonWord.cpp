@@ -31,5 +31,51 @@ Words only consist of letters, never apostrophes or other punctuation symbols.
 class Solution {
 public:
     string mostCommonWord(string paragraph, vector<string>& banned) {
+        unordered_set<string> ban(banned.begin(), banned.end());
+        unordered_map<string, int> count;
+        for (auto & c: paragraph) {
+            c = isalpha(c) ? tolower(c) : ' ';
+        }
+        istringstream iss(paragraph);
+        string w, res = "";
+        int mx_cnt = 0;
+        while (iss >> w) {
+            if (ban.find(w) == ban.end() && ++count[w] > mx_cnt) {
+                res = w;
+                mx_cnt = count[w];
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    string mostCommonWord(string paragraph, vector<string>& banned) {
+        unordered_set<string> ban(banned.begin(), banned.end());
+        unordered_map<string, int> count;
+        string w, res = "";
+        int mx_cnt = 0, s = 0, e = 0;
+
+        paragraph += " ";
+        while (e < paragraph.length()) {
+            if (isalpha(paragraph[e])) {
+                paragraph[e] = tolower(paragraph[e++]);
+            } else {
+                if (s == e) {
+                    s++;
+                    e++;
+                } else {
+                    w = paragraph.substr(s, e - s);
+                    if (ban.find(w) == ban.end() && ++count[w] > mx_cnt) {
+                        res = w;
+                        mx_cnt = count[w];
+                    }
+                    e++;
+                    s = e;
+                }
+            }
+        }
+        return res;
     }
 };
