@@ -63,3 +63,36 @@ public:
         return dp[target];
     }
 };
+
+class Solution {
+public:
+    int racecar(int target) {
+        int res = 0;
+        set<pair<int, int>> v;
+        queue<pair<int, int>> q;
+        q.push({0, 1});
+        v.insert({0, 1});
+        while (!q.empty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                auto car = q.front();
+                q.pop();
+                if (car.first == target)
+                    return res;
+                pair<int, int> car1 = {car.first + car.second, car.second * 2};
+                pair<int, int> car2 = {car.first, car.second > 0 ? -1 : 1};
+                //limited max abs distance to 2^n - 1, max n steps
+                if (abs(car.first + car.second - target) < target && !v.count(car1)) {
+                    v.insert(car1);
+                    q.push(car1);
+                }
+                if (abs(car.first - target) < target && !v.count(car2)) {
+                    v.insert(car2);
+                    q.push(car2);
+                }
+            }
+            res++;
+        }
+        return -1;
+    }
+};
