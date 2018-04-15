@@ -40,6 +40,13 @@ G is a subset of all values in the linked list.
 class Solution {
 public:
     int numComponents(ListNode* head, vector<int>& G) {
-        
+        unordered_set<int> mp(G.begin(), G.end());
+        int res = 0;
+        while (head != NULL) {
+            if (mp.count(head->val) && (head->next == NULL || !mp.count(head->next->val)))
+                res++;
+            head = head->next;
+        }
+        return res;
     }
 };
