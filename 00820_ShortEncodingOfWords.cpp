@@ -23,6 +23,31 @@ Each word has only lowercase letters.
 class Solution {
 public:
     int minimumLengthEncoding(vector<string>& words) {
-        
+        string ans = "";
+        sort (words.begin (), words.end (),
+              [](string &a, string &b) {
+                  return a.length() > b.length();
+              });
+    
+        for (auto &w : words) {
+            if (ans.find (w + "#") == string::npos)
+                ans += (w + "#");
+        }
+        return ans.length();
+    }
+};
+
+class Solution {
+public:
+    int minimumLengthEncoding(vector<string>& words) {
+        unordered_set<string> s(words.begin(), words.end());
+        for (string w : s) {
+            for (int i = 1; i < w.size(); ++i)
+                s.erase(w.substr(i));
+        }
+        int res = 0;
+        for (string w : s)
+            res += w.size() + 1;
+        return res;
     }
 };
