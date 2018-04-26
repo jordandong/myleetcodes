@@ -29,6 +29,20 @@ Note:
 class Solution {
 public:
     int flipgame(vector<int>& fronts, vector<int>& backs) {
-        
+        set<int> same;
+        for (int i = 0; i < fronts.size(); ++i) {
+            if (fronts[i] == backs[i])
+                same.insert(fronts[i]);
+        }
+        int res = 2001;
+        for (int & i : fronts) {
+            if (same.find(i) == same.end())
+                res = min(res, i);
+        }
+        for (int & i : backs) {
+            if (same.find(i) == same.end())
+                res = min(res, i);
+        }
+        return res == 2001 ? 0 : res;
     }
 };
