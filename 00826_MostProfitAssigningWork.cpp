@@ -38,3 +38,24 @@ public:
         return res; 
     }
 };
+
+class Solution {
+public:
+    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
+        map<int, int> m;
+        for (int i = 0; i < difficulty.size(); i++)
+            m[difficulty[i]] = max(m[difficulty[i]], profit[i]);
+        int mx = 0, res = 0;
+        for (auto &p : m)
+            mx = p.second = max(p.second, mx);
+        for (int w : worker) {
+            auto it = m.upper_bound(w);
+            if (it != m.begin()) {
+                res += prev(it)->second;
+                //it--;
+                //res += it->second;
+            }
+        }
+        return res;
+    }
+};
