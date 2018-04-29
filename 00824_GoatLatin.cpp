@@ -36,6 +36,16 @@ S contains only uppercase, lowercase and spaces. Exactly one space between each 
 class Solution {
 public:
     string toGoatLatin(string S) {
-        
+        set<char> vowel = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+        istringstream iss(S);
+        string res, w;
+        int idx = 0;
+        while (iss >> w) {
+            res += ' ' + (vowel.find(w[0]) != vowel.end() ? w : w.substr(1) + w[0]) + "ma";
+            idx++;
+            for (int j = 0; j < idx; ++j)
+                res += "a";
+        }
+        return res.substr(1);
     }
 };
