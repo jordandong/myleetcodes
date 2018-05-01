@@ -38,6 +38,47 @@ Notes:
 class Solution {
 public:
     int numFriendRequests(vector<int>& ages) {
-        
+        //B is in range ( 0.5 * A + 7, A ]
+        int age[121] = {}, res = 0;
+        for (auto a : ages)
+            ++age[a];
+        for (auto A = 15; A < 121; ++A) {
+            for (int B = 0.5 * A + 8; B <= A; ++B) {
+                res += age[B] * (age[A] - (A == B));
+            }
+        }
+        return res;    
+    }
+};
+
+class Solution {
+public:
+    int numFriendRequests(vector<int>& ages) {
+        //B is in range ( 0.5 * A + 7, A ]
+        int age[121] = {}, res = 0;
+        for (auto a : ages)
+            ++age[a];
+        for (auto A = 15, minAge = 15, sSum = 0; A < 121; sSum += age[A], res += age[A++] * (sSum - 1)) {
+            while (minAge <= 0.5 * A + 7)
+                sSum -= age[minAge++];
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int numFriendRequests(vector<int>& ages) {
+        //B is in range ( 0.5 * A + 7, A ]
+        int age[121] = {}, sum_age[121] = {0}, res = 0;
+        for (auto a : ages)
+            ++age[a];
+        for (int i = 1; i < 121; i++)
+            sum_age[i] = sum_age[i - 1] + age[i];
+        for (auto A = 15; A < 121; A++) {
+            if (age[A])
+                res += (sum_age[A] - sum_age[A / 2 + 7] - 1/*self*/) * age[A];
+        }
+        return res;
     }
 };
