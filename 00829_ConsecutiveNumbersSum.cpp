@@ -22,6 +22,15 @@ Note: 1 <= N <= 10 ^ 9.
 class Solution {
 public:
     int consecutiveNumbersSum(int N) {
-        
+        int k = 1, sum = 1, count = 0;
+        //x + 1 + x + 2 + x + 3 + .. x + k = N
+        //1 + 2 + .. + k + kx = N (x from 0 to X)
+        while (sum <= N) {
+            if ((N - sum) % k == 0) // k == 1, itself
+                ++count;
+            ++k;
+            sum = k * (k + 1) / 2;
+        }
+        return count;
     }
 };
