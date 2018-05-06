@@ -31,6 +31,19 @@ Note:  1 <= S.length <= 1000
 class Solution {
 public:
     vector<vector<int>> largeGroupPositions(string S) {
-        
+        vector<vector<int>> ans;
+        int i = 0, j = 0;
+        while (j < S.length()) {
+            if (S[i] == S[j]) {
+                j++;
+            } else {
+                if (j - i >= 3)
+                    ans.push_back({i, j - 1});
+                i = j;
+            }
+        }
+        if (j - i >= 3)
+            ans.push_back({i, j - 1});
+        return ans;
     }
 };
