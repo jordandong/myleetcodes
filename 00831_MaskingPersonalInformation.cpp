@@ -66,6 +66,34 @@ Phone numbers have length at least 10.
 class Solution {
 public:
     string maskPII(string S) {
+        string res;
+        vector<string> country = {"", "+*-", "+**-", "+***-"};
+        int at = S.find("@");
+        if (at != string::npos) {
+            transform(S.begin(), S.end(), S.begin(), ::tolower);
+            return S.substr(0, 1) + "*****" + S.substr(at - 1);
+        }
+        S = regex_replace(S, regex("[^0-9]"), "");
+        return country[S.size() - 10] + "***-***-" + S.substr(S.size() - 4);
         
+    }
+};
+
+class Solution {
+public:
+    string maskPII(string S) {
+        string input;
+        vector<string> country = {"", "+*-", "+**-", "+***-"};
+        for (auto c : S) {
+            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')) {
+                input.push_back(tolower(c));
+            } else if ('0' <= c && c <= '9' || c == '@' || c == '.') {
+                input.push_back(c);
+            }
+        }
+        int at = input.find("@");
+        if (at != string::npos)
+            return input.substr(0, 1) + "*****" + input.substr(at - 1);
+        return country[input.size() - 10] + "***-***-" + input.substr(input.size() - 4);
     }
 };
