@@ -34,16 +34,12 @@ public:
         vector<vector<int>> ans;
         int i = 0, j = 0;
         while (j < S.length()) {
-            if (S[i] == S[j]) {
+            while (j < S.length() && S[i] == S[j])
                 j++;
-            } else {
-                if (j - i >= 3)
-                    ans.push_back({i, j - 1});
-                i = j;
-            }
+            if (j - i >= 3)
+                ans.push_back({i, j - 1});
+            i = j;
         }
-        if (j - i >= 3)
-            ans.push_back({i, j - 1});
         return ans;
     }
 };
