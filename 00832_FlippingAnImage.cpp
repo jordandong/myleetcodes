@@ -47,3 +47,25 @@ public:
         return A;
     }
 };
+
+class Solution {
+public:
+    vector<vector<int>> flipAndInvertImage(vector<vector<int>>& A) {
+        int m = A.size();
+        if (m == 0)
+            return {{}};
+        int n = A[0].size();
+        if (n == 0)
+            return {{}};
+
+        int j = n - 1, k = 0;
+        vector<vector<int>> ans(m, vector<int>{});        
+        while (k < m) {
+            j = n - 1;
+            while (j >= 0)
+                ans[k].push_back(!A[k][j--]);
+            k++;
+        }
+        return ans;
+    }
+};
