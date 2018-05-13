@@ -54,3 +54,20 @@ public:
         return ans;
     }
 };
+
+class Solution {
+public:
+    string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets) {
+        map<int, pair<int, string>> mp;
+        for (auto i = 0; i < indexes.size(); ++i) {
+            if (S.find(sources[i], indexes[i]) == indexes[i])
+                mp[indexes[i]] = {sources[i].length(), targets[i]};
+        }
+        auto it = mp.rbegin();
+        while (it != mp.rend()) {
+            S.replace(it->first, it->second.first, it->second.second);
+            it++;
+        }
+        return S;
+    }
+};
