@@ -28,3 +28,29 @@ Notes:
 All characters in given inputs are lowercase letters.
 */
 
+class Solution {
+public:
+    string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets) {
+        int i = 0, n = S.length();
+        string ans = "";
+        map<int, vector<string>> mp;
+        for (int j = 0; j < indexes.size(); j++) {
+            mp[indexes[j]] = {sources[j], targets[j]};
+        }
+        auto it = mp.begin();
+        while (i < n) {
+            if (it != mp.end() && it->first == i) {
+                if (it->second[0] == S.substr(i, it->second[0].length())) {
+                    ans += it->second[1];
+                } else {
+                    ans += S.substr(i, it->second[0].length());
+                }
+                i += it->second[0].length();
+                it++;
+            } else {
+                ans.push_back(S[i++]);
+            }
+        }
+        return ans;
+    }
+};
