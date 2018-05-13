@@ -26,6 +26,23 @@ Notes:
 class Solution {
 public:
     int largestOverlap(vector<vector<int>>& A, vector<vector<int>>& B) {
-        
+        vector<int> idxA, idxB;
+        int N = A.size();
+        unordered_map<int, int> offset;
+        for (int i = 0; i < N * N; ++i) {
+            if (A[i / N][i % N])
+                idxA.push_back(i / N << 6 | i % N);
+            if (B[i / N][i % N])
+                idxB.push_back(i / N << 6 | i % N);
+        }
+        for (int i: idxA) {
+            for (int j: idxB) {
+                offset[i - j]++; //max offset is the solution after sliding
+            }
+        }
+        int res = 0;
+        for (auto it: offset)
+            res = max(res, it.second);
+        return res;
     }
 };
