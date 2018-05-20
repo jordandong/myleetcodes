@@ -24,6 +24,86 @@ The judging time limit has been increased for this question.
 class Solution {
 public:
     int numSimilarGroups(vector<string>& A) {
+        unordered_map<string, string> parent;
+        int n = A.size();
+        for (int i = 0; i < n; i++) {
+            parent[A[i]] = A[i];
+            for (int j = 0; j < i; j++) {
+                if (isSimilar(A[i], A[j]))
+                    UNION(A[i], A[j], parent);
+            }
+        }
         
+        int ans = 0;
+        for (auto it = parent.begin(); it != parent.end(); it++) {
+            if (it->first == it->second)
+                ans++;
+        }
+        return ans;
+    }
+    
+private:
+    bool isSimilar(string &a, string &b) {
+        if (a.length() != b.length())
+            return false;
+        vector<int> idx;
+        for (int i = 0; i < a.length(); i++) {
+            if (a[i] != b[i])
+                idx.push_back(i);
+        }
+        return idx.size() == 2 && a[idx[0]] == b[idx[1]] && a[idx[1]] == b[idx[0]];
+    }
+    
+    string FIND(string s, unordered_map<string,string> &parent) {
+        if (parent[s] != s)
+            return FIND(parent[s], parent);
+        return s;
+    }
+    
+    void UNION(string a, string b, unordered_map<string,string> &parent) {
+        string pa = FIND(a, parent), pb = FIND(b, parent);
+        parent[pa] = pb;
+    }
+};
+
+class Solution {
+public:
+    int numSimilarGroups(vector<string>& A) {
+        unordered_map<string, string> parent;
+        int n = A.size(), ans = 0;
+        for (int i = 0; i < n; i++) {
+            parent[A[i]] = A[i];
+            ans++;
+            for (int j = 0; j < i; j++) {
+                if (isSimilar(A[i], A[j]))
+                    UNION(A[i], A[j], parent, ans);
+            }
+        }
+        return ans;
+    }
+    
+private:
+    bool isSimilar(string &a, string &b) {
+        if (a.length() != b.length())
+            return false;
+        vector<int> idx;
+        for (int i = 0; i < a.length(); i++) {
+            if (a[i] != b[i])
+                idx.push_back(i);
+        }
+        return idx.size() == 2 && a[idx[0]] == b[idx[1]] && a[idx[1]] == b[idx[0]];
+    }
+    
+    string FIND(string s, unordered_map<string,string> &parent) {
+        if (parent[s] != s)
+            return FIND(parent[s], parent);
+        return s;
+    }
+    
+    void UNION(string a, string b, unordered_map<string,string> &parent, int &ans) {
+        string pa = FIND(a, parent), pb = FIND(b, parent);
+        if (pa != pb)
+            ans--;
+        parent[pa] = pb;
     }
 };
