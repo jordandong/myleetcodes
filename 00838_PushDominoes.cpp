@@ -3,7 +3,8 @@ There are N dominoes in a line, and we place each domino vertically upright.
 
 In the beginning, we simultaneously push some of the dominoes either to the left or to the right.
 
-
+| | | | | | | | | | | | | |
+\ \ | / / | \ \ / / \ \ | |
 
 After each second, each domino that is falling to the left pushes the adjacent domino on the left.
 
@@ -35,6 +36,22 @@ String dominoes contains only 'L', 'R' and '.'
 class Solution {
 public:
     string pushDominoes(string dominoes) {
-        
+        dominoes = 'L' + dominoes + 'R';
+        string res = "";
+        for (int i = 0, j = 1; j < dominoes.length(); ++j) {
+            if (dominoes[j] == '.')
+                continue;
+            int middle = j - i - 1;
+            if (i > 0)
+                res += dominoes[i];
+            if (dominoes[i] == dominoes[j]) //L...L or R...R
+                res += string(middle, dominoes[i]);
+            else if (dominoes[i] == 'L' && dominoes[j] == 'R') //L...R
+                res += string(middle, '.');
+            else //R...L
+                res += string(middle / 2, 'R') + string(middle % 2,'.') + string(middle / 2, 'L');
+            i = j;
+        }
+        return res;
     }
 };
