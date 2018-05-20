@@ -22,6 +22,10 @@ All coordinates in rectangles will be between -10^9 and 10^9.
 class Solution {
 public:
     bool isRectangleOverlap(vector<int>& rec1, vector<int>& rec2) {
-        
+        int x1 = rec1[0], y1 = rec1[1], xx1 = rec1[2], yy1 = rec1[3];
+        int x2 = rec2[0], y2 = rec2[1], xx2 = rec2[2], yy2 = rec2[3];
+        if (x2 >= xx1 || xx2 <= x1 || y2 >= yy1 || yy2 <= y1)
+            return false;
+        return true;
     }
 };
