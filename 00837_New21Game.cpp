@@ -31,6 +31,20 @@ The judging time limit has been reduced for this question.
 class Solution {
 public:
     double new21Game(int N, int K, int W) {
-        
+        if (K == 0)
+            return 1.0;
+        vector<double> dp(N + 1);
+        dp[0] = 1.0;
+        double Wsum = 1.0, res = 0.0;
+        for (int i = 1; i <= N; ++i) {
+            dp[i] = Wsum / W; //last W prob sum, 1/W chance i from i-1, i-2, ...,i-W
+            if (i < K) //after K, stops, so impossible starting form x >= K
+                Wsum += dp[i]; //update prob sum
+            else
+                res += dp[i]; //stop cases, accumulate prob
+            if (0 <= i - W && i - W < K)
+                Wsum -= dp[i - W]; //update prob sum.
+        }
+        return res;
     }
 };
