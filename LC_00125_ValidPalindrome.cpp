@@ -19,15 +19,15 @@ public:
         int l = 0;
         int r = s.length() - 1;
         
-        while(l <= r){
-            if(!isalnum(s[l]))
+        while ( l <= r) {
+            if (!isalnum(s[l]))
                 l++;
-            else if(!isalnum(s[r]))
+            else if (!isalnum(s[r]))
                 r--;
-            else if(abs(s[l] - s[r]) == 0 || abs(s[l] - s[r]) == ('a' - 'A')){
+            else if (tolower(s[l]) == tolower(s[r])) {
                 l++;
                 r--;
-            }else
+            } else
                 return false;
         }
         return true;
