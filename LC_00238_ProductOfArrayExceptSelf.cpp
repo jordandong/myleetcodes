@@ -30,3 +30,21 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> ans(n, 1);
+        int tempPt = 1, tempPt2 = 1;
+        for (int i = 0; i < nums.size(); i++) {
+            ans[i] = ans[i]*tempPt;
+            tempPt *= nums[i];
+            
+            ans[n - 1 - i] = ans[n - 1 - i]*tempPt2;
+            tempPt2 *= nums[n - 1 - i];
+        }
+        
+        return ans;
+    }
+};
