@@ -1,30 +1,34 @@
 /*
-Given a binary tree, each node has value 0 or 1.  Each root-to-leaf path represents a binary number starting with the most significant bit.  For example, if the path is 0 -> 1 -> 1 -> 0 -> 1, then this could represent 01101 in binary, which is 13.
+You are given the root of a binary tree where each node has a value 0 or 1.  Each root-to-leaf path represents a binary number starting with the most significant bit.  For example, if the path is 0 -> 1 -> 1 -> 0 -> 1, then this could represent 01101 in binary, which is 13.
 
 For all leaves in the tree, consider the numbers represented by the path from the root to that leaf.
 
-Return the sum of these numbers.
-
- 
+Return the sum of these numbers. The answer is guaranteed to fit in a 32-bits integer.
 
 Example 1:
-
-
                      1
         0                           1
 0             1            0                 1
-
-
-Input: [1,0,1,0,1,0,1]
+Input: root = [1,0,1,0,1,0,1]
 Output: 22
 Explanation: (100) + (101) + (110) + (111) = 4 + 5 + 6 + 7 = 22
+
+Example 2:
+Input: root = [0]
+Output: 0
+
+Example 3:
+Input: root = [1]
+Output: 1
+
+Example 4:
+Input: root = [1,1]
+Output: 3
  
+Constraints:
 
-Note:
-
-The number of nodes in the tree is between 1 and 1000.
-node.val is 0 or 1.
-The answer will not exceed 2^31 - 1.
+The number of nodes in the tree is in the range [1, 1000].
+Node.val is 0 or 1.
 */
 
 /**
@@ -33,12 +37,29 @@ The answer will not exceed 2^31 - 1.
  *     int val;
  *     TreeNode *left;
  *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
 class Solution {
 public:
     int sumRootToLeaf(TreeNode* root) {
-        
+        int sum = 0;
+        sumRootToLeafHelper(root, 0, sum);
+        return sum;
+    }
+    
+    void sumRootToLeafHelper(TreeNode* root, int cur, int &sum) {
+        if (!root->left && !root->right) {
+            sum += (2*cur + root->val);
+            return;
+        }
+        if (root->left) {
+            sumRootToLeafHelper(root->left, 2*cur + root->val, sum);
+        }
+        if (root->right) {
+            sumRootToLeafHelper(root->right, 2*cur + root->val, sum);
+        }
     }
 };
