@@ -31,7 +31,15 @@ A[i] is 0 or 1
 
 class Solution {
 public:
-    vector<bool> prefixesDivBy5(vector<int>& A) {
-        
+    vector<bool> prefixesDivBy5(vector<int>& nums) {
+        int prev = 0;
+        vector<bool> ans;
+        for (auto e : nums) {
+            int cur = (prev<<1) + e;
+            cur %= 5;
+            ans.push_back(cur == 0);
+            prev = cur ;
+        }
+        return ans;
     }
 };
