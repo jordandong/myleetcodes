@@ -62,10 +62,6 @@ public:
         vector<int> ans;
         int idx = 0;
         flipMatchVoyageHelper(root, voyage, idx, ans);
-        cout<<"idx:"<<idx<<endl;
-        if (ans.size() && ans.front() == -1) {
-            return {-1};
-        }
         return ans;
     }
     
