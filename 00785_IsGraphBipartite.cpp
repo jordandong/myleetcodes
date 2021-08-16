@@ -1,37 +1,44 @@
 /*
-Given a graph, return true if and only if it is bipartite.
+There is an undirected graph with n nodes, where each node is numbered between 0 and n - 1.
+You are given a 2D array graph, where graph[u] is an array of nodes that node u is adjacent to.
+More formally, for each v in graph[u], there is an undirected edge between node u and node v.
+The graph has the following properties:
 
-Recall that a graph is bipartite if we can split it's set of nodes into two independent subsets A and B such that every edge in the graph has one node in A and another node in B.
+There are no self-edges (graph[u] does not contain u).
+There are no parallel edges (graph[u] does not contain duplicate values).
+If v is in graph[u], then u is in graph[v] (the graph is undirected).
+The graph may not be connected, meaning there may be two nodes u and v such that there is no path between them.
+A graph is bipartite if the nodes can be partitioned into two independent sets A and B such that every edge in the graph connects a node in set A and a node in set B.
 
-The graph is given in the following form: graph[i] is a list of indexes j for which the edge between nodes i and j exists.  Each node is an integer between 0 and graph.length - 1.  There are no self edges or parallel edges: graph[i] does not contain i, and it doesn't contain any element twice.
+Return true if and only if it is bipartite.
 
 Example 1:
-Input: [[1,3], [0,2], [1,3], [0,2]]
-Output: true
-Explanation: 
-The graph looks like this:
-0----1
-|    |
-|    |
-3----2
-We can divide the vertices into two groups: {0, 2} and {1, 3}.
-Example 2:
-Input: [[1,2,3], [0,2], [0,1,3], [0,2]]
-Output: false
-Explanation: 
-The graph looks like this:
 0----1
 | \  |
 |  \ |
 3----2
-We cannot find a way to divide the set of nodes into two independent ubsets.
+Input: graph = [[1,2,3],[0,2],[0,1,3],[0,2]]
+Output: false
+Explanation: There is no way to partition the nodes into two independent sets such that every edge connects a node in one and a node in the other.
+
+Example 2:
+0----1
+|    |
+|    |
+3----2
+Input: graph = [[1,3],[0,2],[1,3],[0,2]]
+Output: true
+Explanation: We can partition the nodes into two sets: {0, 2} and {1, 3}.
  
+Constraints:
 
-Note:
-
-graph will have length in range [1, 100].
-graph[i] will contain integers in range [0, graph.length - 1].
-graph[i] will not contain i or duplicate values.
+graph.length == n
+1 <= n <= 100
+0 <= graph[u].length < n
+0 <= graph[u][i] <= n - 1
+graph[u] does not contain u.
+All the values of graph[u] are unique.
+If graph[u] contains v, then graph[v] contains u.
 */
 
 class Solution {
@@ -62,5 +69,37 @@ private:
                 return false;
         }
         return true;
+    }
+};
+
+//We cannot find a way to divide the set of nodes into two independent ubsets.
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<int> parents(n + 1, -1);
+        for (int u = 0; u < n; u++) {
+            int p_u = Find(parents, u);
+            int p_v0;
+            for (int i = 0; i < graph[u].size(); i++) {
+                int v = graph[u][i];
+                int p_v = Find(parents, v);
+                if (p_u == p_v) {
+                    return false;
+                }
+                if (i == 0) {
+                    p_v0 = p_v;
+                }
+                parents[p_v] = p_v0;
+            }
+        }
+        return true;
+    }
+    
+    int Find(vector<int> &parents, int c) {
+        if (parents[c] == -1 || c == parents[c]) {
+            return c;
+        }
+        return Find(parents, parents[c]);
     }
 };
