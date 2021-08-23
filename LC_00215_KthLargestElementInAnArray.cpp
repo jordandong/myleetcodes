@@ -82,3 +82,34 @@ public:
         return nums[N - k];
     }
 };
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int left = 0, right = nums.size() - 1;
+        while (left <= right) {
+            int pIndex = partition(nums, left, right);
+            if (pIndex == nums.size() - k) {
+                return nums[pIndex];
+            } else if (pIndex < nums.size() - k) {
+                left = pIndex + 1;
+            } else {
+                right = pIndex - 1;
+            }
+        }
+        return -1;
+    }
+    
+    int partition(vector<int>& nums, int l, int r) {
+        int pValue = nums[r];
+        int idx = l;
+        for (int i = l; i <= r; i++) {
+            if (nums[i] <= pValue) {
+                if (i != idx)
+                    swap(nums[i], nums[idx]);
+                idx++;
+            }
+        }
+        return idx - 1; 
+    }
+};
